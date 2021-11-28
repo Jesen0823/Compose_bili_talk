@@ -23,6 +23,7 @@ import com.jesen.compose_bili.R
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavBack
 import com.jesen.compose_bili.navigation.doPageNavigationTo
+import com.jesen.compose_bili.ui.widget.user.ActionResult
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
@@ -38,27 +39,8 @@ fun LoginPage(activity: ComponentActivity) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = inputViewModel.loginUIState){
-        activity.lifecycleScope.launch {
-            inputViewModel.loginUIState.collect {
-                when(it){
-                    is InputViewModel.LoginUIState.Success -> {
-                        // 登录成功
-                        oLog(" login page success :${it.result.code}")
-                    }
-                    is InputViewModel.LoginUIState.Error ->{
-                        oLog(" login page error :${it.message}")
-                        scaffoldState.snackbarHostState.showSnackbar(it.message)
-                    }
-                    is InputViewModel.LoginUIState.Loading->{
-                        // 登录中。。。
-                        oLog(" login...")
-                    }
-                    else ->Unit
-                }
-            }
-        }
-    }
+    // 注册UI更新，结果处理
+    ActionResult(inputViewModel, scaffoldState, scope)
 
     Scaffold(
         topBar = { LoginTopBarView(scope) },
@@ -113,7 +95,13 @@ fun InputLoginScreen(
             viewModel = viewModel,
         )
 
-        InputTogButton("登录", scope, viewModel, scaffoldState,onClick = {viewModel.doLogin()} ,true)
+        InputTogButton(
+            "登录",
+            scope,
+            viewModel,
+            scaffoldState,
+            onClick = { viewModel.doLogin() },
+            true)
     }
 
 }

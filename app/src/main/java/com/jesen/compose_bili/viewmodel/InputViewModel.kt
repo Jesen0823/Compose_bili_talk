@@ -62,43 +62,73 @@ class InputViewModel : ViewModel() {
 
     /***********************************************************/
 
-    private val _loginUIState = MutableStateFlow<LoginUIState>(LoginUIState.Empty)
+    private val _loginUIState = MutableStateFlow<UserUIState>(UserUIState.Empty(action = null))
 
-    val loginUIState:StateFlow<LoginUIState> = _loginUIState
+    val userUIState: StateFlow<UserUIState> = _loginUIState
 
-    fun doLogin() = viewModelScope.launch {
-        _loginUIState.value = LoginUIState.Loading
+    /**
+     * 登录行为
+     * */
+    fun doLogin() = userRequest(UserAction.LOGIN)
+
+    /**
+     * 登录行为
+     * */
+    fun doRegister() = userRequest(UserAction.REGISTER)
+
+
+    private fun userRequest(action: UserAction) = viewModelScope.launch {
+        _loginUIState.value = UserUIState.Loading(action)
+
         flow {
-            val result = UserRepository.startLogin(name,pwd)
-            oLog(" login result: ${result.msg}")
+            val result: UserResult = if (action == UserAction.LOGIN) {
+                UserRepository.startLogin(name, pwd)
+            } else {
+                UserRepository.startRegister(name, pwd, mocId.toInt(), orderId.toInt())
+            }
 
+            oLog(" login result: ${result.msg}")
             emit(result)
+
         }.flowOn(Dispatchers.IO)
             // 下游异常 接口返回错误码
             .onEach {
                 oLog("onEach : ${it.code}")
-                _loginUIState.value = LoginUIState.Error(message = it.msg?:"login error")
+                _loginUIState.value =
+                    UserUIState.Error(
+                        message = it.msg ?: "login || register error",
+                        action = action
+                    )
             }
             // 上游异常捕获 如网络异常功能异常
             .catch { e ->
-                oLog(" login result catch: ${e.message}")
+                oLog(" login || register result catch: ${e.message}")
                 e.printStackTrace()
 
-                _loginUIState.value = when(e){
-                    is IOException -> LoginUIState.Error("网络异常，请检查网络")
-                    else -> LoginUIState.Error(message = e.message?:"unKnow error")
+                _loginUIState.value = when (e) {
+                    is IOException -> UserUIState.Error("网络异常，请检查网络", action = action)
+                    else -> UserUIState.Error(
+                        message = e.message ?: "unKnow error",
+                        action = action
+                    )
                 }
             }
             .collect { userResult ->
-                _loginUIState.value = LoginUIState.Success(result=userResult)
+                _loginUIState.value =
+                    UserUIState.Success(result = userResult, action = action)
             }
     }
 
-    sealed class LoginUIState{
-        data class Success(val result: UserResult):LoginUIState()
-        data class Error(val message:String):LoginUIState()
-        object Loading:LoginUIState()
-        object Empty:LoginUIState()
+
+    // UI状态管理
+    sealed class UserUIState(action: UserAction?) {
+        data class Success(val result: UserResult, val action: UserAction) : UserUIState(action)
+        data class Error(val message: String, val action: UserAction) : UserUIState(action)
+        data class Loading(val action: UserAction) : UserUIState(action)
+        data class Empty(val action: UserAction?) : UserUIState(action)
     }
+
+    // 用户行为
+    enum class UserAction { LOGIN, REGISTER }
 
 }

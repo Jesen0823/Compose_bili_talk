@@ -20,8 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jesen.compose_bili.ui.theme.primaryColor
 import com.jesen.compose_bili.ui.theme.primaryDeepColor
+import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.InputViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * 顶部TopBar
@@ -167,4 +170,33 @@ fun drawDiverLine() {
             strokeWidth = 2f
         )
     })
+}
+
+@Composable
+fun ActionResult(
+    inputViewModel: InputViewModel,
+    scaffoldState: ScaffoldState,
+    scope: CoroutineScope
+) {
+    LaunchedEffect(key1 = inputViewModel.userUIState) {
+        scope.launch {
+            inputViewModel.userUIState.collect {
+                when (it) {
+                    is InputViewModel.UserUIState.Success -> {
+                        // 注册成功
+                        oLog(" register page success :${it.result.code}")
+                    }
+                    is InputViewModel.UserUIState.Error -> {
+                        oLog(" register page error :${it.message}")
+                        scaffoldState.snackbarHostState.showSnackbar(it.message)
+                    }
+                    is InputViewModel.UserUIState.Loading -> {
+                        // 登录中。。。
+                        oLog(" register...")
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
 }

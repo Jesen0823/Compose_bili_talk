@@ -17,15 +17,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import com.jesen.compose_bili.R
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavBack
 import com.jesen.compose_bili.navigation.doPageNavigationTo
+import com.jesen.compose_bili.ui.widget.user.ActionResult
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
+import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.InputViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
@@ -35,10 +39,14 @@ fun RegisterPage(activity: ComponentActivity) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
+    // 注册UI更新，结果处理
+    ActionResult(inputViewModel, scaffoldState, scope)
+
     Scaffold(
         topBar = { RegisterTopBarView(scope) },
         scaffoldState = scaffoldState
     ) {
+
         Box(Modifier.fillMaxSize()) {
 
             headPicEffect(inputViewModel)
@@ -48,14 +56,17 @@ fun RegisterPage(activity: ComponentActivity) {
                     .padding(5.dp, 120.dp, 5.dp, 0.dp)
                     .fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier
-                    .height(2.dp)
-                    .background(color = Color.Gray))
+                Spacer(
+                    modifier = Modifier
+                        .height(2.dp)
+                        .background(color = Color.Gray)
+                )
                 InputRegisterScreen(inputViewModel, scaffoldState, scope)
             }
         }
     }
 }
+
 
 @Composable
 fun InputRegisterScreen(
@@ -123,7 +134,7 @@ fun InputRegisterScreen(
             leadingIcon = Icons.Default.AdminPanelSettings,
         )
 
-        InputTogButton("注册", scope, viewModel, scaffoldState,onClick = {})
+        InputTogButton("注册", scope, viewModel, scaffoldState, onClick = { viewModel.doRegister() })
     }
 
 }

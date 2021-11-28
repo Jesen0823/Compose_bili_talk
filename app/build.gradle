@@ -87,5 +87,7 @@ dependencies {
 
     // 导航
     implementation "androidx.navigation:navigation-compose:$navigation_compose"
+    // 可定义动画的Navigation库
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.21.3-beta"
 
 }
