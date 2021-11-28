@@ -20,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.jesen.compose_bili.R
+import com.jesen.compose_bili.navigation.PageRoute
+import com.jesen.compose_bili.navigation.doPageNavBack
+import com.jesen.compose_bili.navigation.doPageNavigationTo
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
@@ -34,6 +37,28 @@ fun LoginPage(activity: ComponentActivity) {
     val inputViewModel by activity.viewModels<InputViewModel>()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = inputViewModel.loginUIState){
+        activity.lifecycleScope.launch {
+            inputViewModel.loginUIState.collect {
+                when(it){
+                    is InputViewModel.LoginUIState.Success -> {
+                        // 登录成功
+                        oLog(" login page success :${it.result.code}")
+                    }
+                    is InputViewModel.LoginUIState.Error ->{
+                        oLog(" login page error :${it.message}")
+                        scaffoldState.snackbarHostState.showSnackbar(it.message)
+                    }
+                    is InputViewModel.LoginUIState.Loading->{
+                        // 登录中。。。
+                        oLog(" login...")
+                    }
+                    else ->Unit
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = { LoginTopBarView(scope) },
@@ -125,14 +150,14 @@ fun LoginTopBarView(scope: CoroutineScope) {
     TopBarView(
         iconEvent = {
             IconButton(onClick = {
-
+                doPageNavBack(route = null)
             }) {
                 Icon(Icons.Filled.ArrowBack, null)
             }
         },
         actionEvent = {
             TextButton(onClick = {
-
+                scope.launch { doPageNavigationTo(PageRoute.REGISTER_ROUTE) }
 
             }) {
                 Text(text = "注册", color = Color.Gray, fontSize = 18.sp)

@@ -18,6 +18,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jesen.compose_bili.R
+import com.jesen.compose_bili.navigation.PageRoute
+import com.jesen.compose_bili.navigation.doPageNavBack
+import com.jesen.compose_bili.navigation.doPageNavigationTo
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
@@ -156,14 +159,14 @@ fun RegisterTopBarView(scope: CoroutineScope) {
     TopBarView(
         iconEvent = {
             IconButton(onClick = {
-
+                doPageNavBack(route = null)
             }) {
                 Icon(Icons.Filled.ArrowBack, null)
             }
         },
         actionEvent = {
             TextButton(onClick = {
-                scope.launch {  }
+                scope.launch { doPageNavigationTo(PageRoute.LOGIN_ROUTE) }
 
             }) {
                 Text(text = "登录", color = Color.Gray, fontSize = 18.sp)

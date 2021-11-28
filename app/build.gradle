@@ -82,4 +82,10 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
+    // 类似ViewPager
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+
+    // 导航
+    implementation "androidx.navigation:navigation-compose:$navigation_compose"
+
 }
