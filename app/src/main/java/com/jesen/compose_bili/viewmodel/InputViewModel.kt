@@ -9,6 +9,7 @@ import com.jesen.compose_bili.network.UserRepository
 import com.jesen.compose_bili.model.UserResult
 import com.jesen.compose_bili.utils.oLog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import okio.IOException
@@ -79,7 +80,7 @@ class InputViewModel : ViewModel() {
 
     private fun userRequest(action: UserAction) = viewModelScope.launch {
         _loginUIState.value = UserUIState.Loading(action)
-
+        delay(2000)
         flow {
             val result: UserResult = if (action == UserAction.LOGIN) {
                 UserRepository.startLogin(name, pwd)

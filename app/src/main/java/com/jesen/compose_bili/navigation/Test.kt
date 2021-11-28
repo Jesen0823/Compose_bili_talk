@@ -45,7 +45,7 @@ class AnimatedNavHostSample : ComponentActivity() {
 
         setContent {
             Compose_bili_talkTheme {
-                ExperimentalAnimationNav()
+               ExperimentalAnimationNav()
             }
         }
     }

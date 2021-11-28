@@ -3,7 +3,9 @@ package com.jesen.compose_bili.ui.pages.user
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,30 +25,54 @@ import com.jesen.compose_bili.R
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavBack
 import com.jesen.compose_bili.navigation.doPageNavigationTo
-import com.jesen.compose_bili.ui.widget.user.ActionResult
+import com.jesen.compose_bili.ui.theme.gray300
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
+import com.jesen.compose_bili.utils.LoadingLottieUI
 import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.InputViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.lang.reflect.TypeVariable
 
 @Composable
 fun LoginPage(activity: ComponentActivity) {
     val inputViewModel by activity.viewModels<InputViewModel>()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    var isLoading by remember { mutableStateOf(false) }
 
-    // 注册UI更新，结果处理
-    ActionResult(inputViewModel, scaffoldState, scope)
+    LaunchedEffect(key1 = inputViewModel.userUIState) {
+        activity.lifecycleScope.launch {
+            inputViewModel.userUIState.collect {
+                when (it) {
+                    is InputViewModel.UserUIState.Success -> {
+                        // 登录成功
+                        isLoading = false
+                        oLog(" login page success :${it.result.code}")
+                    }
+                    is InputViewModel.UserUIState.Error -> {
+                        isLoading = false
+                        scaffoldState.snackbarHostState.showSnackbar(it.message)
+                        oLog(" login page error :${it.message}")
+                    }
+                    is InputViewModel.UserUIState.Loading -> {
+                        isLoading = true
+                        oLog(" login...")
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = { LoginTopBarView(scope) },
         scaffoldState = scaffoldState
     ) {
-        Box(Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
 
             HeaderEffect(inputViewModel)
 
@@ -59,6 +85,10 @@ fun LoginPage(activity: ComponentActivity) {
                 InputLoginScreen(inputViewModel, scaffoldState, scope)
             }
         }
+
+        oLog("isLoad: $isLoading")
+        if (isLoading) LoadingLottieUI(message = "登录中...")
+
     }
 }
 
@@ -101,7 +131,8 @@ fun InputLoginScreen(
             viewModel,
             scaffoldState,
             onClick = { viewModel.doLogin() },
-            true)
+            true
+        )
     }
 
 }

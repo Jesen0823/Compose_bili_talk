@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -22,10 +23,11 @@ import com.jesen.compose_bili.R
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavBack
 import com.jesen.compose_bili.navigation.doPageNavigationTo
-import com.jesen.compose_bili.ui.widget.user.ActionResult
+import com.jesen.compose_bili.ui.theme.gray300
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
+import com.jesen.compose_bili.utils.LoadingLottieUI
 import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.InputViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -38,16 +40,40 @@ fun RegisterPage(activity: ComponentActivity) {
     val inputViewModel by activity.viewModels<InputViewModel>()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    var isLoading by remember { mutableStateOf(false) }
+
 
     // 注册UI更新，结果处理
-    ActionResult(inputViewModel, scaffoldState, scope)
+    LaunchedEffect(key1 = inputViewModel.userUIState) {
+        activity.lifecycleScope.launch {
+            inputViewModel.userUIState.collect {
+                when (it) {
+                    is InputViewModel.UserUIState.Success -> {
+                        // 登录成功
+                        isLoading = false
+                        scaffoldState.snackbarHostState.showSnackbar("注册成功")
+                        oLog(" register page success :${it.result.code}")
+                    }
+                    is InputViewModel.UserUIState.Error -> {
+                        isLoading = false
+                        scaffoldState.snackbarHostState.showSnackbar(it.message)
+                        oLog(" register page error :${it.message}")
+                    }
+                    is InputViewModel.UserUIState.Loading -> {
+                        isLoading = true
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = { RegisterTopBarView(scope) },
         scaffoldState = scaffoldState
     ) {
 
-        Box(Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
 
             headPicEffect(inputViewModel)
 
@@ -63,6 +89,8 @@ fun RegisterPage(activity: ComponentActivity) {
                 )
                 InputRegisterScreen(inputViewModel, scaffoldState, scope)
             }
+
+            if (isLoading) LoadingLottieUI(message = "正在注册...")
         }
     }
 }
