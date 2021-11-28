@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.jesen.compose_bili.ui.pages.user.LoginPage
 import com.jesen.compose_bili.ui.theme.Compose_bili_talkTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     )
                     // A surface container using the 'background' color from the theme
                     Surface(color = MaterialTheme.colors.background) {
-
+                        LoginPage(this)
                     }
                 }
             }
