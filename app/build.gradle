@@ -57,7 +57,7 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_runtime_ktx"
     implementation "androidx.activity:activity-compose:$activity_compose_version"
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
@@ -65,4 +65,13 @@ dependencies {
 
     // Icons部分图标找不到的问题
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
+    // coil
+    implementation 'com.google.accompanist:accompanist-coil:0.12.0'
+
+    // 状态栏相关
+    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-insets-ui:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
 }
