@@ -3,9 +3,7 @@ package com.jesen.compose_bili.ui.pages.user
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,7 +23,6 @@ import com.jesen.compose_bili.R
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavBack
 import com.jesen.compose_bili.navigation.doPageNavigationTo
-import com.jesen.compose_bili.ui.theme.gray300
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
@@ -35,7 +32,6 @@ import com.jesen.compose_bili.viewmodel.InputViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.reflect.TypeVariable
 
 @Composable
 fun LoginPage(activity: ComponentActivity) {
@@ -43,6 +39,7 @@ fun LoginPage(activity: ComponentActivity) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     var isLoading by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(key1 = inputViewModel.userUIState) {
         activity.lifecycleScope.launch {

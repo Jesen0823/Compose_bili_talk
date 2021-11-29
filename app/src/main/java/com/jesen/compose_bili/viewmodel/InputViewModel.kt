@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jesen.compose_bili.network.UserRepository
+import com.jesen.compose_bili.datastore.DataStoreUtil
 import com.jesen.compose_bili.model.UserResult
+import com.jesen.compose_bili.network.UserRepository
+import com.jesen.compose_bili.utils.BOARDING_PASS
 import com.jesen.compose_bili.utils.oLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -73,7 +75,7 @@ class InputViewModel : ViewModel() {
     fun doLogin() = userRequest(UserAction.LOGIN)
 
     /**
-     * 登录行为
+     * 注册行为
      * */
     fun doRegister() = userRequest(UserAction.REGISTER)
 
@@ -115,13 +117,35 @@ class InputViewModel : ViewModel() {
                 }
             }
             .collect { userResult ->
+
+                // 存储登录令牌，方便其他API调用
+                saveUserToken(userResult)
+
+                // 更新UI状态
                 _loginUIState.value =
                     UserUIState.Success(result = userResult, action = action)
             }
     }
 
+    /**
+     * 保存登录令牌
+     * 登录后保存，其他页面API会用到
+     */
+    private fun saveUserToken(userResult: UserResult) {
+        userResult.data?.let {
+            if (userResult.code == 0 && it.isNotEmpty()) {
+                viewModelScope.launch {
+                    DataStoreUtil.saveStringData(BOARDING_PASS, it)
+                }
+            }
+        }
+    }
 
-    // UI状态管理
+
+    /**
+     * UI状态管理
+     * @param action 用户操作类型 是注册/登录/登出/
+     */
     sealed class UserUIState(action: UserAction?) {
         data class Success(val result: UserResult, val action: UserAction) : UserUIState(action)
         data class Error(val message: String, val action: UserAction) : UserUIState(action)
