@@ -1,0 +1,356 @@
+{
+  "code": 0,
+  "data": {
+    "bannerList": [
+      {
+        "id": "10",
+        "sticky": 1,
+        "type": "recommend",
+        "title": "好课推荐",
+        "subtitle": "Flutter高级进阶实战 仿哔哩哔哩APP",
+        "url": "https://coding.imooc.com/class/487.html",
+        "cover": "https://szimg.mukewang.com/60497caf0971842912000676.jpg",
+        "createTime": "2021-10-11 10:54:35"
+      },
+      {
+        "id": "9",
+        "sticky": 1,
+        "type": "recommend",
+        "title": "好课推荐",
+        "subtitle": "移动端普通工程师到架构师的全方位蜕变",
+        "url": "http://class.imooc.com/sale/mobilearchitect",
+        "cover": "https://o.devio.org/images/other/as-cover.png",
+        "createTime": "2021-06-01 11:17:43"
+      },
+      {
+        "id": "8",
+        "sticky": 1,
+        "type": "recommend",
+        "title": "好课推荐",
+        "subtitle": "带你解锁React Native开发应用新姿势，一网打尽React Native新版本热门技术",
+        "url": "https://coding.imooc.com/class/304.html",
+        "cover": "https://o.devio.org/images/other/rn-cover2.png",
+        "createTime": "2020-11-04 13:54:06"
+      },
+      {
+        "id": "5",
+        "sticky": 1,
+        "type": "video",
+        "title": "精彩视频推荐",
+        "subtitle": "最强自夸王！！！！！",
+        "url": "BV1p7411Y7BC",
+        "cover": "https://o.devio.org/images/fa/photo-1601513041797-a79a526a521e.webp",
+        "createTime": "2021-02-06 00:37:32"
+      },
+      {
+        "id": "4",
+        "sticky": 1,
+        "type": "video",
+        "title": "精彩视频推荐",
+        "subtitle": "【派大星的独白】一个关于正常人的故事",
+        "url": "BV1qt411j7fV",
+        "cover": "https://o.devio.org/images/fa/cat-4098058__340.webp",
+        "createTime": "2021-02-06 01:19:14"
+      },
+      {
+        "id": "2",
+        "sticky": 1,
+        "type": "recommend",
+        "title": "好课推荐",
+        "subtitle": "Flutter从入门到进阶-实战携程网App",
+        "url": "https://coding.imooc.com/class/321.html",
+        "cover": "https://o.devio.org/images/o_as/other/flutter_321.jpg",
+        "createTime": "2020-06-11 23:48:38"
+      }
+    ],
+    "categoryList": [
+      {
+        "name": "推荐",
+        "count": 933
+      },
+      {
+        "name": "搞笑",
+        "count": 178
+      },
+      {
+        "name": "日常",
+        "count": 152
+      },
+      {
+        "name": "综合",
+        "count": 95
+      },
+      {
+        "name": "鬼畜调教",
+        "count": 42
+      },
+      {
+        "name": "MAD·AMV",
+        "count": 39
+      },
+      {
+        "name": "手机游戏",
+        "count": 38
+      },
+      {
+        "name": "单机游戏",
+        "count": 36
+      },
+      {
+        "name": "短片·手书·配音",
+        "count": 35
+      },
+      {
+        "name": "动物圈",
+        "count": 34
+      },
+      {
+        "name": "美食测评",
+        "count": 27
+      }
+    ],
+    "videoList": [
+      {
+        "id": "272",
+        "vid": "BV1U54y1z7Qn",
+        "title": "这TM才是大型名场面",
+        "tname": "搞笑",
+        "url": "https://o.devio.org/files/video/v=eiDiKwbGfIY.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1612359586864-07cb961d640f.webp",
+        "pubdate": 1605232677,
+        "desc": "关注我吧就等你了",
+        "view": 68705,
+        "duration": 333,
+        "owner": {
+          "name": "仓人",
+          "face": "https://o.devio.org/images/o_as/avatar/tx10.jpeg",
+          "fans": 1267182809
+        },
+        "reply": 18,
+        "favorite": 85,
+        "like": 3592,
+        "coin": 150,
+        "share": 19,
+        "createTime": "2020-11-14 19:35:54",
+        "size": 17646
+      },
+      {
+        "id": "4215",
+        "vid": "BV1D5411V7RN",
+        "title": "对王之王马保国——文武双全！",
+        "tname": "鬼畜调教",
+        "url": "https://o.devio.org/files/video/fr-2309567071.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1572805889447-551c557331a8.webp",
+        "pubdate": 1605261619,
+        "desc": "观众上来就是一个点赞、一个投币、一个收藏、我全部没防出去，大意了啊！",
+        "view": 847871,
+        "duration": 26,
+        "owner": {
+          "name": "风轻云淡",
+          "face": "https://o.devio.org/images/o_as/avatar/tx19.jpeg",
+          "fans": 622089138
+        },
+        "reply": 582,
+        "favorite": 17800,
+        "like": 65503,
+        "coin": 38047,
+        "share": 17759,
+        "createTime": "2020-11-15 12:53:28",
+        "size": 8256
+      },
+      {
+        "id": "5774",
+        "vid": "BV1tA411Y7Ct",
+        "title": "华农兄弟：收到一份神秘的快递，拆开来尝一下，味道还可以哟",
+        "tname": "田园美食",
+        "url": "https://o.devio.org/files/video/v=mllXxyHTzfg.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1612311968778-44a2abea88aa.webp",
+        "pubdate": 1596252615,
+        "desc": "华农兄弟：收到一份神秘的快递，拆开来尝一下，味道还可以哟",
+        "view": 3207531,
+        "duration": 339,
+        "owner": {
+          "name": "觅遇",
+          "face": "https://o.devio.org/images/o_as/avatar/tx10.jpeg",
+          "fans": 1968670029
+        },
+        "reply": 8645,
+        "favorite": 13127,
+        "like": 292794,
+        "coin": 69692,
+        "share": 4529,
+        "createTime": "2020-11-15 12:53:28",
+        "size": 23962
+      },
+      {
+        "id": "422",
+        "vid": "BV1et4y1Q7ED",
+        "title": "老弟的生活处处是惊喜",
+        "tname": "搞笑",
+        "url": "https://o.devio.org/files/video/v=HcQJzFzZfVI.mp4",
+        "cover": "https://o.devio.org/images/fa/cat-2536662__340.webp",
+        "pubdate": 1594530828,
+        "desc": "-",
+        "view": 2398151,
+        "duration": 262,
+        "owner": {
+          "name": "等待独白的戏",
+          "face": "https://o.devio.org/images/o_as/avatar/tx18.jpeg",
+          "fans": 2054341237
+        },
+        "reply": 1063,
+        "favorite": 4789,
+        "like": 107449,
+        "coin": 7860,
+        "share": 5600,
+        "createTime": "2020-11-14 19:35:54",
+        "size": 13732
+      },
+      {
+        "id": "309",
+        "vid": "BV17t4y1e78P",
+        "title": "【原神】强  吻  妹  妹  \uD83D\uDC8B",
+        "tname": "短片·手书·配音",
+        "url": "https://o.devio.org/files/video/v=HcQJzFzZfVI.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1606851282819-76f0b67d5061.webp",
+        "pubdate": 1605146417,
+        "desc": "这是?当年和公子??切磋的珍贵影像资料，如今公开了，?很感动\n\n《强吻妹妹》\n画师：@305小白\n派蒙罐头参考：@老冰辊的藤田兵器所",
+        "view": 916149,
+        "duration": 262,
+        "owner": {
+          "name": "乔峰",
+          "face": "https://o.devio.org/images/o_as/avatar/tx9.jpeg",
+          "fans": 42033268
+        },
+        "reply": 2618,
+        "favorite": 36820,
+        "like": 88531,
+        "coin": 43825,
+        "share": 30308,
+        "createTime": "2020-11-14 21:29:22",
+        "size": 13732
+      },
+      {
+        "id": "1697",
+        "vid": "BV1Ck4y1C7C1",
+        "title": "单身vs已婚",
+        "tname": "日常",
+        "url": "https://o.devio.org/files/video/v=nSDgHBxUbVQ.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1582767916724-808850c4486f.webp",
+        "pubdate": 1602804627,
+        "desc": "https://video.weibo.com/show?fid=1034:4559810897575962",
+        "view": 717848,
+        "duration": 274,
+        "owner": {
+          "name": "好好学习",
+          "face": "https://o.devio.org/images/o_as/avatar/tx13.jpeg",
+          "fans": 34969612
+        },
+        "reply": 408,
+        "favorite": 3799,
+        "like": 14313,
+        "coin": 564,
+        "share": 5582,
+        "createTime": "2020-11-14 19:35:54",
+        "size": 18495
+      },
+      {
+        "id": "400",
+        "vid": "BV1Qr4y1F7WE",
+        "title": "全 程 高 能【第十三集 地底湖】",
+        "tname": "单机游戏",
+        "url": "https://o.devio.org/files/video/v=NGoOpniJwnM.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1612442861893-dc499fbe2c2f.webp",
+        "pubdate": 1605340055,
+        "desc": "魔鬼玩家系列，已完成（13/100）\n游戏模式：生存\n大家好，我是魔鬼，我来啦(*°▽°*)八(*°▽°*)♪",
+        "view": 175659,
+        "duration": 363,
+        "owner": {
+          "name": "欧阳娜娜",
+          "face": "https://o.devio.org/images/o_as/avatar/tx2.jpeg",
+          "fans": 251649201
+        },
+        "reply": 740,
+        "favorite": 10287,
+        "like": 38464,
+        "coin": 33199,
+        "share": 982,
+        "createTime": "2020-11-14 21:29:23",
+        "size": 29401
+      },
+      {
+        "id": "305",
+        "vid": "BV1H5411V7mh",
+        "title": "可莉:小僵尸你不讲矮德",
+        "tname": "网络游戏",
+        "url": "https://o.devio.org/files/video/v=eiDiKwbGfIY.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1553028826-f4804a6dba3b.webp",
+        "pubdate": 1604660413,
+        "desc": "-",
+        "view": 229100,
+        "duration": 333,
+        "owner": {
+          "name": "乔峰",
+          "face": "https://o.devio.org/images/o_as/avatar/tx1.jpeg",
+          "fans": 2059823900
+        },
+        "reply": 330,
+        "favorite": 718,
+        "like": 6716,
+        "coin": 139,
+        "share": 712,
+        "createTime": "2020-11-14 19:35:54",
+        "size": 17646
+      },
+      {
+        "id": "4142",
+        "vid": "BV1CK411n7Zi",
+        "title": "【反应】韩国人欣赏葛东琪《囍》反应是...？剪辑这个视频的人太牛了",
+        "tname": "音乐综合",
+        "url": "https://o.devio.org/files/video/v=0LHmevWVvpc.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1610252210889-39f91863926a.webp",
+        "pubdate": 1593772578,
+        "desc": "韩国人欣赏葛东琪《囍》反应，谢谢推荐喔～剪辑视频的那位真的好厉害",
+        "view": 1031358,
+        "duration": 248,
+        "owner": {
+          "name": "半字浅眉-",
+          "face": "https://o.devio.org/images/o_as/avatar/tx3.jpeg",
+          "fans": 1056265242
+        },
+        "reply": 1099,
+        "favorite": 4696,
+        "like": 16933,
+        "coin": 1852,
+        "share": 571,
+        "createTime": "2020-11-15 12:53:28",
+        "size": 15679
+      },
+      {
+        "id": "5640",
+        "vid": "BV1aJ411X78q",
+        "title": "一分钟后抢走你的硬币，小 丑 派 大 星",
+        "tname": "综合",
+        "url": "https://o.devio.org/files/video/v=2sIC1sh-yc0.mp4",
+        "cover": "https://o.devio.org/images/fa/photo-1612281495033-15d094321337.webp",
+        "pubdate": 1574823626,
+        "desc": "用心在画了！！！",
+        "view": 7239012,
+        "duration": 295,
+        "owner": {
+          "name": "等待独白的戏",
+          "face": "https://o.devio.org/images/o_as/avatar/tx2.jpeg",
+          "fans": 954046921
+        },
+        "reply": 2807,
+        "favorite": 264988,
+        "like": 766244,
+        "coin": 675805,
+        "share": 27751,
+        "createTime": "2020-11-15 12:53:27",
+        "size": 17593
+      }
+    ]
+  },
+  "msg": "SUCCESS."
+}

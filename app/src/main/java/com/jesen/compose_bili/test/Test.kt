@@ -1,24 +1,14 @@
-package com.jesen.compose_bili.navigation
+package com.jesen.compose_bili.test
 
 
+import VideoM
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandIn
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -32,20 +22,44 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.jesen.compose_bili.ui.theme.Compose_bili_talkTheme
+import com.jesen.compose_bili.ui.widget.MainTopBarUI
+import com.jesen.compose_bili.utils.MoshiUtil
+import com.jesen.compose_bili.utils.oLog
+import com.jesen.compose_bili.utils.videoDataDemo
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 class AnimatedNavHostSample : ComponentActivity() {
+    @DelicateCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        GlobalScope.launch {
+            val video = MoshiUtil.fromJson<VideoM>(videoDataDemo)
+            oLog("video bean: ${video?.desc}")
+            val str = MoshiUtil.toJson(video)
+            oLog("string: $str")
+        }
+
+
         setContent {
             Compose_bili_talkTheme {
-               ExperimentalAnimationNav()
+                //ExperimentalAnimationNav()
+                Scaffold(
+                    topBar = {
+                        MainTopBarUI({}, {}, {})
+                    }
+                ) {
+                    Text(text = "test")
+                }
             }
         }
     }
@@ -199,10 +213,13 @@ fun AnimatedVisibilityScope.BlueScreen(navController: NavHostController) {
         ) { navController.navigate("Inner") }
         Text(
             "Blue",
-            modifier = Modifier.fillMaxWidth().weight(1f).animateEnterExit(
-                enter = fadeIn(animationSpec = tween(250, delayMillis = 450)),
-                exit = ExitTransition.None
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .animateEnterExit(
+                    enter = fadeIn(animationSpec = tween(250, delayMillis = 450)),
+                    exit = ExitTransition.None
+                ),
             color = Color.White, fontSize = 80.sp, textAlign = TextAlign.Center
         )
         NavigateBackButton(navController)
@@ -233,10 +250,13 @@ fun AnimatedVisibilityScope.RedScreen(navController: NavHostController) {
         ) { navController.navigate("Green") }
         Text(
             "Red",
-            modifier = Modifier.fillMaxWidth().weight(1f).animateEnterExit(
-                enter = fadeIn(animationSpec = tween(250, delayMillis = 450)),
-                exit = ExitTransition.None
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .animateEnterExit(
+                    enter = fadeIn(animationSpec = tween(250, delayMillis = 450)),
+                    exit = ExitTransition.None
+                ),
             color = Color.White, fontSize = 80.sp, textAlign = TextAlign.Center
         )
         NavigateBackButton(navController)
@@ -260,10 +280,13 @@ fun AnimatedVisibilityScope.GreenScreen(navController: NavHostController) {
         ) { navController.navigate("Red") }
         Text(
             "Green",
-            modifier = Modifier.fillMaxWidth().weight(1f).animateEnterExit(
-                enter = fadeIn(animationSpec = tween(250, delayMillis = 450)),
-                exit = ExitTransition.None
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .animateEnterExit(
+                    enter = fadeIn(animationSpec = tween(250, delayMillis = 450)),
+                    exit = ExitTransition.None
+                ),
             color = Color.White, fontSize = 80.sp, textAlign = TextAlign.Center
         )
         NavigateBackButton(navController)

@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
  * 视频详情页
  * */
 @Composable
-fun VideoDetailPage() {
+fun VideoDetailPage(param: String?) {
     Scaffold() {
         Box(modifier = Modifier.fillMaxSize()) {
-            Text("视频详情页呀")
+            Text("视频详情页呀:\n $param")
         }
     }
 }

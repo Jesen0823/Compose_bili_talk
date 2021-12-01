@@ -1,5 +1,9 @@
 package com.jesen.compose_bili.ui.pages
 
+//import androidx.compose.animation.ExperimentalAnimationApi
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
@@ -11,7 +15,9 @@ import com.jesen.compose_bili.navigation.Screens
 /**
  * 首屏 主页面
  * */
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
+@ExperimentalAnimationApi
 @Composable
 fun MainPage() {
     val list = listOf(
