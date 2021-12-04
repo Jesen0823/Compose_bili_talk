@@ -35,7 +35,7 @@ import com.jesen.compose_bili.ui.theme.gray700
 @Composable
 fun LoadingLottieUI(message: String) {
 
-    Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
                 .size(120.dp)
@@ -85,13 +85,22 @@ fun SnackbarShow(content: String) {
  */
 @ExperimentalCoilApi
 @Composable
-fun CoilImage(url: String?, modifier: Modifier, radius: Float = 4f) {
+fun CoilImage(
+    url: String?, modifier: Modifier,
+    topLeft: Float = 0f, topRight: Float = 0f,
+    bottomLeft: Float = 0f, bottomRight: Float = 0f
+) {
     Image(
         painter = rememberImagePainter(
             data = url,
             builder = {
                 transformations(
-                    RoundedCornersTransformation(radius)
+                    RoundedCornersTransformation(
+                        topLeft = topLeft,
+                        topRight = topRight,
+                        bottomLeft = bottomLeft,
+                        bottomRight = bottomRight
+                    )
                 )
                 placeholder(R.drawable.place_img)
                 error(R.drawable.place_img)

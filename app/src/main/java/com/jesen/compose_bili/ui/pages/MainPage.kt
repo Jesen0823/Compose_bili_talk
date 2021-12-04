@@ -4,10 +4,13 @@ package com.jesen.compose_bili.ui.pages
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.navigation.BottomNavHost
 import com.jesen.compose_bili.navigation.BottomNavigationScreen
 import com.jesen.compose_bili.navigation.Screens
@@ -15,11 +18,13 @@ import com.jesen.compose_bili.navigation.Screens
 /**
  * 首屏 主页面
  * */
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 @RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
-fun MainPage() {
+fun MainPage(activity: MainActivity) {
     val list = listOf(
         Screens.Home,
         Screens.Ranking,
@@ -31,6 +36,6 @@ fun MainPage() {
     Scaffold(bottomBar = {
         BottomNavigationScreen(navController = navController, items = list)
     }) {
-        BottomNavHost(navHostController = navController)
+        BottomNavHost(navHostController = navController, activity)
     }
 }

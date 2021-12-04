@@ -1,7 +1,7 @@
-import android.os.Parcelable
+package com.jesen.compose_bili.model
+
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
 data class HomeM(
@@ -13,7 +13,7 @@ data class HomeM(
     val msg: String
 )
 
-@Parcelize
+
 @JsonClass(generateAdapter = true)
 data class VideoM(
     @Json(name = "coin")
@@ -52,7 +52,7 @@ data class VideoM(
     val vid: String,
     @Json(name = "view")
     val view: Int
-) : Parcelable
+)
 
 @JsonClass(generateAdapter = true)
 data class BannerM(
@@ -82,7 +82,6 @@ data class CategoryM(
     val name: String
 )
 
-@Parcelize
 @JsonClass(generateAdapter = true)
 data class OwnerM(
     @Json(name = "face")
@@ -91,14 +90,14 @@ data class OwnerM(
     val fans: Int,
     @Json(name = "name")
     val name: String
-) : Parcelable
+)
 
 @JsonClass(generateAdapter = true)
 data class DataM(
     @Json(name = "bannerList")
-    val bannerList: List<BannerM>,
+    val bannerList: List<BannerM>? = null,
     @Json(name = "categoryList")
-    val categoryList: List<CategoryM>,
+    val categoryList: List<CategoryM>? = null,
     @Json(name = "videoList")
     val videoList: List<VideoM>
 )

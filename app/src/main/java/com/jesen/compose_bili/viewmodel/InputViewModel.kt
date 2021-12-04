@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jesen.compose_bili.datastore.DataStoreUtil
 import com.jesen.compose_bili.model.UserResult
-import com.jesen.compose_bili.network.UserRepository
+import com.jesen.compose_bili.repository.UserRepository
 import com.jesen.compose_bili.utils.BOARDING_PASS
 import com.jesen.compose_bili.utils.oLog
 import kotlinx.coroutines.Dispatchers

@@ -1,7 +1,7 @@
 package com.jesen.compose_bili.test
 
 
-import VideoM
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,6 +27,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.ui.theme.Compose_bili_talkTheme
 import com.jesen.compose_bili.ui.widget.MainTopBarUI
 import com.jesen.compose_bili.utils.MoshiUtil

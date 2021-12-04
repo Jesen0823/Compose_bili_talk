@@ -4,10 +4,8 @@ import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
@@ -20,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.R
 import com.jesen.compose_bili.ui.pages.mainchildren.FavoritePage
 import com.jesen.compose_bili.ui.pages.mainchildren.HomeTabPage
@@ -48,14 +47,16 @@ sealed class Screens(val title: String, val route: String, @DrawableRes val icon
 /**
  * 将Home设为默认页面
  * */
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun BottomNavHost(navHostController: NavHostController) {
+fun BottomNavHost(navHostController: NavHostController, activity: MainActivity) {
     NavHost(navController = navHostController, startDestination = Screens.Home.route) {
         composable(route = Screens.Home.route) {
-            HomeTabPage()
+            HomeTabPage(activity)
         }
         composable(route = Screens.Ranking.route) {
             RankingPage()

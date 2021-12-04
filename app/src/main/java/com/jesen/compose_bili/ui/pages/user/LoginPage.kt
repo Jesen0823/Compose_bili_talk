@@ -148,7 +148,7 @@ fun HeaderEffect(viewModel: InputViewModel) {
         )
         Image(
             alignment = Alignment.BottomCenter,
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo2),
             contentDescription = "mid image"
         )
         Image(

@@ -1,25 +1,27 @@
 package com.jesen.compose_bili.ui.pages.mainchildren
 
 import android.os.Build
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavigationTo
 import com.jesen.compose_bili.ui.theme.bili_90
@@ -28,8 +30,11 @@ import com.jesen.compose_bili.ui.theme.gray50
 import com.jesen.compose_bili.ui.theme.gray700
 import com.jesen.compose_bili.ui.widget.BiliAnimatedIndicator
 import com.jesen.compose_bili.ui.widget.MainTopBarUI
+import com.jesen.compose_bili.ui.widget.RefreshCategoryContentScreen
 import com.jesen.compose_bili.utils.ColorUtil
+import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.utils.replaceRegex
+import com.jesen.compose_bili.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -40,30 +45,27 @@ import kotlinx.coroutines.launch
  *
  * */
 
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 @RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
-fun HomeTabPage() {
-    val items = listOf("推荐", "电影", "电视剧", "综艺", "纪录片", "娱乐", "新闻")
+fun HomeTabPage(activity: MainActivity) {
 
-    val tabstr = remember {
-        mutableStateOf(items[0])
+    val viewModel by activity.viewModels<HomeViewModel>()
+
+    val tabState = remember {
+        mutableStateOf(viewModel.categoryList[0])
     }
 
     val scope = rememberCoroutineScope()
     var indicatorState by remember { mutableStateOf(0) }
 
-    val state = rememberPagerState(
-        //pageCount = items.size, //总页数
-        //initialOffscreenLimit = 3, //预加载的个数
-        //infiniteLoop = false, //是否无限循环
+    val pagerState = rememberPagerState(
         initialPage = 0 //初始页面
     )
-    /*val state = rememberPagerState(
-        //总页数
-        pageCount = items.size,
-    )*/
 
     Scaffold(
         topBar = {
@@ -78,16 +80,17 @@ fun HomeTabPage() {
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Column {
+
                 // 可滑动TabView
                 ScrollableTabRow(
-                    selectedTabIndex = items.indexOf(tabstr.value),
+                    selectedTabIndex = viewModel.categoryList.indexOf(tabState.value),
                     modifier = Modifier.wrapContentWidth(),
                     edgePadding = 16.dp,
                     // 默认指示器
                     /*indicator = { tabIndicator ->
                         TabRowDefaults.Indicator(
                             Modifier.tabIndicatorOffset(
-                                tabIndicator[items.indexOf(
+                                tabIndicator[categoryList.indexOf(
                                     tabstr.value
                                 )]
                             ),
@@ -98,23 +101,23 @@ fun HomeTabPage() {
                     indicator = @Composable { tabPositions: List<TabPosition> ->
                         BiliAnimatedIndicator(
                             tabPositions = tabPositions,
-                            selectedTabIndex = items.indexOf(
-                                tabstr.value
-                            )
+                            selectedTabIndex = pagerState.currentPage
                         )
                     },
                     backgroundColor = gray100,
                     divider = {
-                        TabRowDefaults.Divider(color = Color.Gray)
+                        TabRowDefaults.Divider(color = Color.White)
                     }
                 ) {
-                    items.forEachIndexed { index, title ->
-                        val selected = index == items.indexOf(tabstr.value)
+                    viewModel.categoryList.forEachIndexed { index, category ->
+                        // val selected = index == viewModel.categoryList.indexOf(tabState.value)
+                        val selected = index == pagerState.currentPage
+
                         Tab(
                             modifier = Modifier.background(gray50),
                             text = {
                                 Text(
-                                    text = title,
+                                    text = category.name,
                                     style = TextStyle(
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Thin
@@ -125,9 +128,9 @@ fun HomeTabPage() {
                             unselectedContentColor = gray700,
                             selectedContentColor = ColorUtil.getRandomColorB(bili_90),
                             onClick = {
-                                tabstr.value = items[index]
+                                tabState.value = viewModel.categoryList[index]
                                 scope.launch {
-                                    state.scrollToPage(index)
+                                    pagerState.scrollToPage(index)
                                 }
                             }
                         )
@@ -136,26 +139,21 @@ fun HomeTabPage() {
 
                 // 横向Pager类似PagerView
                 HorizontalPager(
-                    state = state,
-                    count = items.size,
+                    state = pagerState,
+                    count = viewModel.categoryList.size,
                     reverseLayout = false
                 ) { indexPage ->
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .background(Color.White),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        when (indexPage) {
-                            in 0..(items.size) -> Text(text = items[indexPage])
-
-                        }
-                        Text(text = items[indexPage])
-                    }
+                    oLog("home switch page: pageIndex = $indexPage")
+                    oLog("home currentPage: pageIndex = ${pagerState.currentPage}")
+                    // 以下是pager的具体内容
+                    RefreshCategoryContentScreen(
+                        viewModel = viewModel,
+                        context = activity,
+                        index = pagerState.currentPage
+                    )
                 }
             }
-            tabstr.value = items[state.currentPage]
+            tabState.value = viewModel.categoryList[pagerState.currentPage]
         }
     }
 }

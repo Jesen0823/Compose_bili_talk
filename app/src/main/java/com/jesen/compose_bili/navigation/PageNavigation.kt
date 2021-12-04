@@ -2,7 +2,11 @@ package com.jesen.compose_bili.navigation
 
 //import com.google.accompanist.navigation.animation.AnimatedNavHost
 //import com.google.accompanist.navigation.animation.composable
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -30,6 +34,9 @@ object PageRoute {
 /**
  * 将页面与路由关联
  * */
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
@@ -58,7 +65,7 @@ fun PageNavHost(mainActivity: MainActivity) {
             VideoDetailPage(param)
         }
         composable(route = PageRoute.MAIN_PAGE) {
-            MainPage()
+            MainPage(activity = mainActivity)
         }
     }
 
