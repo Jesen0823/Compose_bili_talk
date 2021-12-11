@@ -1,7 +1,7 @@
 package com.jesen.compose_bili.repository
 
-import com.jesen.compose_bili.network.HomeServiceApi
 import com.jesen.compose_bili.network.RetrofitClient
+import com.jesen.compose_bili.network.api.HomeServiceApi
 
 /**
  * 首页列表请求 Repository

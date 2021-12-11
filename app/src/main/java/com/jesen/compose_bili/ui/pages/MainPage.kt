@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.compose_bili.MainActivity
+import com.jesen.compose_bili.navigation.BottomNav
 import com.jesen.compose_bili.navigation.BottomNavHost
 import com.jesen.compose_bili.navigation.BottomNavigationScreen
-import com.jesen.compose_bili.navigation.Screens
 
 /**
  * 首屏 主页面
@@ -26,15 +26,19 @@ import com.jesen.compose_bili.navigation.Screens
 @Composable
 fun MainPage(activity: MainActivity) {
     val list = listOf(
-        Screens.Home,
-        Screens.Ranking,
-        Screens.Favorite,
-        Screens.Profile,
+        BottomNav.Screens.Home,
+        BottomNav.Screens.Ranking,
+        BottomNav.Screens.Favorite,
+        BottomNav.Screens.Profile,
     )
     val navController = rememberNavController()
 
     Scaffold(bottomBar = {
-        BottomNavigationScreen(navController = navController, items = list)
+        BottomNavigationScreen(
+            bottomItem = BottomNav.bottomNavRoute.value,
+            navController = navController,
+            items = list
+        )
     }) {
         BottomNavHost(navHostController = navController, activity)
     }

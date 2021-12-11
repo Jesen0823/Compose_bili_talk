@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Compose_bili_talk</string>
 
+    <string name="main_bottom_home">首页</string>
+    <string name="main_bottom_rank">排行</string>
+    <string name="main_bottom_fav">收藏</string>
+    <string name="main_bottom_profile">我的</string>
+
     <string name="rank_tab_new">最新</string>
     <string name="rank_tab_hot">最热</string>
     <string name="rank_tab_fav">收藏</string>

@@ -1,5 +1,7 @@
 package com.jesen.compose_bili.utils
 
+import com.jesen.compose_bili.BiliApp
+
 /// 时间转换将秒转换为分钟:秒
 fun durationTransform(seconds: Int): String {
     val m: Int = (seconds / 60)
@@ -14,3 +16,4 @@ fun countFormat(count: Int): String = if (count > 9999) {
     count.toString()
 }
 
+fun getResString(resId: Int) = BiliApp.mContext.applicationContext.getString(resId)

@@ -20,8 +20,10 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.jesen.compose_bili.MainActivity
+import com.jesen.compose_bili.model.CategoryM
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavigationTo
 import com.jesen.compose_bili.ui.theme.bili_90
@@ -79,63 +81,12 @@ fun HomeTabPage(activity: MainActivity) {
         }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
+
+            val categoryList = viewModel.categoryList
             Column {
 
-                // 可滑动TabView
-                ScrollableTabRow(
-                    selectedTabIndex = viewModel.categoryList.indexOf(tabState.value),
-                    modifier = Modifier.wrapContentWidth(),
-                    edgePadding = 16.dp,
-                    // 默认指示器
-                    /*indicator = { tabIndicator ->
-                        TabRowDefaults.Indicator(
-                            Modifier.tabIndicatorOffset(
-                                tabIndicator[categoryList.indexOf(
-                                    tabstr.value
-                                )]
-                            ),
-                            color = Color.Cyan
-                        )
-                    },*/
-                    // 自定义指示器
-                    indicator = @Composable { tabPositions: List<TabPosition> ->
-                        BiliAnimatedIndicator(
-                            tabPositions = tabPositions,
-                            selectedTabIndex = pagerState.currentPage
-                        )
-                    },
-                    backgroundColor = gray100,
-                    divider = {
-                        TabRowDefaults.Divider(color = Color.White)
-                    }
-                ) {
-                    viewModel.categoryList.forEachIndexed { index, category ->
-                        // val selected = index == viewModel.categoryList.indexOf(tabState.value)
-                        val selected = index == pagerState.currentPage
-
-                        Tab(
-                            modifier = Modifier.background(gray50),
-                            text = {
-                                Text(
-                                    text = category.name,
-                                    style = TextStyle(
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Thin
-                                    )
-                                )
-                            },
-                            selected = selected,
-                            unselectedContentColor = gray700,
-                            selectedContentColor = ColorUtil.getRandomColorB(bili_90),
-                            onClick = {
-                                tabState.value = viewModel.categoryList[index]
-                                scope.launch {
-                                    pagerState.scrollToPage(index)
-                                }
-                            }
-                        )
-                    }
-                }
+                // 顶部导航
+                ScrollableTab(pagerState, categoryList)
 
                 // 横向Pager类似PagerView
                 HorizontalPager(
@@ -154,6 +105,70 @@ fun HomeTabPage(activity: MainActivity) {
                 }
             }
             tabState.value = viewModel.categoryList[pagerState.currentPage]
+        }
+    }
+}
+
+// 可滑动TabView
+@RequiresApi(Build.VERSION_CODES.O)
+@ExperimentalPagerApi
+@Composable
+fun ScrollableTab(pagerState: PagerState, categoryList: MutableList<CategoryM>) {
+    val scope = rememberCoroutineScope()
+
+    ScrollableTabRow(
+        //selectedTabIndex = viewModel.categoryList.indexOf(tabState.value),
+        selectedTabIndex = pagerState.currentPage,
+        modifier = Modifier.wrapContentWidth(),
+        edgePadding = 16.dp,
+        // 默认指示器
+        /*indicator = { tabIndicator ->
+            TabRowDefaults.Indicator(
+                Modifier.tabIndicatorOffset(
+                    tabIndicator[categoryList.indexOf(
+                        tabstr.value
+                    )]
+                ),
+                color = Color.Cyan
+            )
+        },*/
+        // 自定义指示器
+        indicator = @Composable { tabPositions: List<TabPosition> ->
+            BiliAnimatedIndicator(
+                tabPositions = tabPositions,
+                selectedTabIndex = pagerState.currentPage
+            )
+        },
+        backgroundColor = gray100,
+        divider = {
+            TabRowDefaults.Divider(color = Color.White)
+        }
+    ) {
+        categoryList.forEachIndexed { index, category ->
+            // val selected = index == viewModel.categoryList.indexOf(tabState.value)
+            val selected = index == pagerState.currentPage
+
+            Tab(
+                modifier = Modifier.background(gray50),
+                text = {
+                    Text(
+                        text = category.name,
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Thin
+                        )
+                    )
+                },
+                selected = selected,
+                unselectedContentColor = gray700,
+                selectedContentColor = ColorUtil.getRandomColorB(bili_90),
+                onClick = {
+                    //tabState.value = viewModel.categoryList[index]
+                    scope.launch {
+                        pagerState.scrollToPage(index)
+                    }
+                }
+            )
         }
     }
 }
