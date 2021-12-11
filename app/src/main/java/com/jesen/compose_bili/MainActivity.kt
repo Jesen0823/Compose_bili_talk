@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
@@ -39,18 +40,26 @@ class MainActivity : ComponentActivity() {
             pageNavController = rememberNavController()
             // 可定义动画的Navigation库
             //pageNavController = rememberAnimatedNavController()
+            // 加入ProvideWindowInsets
+            ProvideWindowInsets {
+                Compose_bili_talkTheme {
 
-            Compose_bili_talkTheme {
-                // 加入ProvideWindowInsets
-                ProvideWindowInsets {
+                    val systemUiController = rememberSystemUiController()
+                    val primaryColor = MaterialTheme.colors.background
+                    val dark = MaterialTheme.colors.isLight
+
                     // 状态栏改为透明
-                    rememberSystemUiController().setStatusBarColor(
-                        Color.Transparent, darkIcons = MaterialTheme.colors.isLight
-                    )
-                    // 底部导航栏
-                    rememberSystemUiController().setNavigationBarColor(
-                        Color.Transparent, darkIcons = MaterialTheme.colors.isLight
-                    )
+                    SideEffect {
+                        systemUiController.setStatusBarColor(
+                            Color.Transparent, darkIcons = dark
+                        )
+                        // 底部导航栏
+                        systemUiController.setNavigationBarColor(
+                            primaryColor, darkIcons = dark
+                        )
+
+                    }
+
                     // A surface container using the 'background' color from the theme
                     Surface(
                         color = MaterialTheme.colors.background,
