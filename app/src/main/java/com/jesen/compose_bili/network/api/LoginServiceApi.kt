@@ -1,6 +1,7 @@
-package com.jesen.compose_bili.network
+package com.jesen.compose_bili.network.api
 
 import com.jesen.compose_bili.model.UserResult
+import com.jesen.compose_bili.network.BaseApi
 import com.jesen.compose_bili.utils.AUTH_TOKEN_K
 import com.jesen.compose_bili.utils.AUTH_TOKEN_V
 import com.jesen.compose_bili.utils.COURSE_FLAG_K
@@ -18,18 +19,18 @@ import retrofit2.http.Query
  * response: {"code":5004,"msg":"请先购买课程@https://coding.imooc.com/class/487.html"}
  *
  * */
-interface RegisterServiceApi : BaseApi {
+interface LoginServiceApi : BaseApi {
 
     @Headers(
         "$AUTH_TOKEN_K: $AUTH_TOKEN_V",
         "$COURSE_FLAG_K: $COURSE_FLAG_V"
     )
-    @POST("/uapi/user/registration")
-    suspend fun requestRegister(
+    @POST("/uapi/user/login")
+    suspend fun requestLogin(
         @Query("userName") userName: String,
         @Query("password") password: String,
-        @Query("imoocId") imoocId: Int,
-        @Query("orderId") orderId: Int,
+        @Query("imoocId") imoocId: Int? = null,
+        @Query("orderId") orderId: Int? = null,
     ): UserResult
 
     override fun needLogin(): Boolean = false

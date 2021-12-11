@@ -105,8 +105,8 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:$datastore_preferences"
 
     // moshi
-    implementation("com.squareup.moshi:moshi:1.12.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
+    implementation "com.squareup.moshi:moshi:1.12.0"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
 
     //Paging 3.0
     implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
@@ -115,6 +115,7 @@ dependencies {
     // 下拉刷新
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
 
-
+    // ConstraintLayout
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
 
 }

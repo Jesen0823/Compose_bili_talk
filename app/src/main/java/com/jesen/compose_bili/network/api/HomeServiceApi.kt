@@ -1,6 +1,7 @@
-package com.jesen.compose_bili.network
+package com.jesen.compose_bili.network.api
 
 import com.jesen.compose_bili.model.HomeM
+import com.jesen.compose_bili.network.BaseApi
 import com.jesen.compose_bili.utils.AUTH_TOKEN_K
 import com.jesen.compose_bili.utils.AUTH_TOKEN_V
 import com.jesen.compose_bili.utils.COURSE_FLAG_K

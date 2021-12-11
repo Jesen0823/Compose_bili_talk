@@ -3,11 +3,12 @@ package com.jesen.compose_bili.ui.widget
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
-import com.jesen.compose_bili.base.SwipeRefreshGridList
+import com.jesen.compose_bili.base.SwipeRefreshGridLayout
 import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.HomeViewModel
 
@@ -28,8 +29,10 @@ fun RefreshCategoryContentScreen(
 
     val collectAsLazyPagingIDataList =
         viewModel.getVideoListIndexOf(index).collectAsLazyPagingItems()
+    val lazyListState = rememberLazyListState()
 
-    SwipeRefreshGridList(
+    SwipeRefreshGridLayout(
+        lazyListState = lazyListState,
         collectAsLazyPagingItems = collectAsLazyPagingIDataList
     ) {
 

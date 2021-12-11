@@ -6,12 +6,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.jesen.compose_bili.MainActivity
 
 /**
  * 收藏页面
  * */
 @Composable
-fun FavoritePage() {
+fun FavoritePage(activity: MainActivity) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

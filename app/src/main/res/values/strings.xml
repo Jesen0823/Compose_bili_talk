@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Compose_bili_talk</string>
+
+    <string name="rank_tab_new">最新</string>
+    <string name="rank_tab_hot">最热</string>
+    <string name="rank_tab_fav">收藏</string>
+
 </resources>

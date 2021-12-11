@@ -1,8 +1,8 @@
 package com.jesen.compose_bili.repository
 
-import com.jesen.compose_bili.network.LoginServiceApi
-import com.jesen.compose_bili.network.RegisterServiceApi
 import com.jesen.compose_bili.network.RetrofitClient
+import com.jesen.compose_bili.network.api.LoginServiceApi
+import com.jesen.compose_bili.network.api.RegisterServiceApi
 
 /**
  * 用户登录注册

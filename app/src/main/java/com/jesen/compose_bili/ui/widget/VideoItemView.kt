@@ -130,7 +130,12 @@ fun VideoInfo(modifier: Modifier, video: VideoM) {
 
 
 @Composable
-fun IconTextSmall(imageVector: ImageVector, count: Int, modifier: Modifier? = null) {
+fun IconTextSmall(
+    imageVector: ImageVector,
+    count: Int,
+    modifier: Modifier? = null,
+    color: Color = Color.White
+) {
     Row(
         modifier = modifier ?: Modifier.wrapContentSize(),
         verticalAlignment = Alignment.CenterVertically
@@ -139,12 +144,12 @@ fun IconTextSmall(imageVector: ImageVector, count: Int, modifier: Modifier? = nu
             imageVector = imageVector,
             contentDescription = null,
             modifier = Modifier.size(12.dp),
-            tint = Color.White
+            tint = color
         )
         Text(
             text = countFormat(count),
             modifier = Modifier.padding(start = 6.dp),
-            style = TextStyle(fontSize = 12.sp, color = Color.White)
+            style = TextStyle(fontSize = 12.sp, color = color)
         )
     }
 }
