@@ -65,16 +65,18 @@ fun BiliIndicator2(
 fun BiliAnimatedIndicator(tabPositions: List<TabPosition>, selectedTabIndex: Int) {
     val colors = listOf(Color.Yellow, Color.Red, Color.Green)
     val transition = updateTransition(selectedTabIndex, label = "Transition")
+    // 这里是指示器起点
     val indicatorStart by transition.animateDp(
         label = "Indicator Start",
         transitionSpec = {
             // 如果向右移动，则右边移动速度快
-            // 如果向左移动，则左边速度快
             // 阻尼比dampingRatio默认1f，
-            // 刚度：stiffness 刚度对立面是柔性，刚度越大弹簧伸缩速度越快，这里设小点
+            // 刚度：stiffness 刚度对立面是柔性，刚度越大弹簧伸缩速度越快
             if (initialState < targetState) {
-                spring(dampingRatio = 1f, stiffness = 50f)
+                // 这里init < target说明是向右移动，那起点要慢点
+                spring(dampingRatio = 1f, stiffness = 100f)
             } else {
+                // 如果向左移动，则起点速度快
                 spring(dampingRatio = 1f, stiffness = 1000f)
             }
         }
@@ -105,7 +107,7 @@ fun BiliAnimatedIndicator(tabPositions: List<TabPosition>, selectedTabIndex: Int
     BiliIndicator2(
         // indicator当前颜色，指定颜色有默认值
         //color = indicatorColor1,
-        height = 5.dp,
+        height = 4.dp,
         modifier = Modifier
             // 填满整个TabView,并把指示器放在开始位置
             .fillMaxSize()

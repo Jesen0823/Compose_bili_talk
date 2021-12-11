@@ -1,13 +1,15 @@
-package com.jesen.compose_bili.repository
+package com.jesen.compose_bili.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.jesen.compose_bili.model.CategoryM
 import com.jesen.compose_bili.model.VideoM
+import com.jesen.compose_bili.repository.HomeCategoryRepository
 import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.HomeViewModel
 
 class HomeVideoListDataSource(
-    private val repository: HomeCategoryRepository,
+    private val categoryM: CategoryM,
     private val viewModel: HomeViewModel,
     private val pageIndex: Int
 ) : PagingSource<Int, VideoM>() {
@@ -18,20 +20,20 @@ class HomeVideoListDataSource(
         return try {
             val currentPage = params.key ?: 1
             val pageSize = params.loadSize
-            val categoryList = viewModel.categoryList
 
-            val categoryName = if (categoryList.size == 1) "推荐" else categoryList[pageIndex].name
-
+            // 获取数据
             val responseResult =
-                repository.requestHome(category = categoryName, currentPage, pageSize)
+                HomeCategoryRepository.requestHome(
+                    category = categoryM.name,
+                    pageIndex = currentPage,
+                    pageSize = pageSize
+                )
 
             // 保存栏目列表
             if (responseResult.code == 0 && pageIndex == 0) {
-                responseResult.data.categoryList?.let {
-                    viewModel.categoryList.apply {
-                        clear()
-                        addAll(it)
-                    }
+                if (responseResult.data.categoryList?.isNotEmpty() == true && viewModel.categoryList.size == 1) {
+                    viewModel.categoryList.clear()
+                    viewModel.categoryList.addAll(responseResult.data.categoryList)
                 }
 
                 responseResult.data.bannerList?.let {
@@ -39,7 +41,7 @@ class HomeVideoListDataSource(
                 }
             }
 
-            val videoList = responseResult?.data.videoList
+            val videoList = responseResult.data.videoList
             // 上一页页码
             val preKey = if (currentPage == 1) null else currentPage.minus(1)
             // 下一页页码

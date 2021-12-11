@@ -8,7 +8,7 @@ data class HomeM(
     @Json(name = "code")
     val code: Int,
     @Json(name = "data")
-    val `data`: DataM,
+    val `data`: HomeData,
     @Json(name = "msg")
     val msg: String
 )
@@ -93,7 +93,7 @@ data class OwnerM(
 )
 
 @JsonClass(generateAdapter = true)
-data class DataM(
+data class HomeData(
     @Json(name = "bannerList")
     val bannerList: List<BannerM>? = null,
     @Json(name = "categoryList")

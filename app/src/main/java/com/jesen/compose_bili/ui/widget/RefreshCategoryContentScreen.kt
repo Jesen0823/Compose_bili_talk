@@ -6,9 +6,10 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.jesen.compose_bili.base.SwipeRefreshGridLayout
+import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.HomeViewModel
 
@@ -23,21 +24,20 @@ fun RefreshCategoryContentScreen(
     viewModel: HomeViewModel,
     context: Context,
     index: Int,
+    videoCategoryList: LazyPagingItems<VideoM>,
 ) {
 
     oLog(" refresh content index = $index")
 
-    val collectAsLazyPagingIDataList =
-        viewModel.getVideoListIndexOf(index).collectAsLazyPagingItems()
     val lazyListState = rememberLazyListState()
 
     SwipeRefreshGridLayout(
         lazyListState = lazyListState,
-        collectAsLazyPagingItems = collectAsLazyPagingIDataList
+        collectAsLazyPagingItems = videoCategoryList
     ) {
 
-        items(collectAsLazyPagingIDataList.itemCount) { index ->
-            collectAsLazyPagingIDataList[index]?.let {
+        items(videoCategoryList.itemCount) { index ->
+            videoCategoryList[index]?.let {
                 VideoItemCard(
                     index = index,
                     video = it,
