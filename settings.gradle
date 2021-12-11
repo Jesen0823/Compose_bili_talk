@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Compose_bili_talk"
 include ':app'
+include ':bilibanner'
