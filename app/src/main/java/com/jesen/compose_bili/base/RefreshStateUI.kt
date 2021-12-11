@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jesen.compose_bili.ui.theme.gray200
 import com.jesen.compose_bili.ui.theme.gray300
 import com.jesen.compose_bili.ui.theme.gray600
 import com.jesen.compose_bili.ui.theme.gray700
@@ -50,14 +51,14 @@ fun NoMoreDataFindItem(onClick: () -> Unit) {
         TextButton(
             onClick = { onClick() },
             modifier = Modifier
+                .wrapContentSize()
                 .padding(20.dp)
-                .width(80.dp)
                 .height(30.dp),
             shape = RoundedCornerShape(6.dp),
             contentPadding = PaddingValues(3.dp),
-            colors = ButtonDefaults.textButtonColors(backgroundColor = gray300),
+            colors = ButtonDefaults.textButtonColors(backgroundColor = gray200),
             elevation = ButtonDefaults.elevation(
-                defaultElevation = 2.dp,
+                defaultElevation = 1.dp,
                 pressedElevation = 4.dp,
             ),
         ) {
@@ -74,8 +75,7 @@ fun NoMoreDataFindItem(onClick: () -> Unit) {
 fun ErrorContent(retry: () -> Unit) {
     val errorResIndex = Random.nextInt(3)
     Column(
-        modifier = Modifier
-            .wrapContentSize(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

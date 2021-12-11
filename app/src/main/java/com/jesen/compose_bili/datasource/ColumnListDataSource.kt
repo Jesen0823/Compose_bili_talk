@@ -2,31 +2,24 @@ package com.jesen.compose_bili.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.jesen.compose_bili.model.VideoM
-import com.jesen.compose_bili.network.api.ParamSort
-import com.jesen.compose_bili.repository.LazyColumnRepository
 
-class VideoColumnListDataSource(
-    private val sort: ParamSort
-) :
-    PagingSource<Int, VideoM>() {
+/**
+ * 给简单列表封装一个公共DataSource
+ * */
+abstract class ColumnListDataSource<T : Any>() :
+    PagingSource<Int, T>() {
 
-    override fun getRefreshKey(state: PagingState<Int, VideoM>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, T>): Int? {
         return null
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, VideoM> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         return try {
             val currentPage = params.key ?: 1
             val pageSize = params.loadSize
 
-            val responseList =
-                LazyColumnRepository.getRankingVideoList(
-                    sort = sort.value,
-                    pageIndex = currentPage,
-                    pageSize = pageSize
-                )
-                    .data?.list ?: emptyList<VideoM>()
+            val responseList = provideDataList(params)
+
             // 上一页页码
             val preKey = if (currentPage == 1) null else currentPage.minus(1)
             // 下一页页码
@@ -46,4 +39,7 @@ class VideoColumnListDataSource(
             LoadResult.Error(e)
         }
     }
+
+    // 处理结果，返回实体列表
+    abstract suspend fun provideDataList(params: LoadParams<Int>): List<T>
 }

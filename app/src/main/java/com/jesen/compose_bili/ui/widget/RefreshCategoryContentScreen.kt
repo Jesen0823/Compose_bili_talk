@@ -11,7 +11,6 @@ import coil.annotation.ExperimentalCoilApi
 import com.jesen.compose_bili.base.SwipeRefreshGridLayout
 import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.utils.oLog
-import com.jesen.compose_bili.viewmodel.HomeViewModel
 
 /**
  * 首页列表加载 ---下拉刷新，加载更多动效
@@ -21,7 +20,6 @@ import com.jesen.compose_bili.viewmodel.HomeViewModel
 @ExperimentalMaterialApi
 @Composable
 fun RefreshCategoryContentScreen(
-    viewModel: HomeViewModel,
     context: Context,
     index: Int,
     videoCategoryList: LazyPagingItems<VideoM>,

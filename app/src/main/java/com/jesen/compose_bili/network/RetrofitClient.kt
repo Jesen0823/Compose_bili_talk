@@ -31,6 +31,7 @@ object RetrofitClient {
                 oLog("headerInterceptor:  ${original.url.pathSegments}")
                 if (original.url.pathSegments.contains("home")
                     || original.url.pathSegments.contains("ranking")
+                    || original.url.pathSegments.contains("favorites")
                 ) {
                     header(BOARDING_PASS, "E793ED7A61088AAA70DD32614448F2C4AF")
                 }

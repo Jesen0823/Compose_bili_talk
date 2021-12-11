@@ -91,12 +91,12 @@ fun HomeTabPage(activity: MainActivity) {
         Column(modifier = Modifier.fillMaxSize()) {
 
             // 顶部导航
-            ScrollableTab(pagerState, viewModel.categoryList!!)
+            ScrollableTab(pagerState, viewModel.categoryList)
 
             // 横向Pager类似PagerView
             HorizontalPager(
                 state = pagerState,
-                count = viewModel.categoryList!!.size,
+                count = viewModel.categoryList.size,
                 reverseLayout = false
             ) { indexPage ->
                 oLog("home switch page: pageIndex = $indexPage")
@@ -121,7 +121,6 @@ fun HomeTabPage(activity: MainActivity) {
 
                 // 以下是pager的具体内容
                 RefreshCategoryContentScreen(
-                    viewModel = viewModel,
                     context = activity,
                     index = pagerState.currentPage,
                     videoCategoryList = videoPagingDataList.second.collectAsLazyPagingItems()
