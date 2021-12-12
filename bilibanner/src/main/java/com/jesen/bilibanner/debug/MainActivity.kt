@@ -1,4 +1,4 @@
-package com.jesen.bilibanner
+package com.jesen.bilibanner.debug
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.bilibanner.BannerPager
 import com.jesen.bilibanner.bean.BannerData
 import com.jesen.bilibanner.ui.theme.Compose_bili_talkTheme
 

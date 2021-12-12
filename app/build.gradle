@@ -5,20 +5,29 @@ plugins {
     //id 'kotlin-parcelize'
 }
 
+// 自定义选项
+def mVersions = rootProject.ext.mVersions
+def mDependencies = rootProject.ext.mDencies
+def mIds = rootProject.ext.mIds
+def host_url = rootProject.ext.host_url
+
 android {
-    compileSdk 31
+    compileSdk mVersions.compileSdk
 
     defaultConfig {
-        applicationId "com.jesen.compose_bili"
-        minSdk 23
-        targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        applicationId mIds.app
+        minSdk mVersions.minSdk
+        targetSdk mVersions.targetSdk
+        versionCode mVersions.versionCode
+        versionName mVersions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
+
+        // src代码中有可能需要用到跨模块交互
+        buildConfigField("boolean", "isDebug", String.valueOf(isDebug))
     }
 
     buildTypes {
@@ -52,28 +61,13 @@ android {
 
 dependencies {
 
-    implementation project(path: ':bilibanner')
+    // 公共基本依赖
+    mDependencies.each { k, v -> implementation v }
 
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_runtime_ktx"
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation project(path: ':bilibanner')
 
     // Icons部分图标找不到的问题
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-
-    // coil
-    //implementation "com.google.accompanist:accompanist-coil:$accompanist_coil"
-    //implementation "io.coil-kt:coil-compose:$compose_coil"
 
     // 状态栏相关
     implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
@@ -90,9 +84,6 @@ dependencies {
     //okHttp
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
-
-    // 类似ViewPager
-    //implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
 
     // 导航
     implementation "androidx.navigation:navigation-compose:$navigation_compose"
