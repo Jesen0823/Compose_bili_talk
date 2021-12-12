@@ -62,4 +62,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+    // 类似ViewPager
+    api "com.google.accompanist:accompanist-pager:$accompanist_version"
+    // coil
+    api "com.google.accompanist:accompanist-coil:$accompanist_coil"
+    api "io.coil-kt:coil-compose:$compose_coil"
+
+    // livedata
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 }
