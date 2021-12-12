@@ -123,7 +123,8 @@ fun HomeTabPage(activity: MainActivity) {
                 RefreshCategoryContentScreen(
                     context = activity,
                     index = pagerState.currentPage,
-                    videoCategoryList = videoPagingDataList.second.collectAsLazyPagingItems()
+                    videoCategoryList = videoPagingDataList.second.collectAsLazyPagingItems(),
+                    bannerList = if (indexPage == 0) viewModel.bannerDataList else null
                 )
             }
 

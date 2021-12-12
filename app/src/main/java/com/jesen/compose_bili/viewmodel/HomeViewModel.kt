@@ -7,10 +7,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.jesen.bilibanner.bean.BannerData
 import com.jesen.compose_bili.datasource.HomeContentPagingDataSource
-import com.jesen.compose_bili.model.BannerM
 import com.jesen.compose_bili.model.CategoryM
 import com.jesen.compose_bili.model.VideoM
+import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
 import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel : ViewModel() {
@@ -19,7 +20,7 @@ class HomeViewModel : ViewModel() {
 
     var selectedIndex = 0
 
-    var bannerList: List<BannerM>? = null
+    var bannerDataList = mutableStateListOf<BannerData>(BannerData())
 
     var allCategoryVideoMap: MutableMap<CategoryM, Pair<CategoryM, Flow<PagingData<VideoM>>>>? =
         mutableMapOf()
@@ -34,7 +35,7 @@ class HomeViewModel : ViewModel() {
                 )
             ) {
 
-                HomeContentPagingDataSource(category, this, selectedIndex)
+                HomeContentPagingDataSource(category, this, selectedIndex, EntityBannerMapper())
             }.flow.cachedIn(viewModelScope)
         ).also {
             allCategoryVideoMap?.put(category, it)

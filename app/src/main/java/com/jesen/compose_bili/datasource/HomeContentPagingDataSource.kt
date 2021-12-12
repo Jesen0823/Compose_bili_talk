@@ -4,6 +4,7 @@ import com.jesen.compose_bili.base.CommonListPagingDataSource
 import com.jesen.compose_bili.model.CategoryM
 import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.repository.HomeCategoryRepository
+import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
 import com.jesen.compose_bili.viewmodel.HomeViewModel
 
 /**
@@ -12,7 +13,8 @@ import com.jesen.compose_bili.viewmodel.HomeViewModel
 class HomeContentPagingDataSource(
     private val categoryM: CategoryM,
     private val viewModel: HomeViewModel,
-    private val pageIndex: Int
+    private val pageIndex: Int,
+    private val bannerMapper: EntityBannerMapper
 ) : CommonListPagingDataSource<VideoM>() {
 
     override suspend fun provideDataList(params: LoadParams<Int>): List<VideoM> {
@@ -35,7 +37,12 @@ class HomeContentPagingDataSource(
             }
 
             responseResult.data.bannerList?.let {
-                viewModel.bannerList = it
+                // 转换为封装的banner需要的数据类型
+                val bannerEntityList = it.map { banner ->
+                    bannerMapper.map(banner)
+                }
+                viewModel.bannerDataList.clear()
+                viewModel.bannerDataList.addAll(bannerEntityList)
             }
         }
 
