@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.datasource
+package com.jesen.compose_bili.base
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -6,7 +6,7 @@ import androidx.paging.PagingState
 /**
  * 给简单列表封装一个公共DataSource
  * */
-abstract class ColumnListDataSource<T : Any>() :
+abstract class CommonListPagingDataSource<T : Any>() :
     PagingSource<Int, T>() {
 
     override fun getRefreshKey(state: PagingState<Int, T>): Int? {

@@ -8,6 +8,7 @@ if (isDebug) {
     apply plugin: 'com.android.library'
 }
 
+
 // 自定义选项
 def mVersions = rootProject.ext.mVersions
 def mDependencies = rootProject.ext.mDencies

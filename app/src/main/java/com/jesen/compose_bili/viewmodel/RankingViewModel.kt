@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.jesen.compose_bili.datasource.RankingListDataSource
+import com.jesen.compose_bili.datasource.RankingListPagingDataSource
 import com.jesen.compose_bili.network.api.ParamSort
 
 
@@ -27,7 +27,7 @@ class RankingViewModel() : ViewModel() {
                 prefetchDistance = 1,
             )
         ) {
-            RankingListDataSource(sort)
+            RankingListPagingDataSource(sort)
         }.flow.cachedIn(viewModelScope)
     }.toList()
 }

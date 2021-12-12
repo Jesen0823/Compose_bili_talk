@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.jesen.compose_bili.datasource.FavoriteListDataSource
+import com.jesen.compose_bili.datasource.FavoriteListPagingDataSource
 
 class FavoriteListViewModel : ViewModel() {
 
@@ -17,7 +17,7 @@ class FavoriteListViewModel : ViewModel() {
             prefetchDistance = 1,
         )
     ) {
-        FavoriteListDataSource()
+        FavoriteListPagingDataSource()
     }.flow.cachedIn(viewModelScope)
 
 
