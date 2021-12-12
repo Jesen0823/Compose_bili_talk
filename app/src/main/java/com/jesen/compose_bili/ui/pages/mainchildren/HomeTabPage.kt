@@ -8,6 +8,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -37,6 +38,7 @@ import com.jesen.compose_bili.ui.theme.gray100
 import com.jesen.compose_bili.ui.theme.gray50
 import com.jesen.compose_bili.ui.theme.gray700
 import com.jesen.compose_bili.ui.widget.BiliAnimatedIndicator
+import com.jesen.compose_bili.ui.widget.BiliBanner
 import com.jesen.compose_bili.ui.widget.MainTopBarUI
 import com.jesen.compose_bili.ui.widget.RefreshCategoryContentScreen
 import com.jesen.compose_bili.utils.ColorUtil
@@ -124,7 +126,21 @@ fun HomeTabPage(activity: MainActivity) {
                     context = activity,
                     index = pagerState.currentPage,
                     videoCategoryList = videoPagingDataList.second.collectAsLazyPagingItems(),
-                    bannerList = if (indexPage == 0) viewModel.bannerDataList else null
+                    // 可扩展位置，只有含banner的栏目才有
+                    extendItemUI = {
+                        val context = this
+                        if (indexPage == 0) {
+                            context.item {
+                                BiliBanner(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    items = viewModel.bannerDataList,
+                                    itemOnClick = { banner ->
+                                        // 点击banner
+                                    }
+                                )
+                            }
+                        }
+                    }
                 )
             }
 
