@@ -1,8 +1,8 @@
 package com.jesen.compose_bili.network
 
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.BuildConfig
 import com.jesen.compose_bili.utils.BOARDING_PASS
-import com.jesen.compose_bili.utils.oLog
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -29,10 +29,9 @@ object RetrofitClient {
 
             val requestBuilder: Request.Builder = original.newBuilder().apply {
                 oLog("headerInterceptor:  ${original.url.pathSegments}")
-                if (original.url.pathSegments.contains("home")
-                    || original.url.pathSegments.contains("ranking")
-                    || original.url.pathSegments.contains("favorites")
-                ) {
+
+                // 检测是否追加请求头
+                if (checkPath(original.url.pathSegments)) {
                     header(BOARDING_PASS, "E793ED7A61088AAA70DD32614448F2C4AF")
                 }
             }
@@ -54,6 +53,13 @@ object RetrofitClient {
             //.addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
+    }
+
+    private fun checkPath(pathSegments: List<String>): Boolean = pathSegments.run {
+        contains("home") ||
+                contains("ranking") ||
+                contains("favorites") ||
+                contains("detail")
     }
 
 

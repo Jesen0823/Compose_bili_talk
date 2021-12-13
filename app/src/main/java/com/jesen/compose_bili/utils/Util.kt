@@ -1,10 +1,5 @@
 package com.jesen.compose_bili.utils
 
-import android.util.Log
-
-fun oLog(msg: String) {
-    Log.d("Bi--", msg)
-}
 
 /**
  * 将参数匹配替换进Route路径

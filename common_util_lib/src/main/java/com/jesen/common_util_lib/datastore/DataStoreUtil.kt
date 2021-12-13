@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.datastore
+package com.jesen.common_util_lib.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

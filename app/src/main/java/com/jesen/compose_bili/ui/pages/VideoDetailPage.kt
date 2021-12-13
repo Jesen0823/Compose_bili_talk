@@ -1,11 +1,14 @@
 package com.jesen.compose_bili.ui.pages
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.google.accompanist.insets.navigationBarsWithImePadding
+import com.jesen.biliexoplayer.player.ExoComposePlayer
 
 /**
  * 视频详情页
@@ -13,8 +16,19 @@ import androidx.compose.ui.Modifier
 @Composable
 fun VideoDetailPage(param: String?) {
     Scaffold() {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text("视频详情页呀:\n $param")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .navigationBarsWithImePadding()
+        ) {
+            ExoComposePlayer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16 / 9f),
+                title = "测试播放器。。。",
+                url = "https://o.devio.org/files/video/v=eiDiKwbGfIY.mp4"
+            )
         }
     }
 }
+

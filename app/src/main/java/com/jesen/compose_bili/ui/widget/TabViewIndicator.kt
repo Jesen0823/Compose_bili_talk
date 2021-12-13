@@ -60,7 +60,6 @@ fun BiliIndicator2(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BiliAnimatedIndicator(tabPositions: List<TabPosition>, selectedTabIndex: Int) {
     val colors = listOf(Color.Yellow, Color.Red, Color.Green)

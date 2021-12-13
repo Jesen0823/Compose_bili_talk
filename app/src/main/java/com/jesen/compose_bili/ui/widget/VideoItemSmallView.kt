@@ -28,7 +28,6 @@ import com.jesen.compose_bili.ui.theme.black87
 import com.jesen.compose_bili.ui.theme.gray200
 import com.jesen.compose_bili.ui.theme.gray600
 import com.jesen.compose_bili.utils.CoilImage
-import com.jesen.compose_bili.utils.durationTransform
 
 
 @ExperimentalCoilApi
@@ -87,7 +86,7 @@ fun SmallVideoCard(
                         bottom.linkTo(coverImage.bottom, margin = 10.dp)
                         end.linkTo(coverImage.end, margin = 6.dp)
                     },
-                text = durationTransform(video.duration),
+                text = com.jesen.common_util_lib.utils.durationTransform(video.duration),
                 style = TextStyle(fontSize = 12.sp, color = Color.White)
             )
 

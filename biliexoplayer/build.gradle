@@ -85,4 +85,16 @@ dependencies {
     // 公共基本依赖
     mDependencies.each { k, v -> implementation v }
 
+    implementation project(path: ':common_util_lib')
+
+    // ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
+
+    //lottie
+    implementation 'com.airbnb.android:lottie:4.2.0'
+
+    // 播放控制器适配，可省略
+    implementation 'org.checkerframework:checker-compat-qual:2.5.5'
+    implementation 'org.checkerframework:checker-qual:3.19.0'
+
 }

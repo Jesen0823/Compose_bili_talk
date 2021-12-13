@@ -1,6 +1,6 @@
-package com.jesen.compose_bili.utils
+package com.jesen.common_util_lib.utils
 
-import com.jesen.compose_bili.BiliApp
+import android.util.Log
 
 /// 时间转换将秒转换为分钟:秒
 fun durationTransform(seconds: Int): String {
@@ -16,4 +16,6 @@ fun countFormat(count: Int): String = if (count > 9999) {
     count.toString()
 }
 
-fun getResString(resId: Int) = BiliApp.mContext.applicationContext.getString(resId)
+fun oLog(msg: String) {
+    Log.d("Bi--", msg)
+}

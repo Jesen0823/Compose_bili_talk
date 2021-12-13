@@ -1,10 +1,8 @@
 package com.jesen.compose_bili
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,17 +20,16 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jesen.compose_bili.navigation.PageNavHost
 import com.jesen.compose_bili.ui.theme.Compose_bili_talkTheme
 
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
 
     companion object {
         var pageNavController: NavHostController? = null
     }
 
-    @ExperimentalMaterialApi
-    @ExperimentalFoundationApi
-    @RequiresApi(Build.VERSION_CODES.O)
-    @ExperimentalAnimationApi
-    @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

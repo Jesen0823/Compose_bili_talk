@@ -1,8 +1,6 @@
 package com.jesen.compose_bili.ui.pages.mainchildren
 
-import android.os.Build
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -28,6 +26,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import com.jesen.common_util_lib.utils.ColorUtil
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.model.CategoryM
 import com.jesen.compose_bili.model.VideoM
@@ -41,8 +41,6 @@ import com.jesen.compose_bili.ui.widget.BiliAnimatedIndicator
 import com.jesen.compose_bili.ui.widget.BiliBanner
 import com.jesen.compose_bili.ui.widget.MainTopBarUI
 import com.jesen.compose_bili.ui.widget.RefreshCategoryContentScreen
-import com.jesen.compose_bili.utils.ColorUtil
-import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.utils.replaceRegex
 import com.jesen.compose_bili.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.Flow
@@ -61,7 +59,6 @@ import kotlinx.coroutines.launch
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
-@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
@@ -150,7 +147,6 @@ fun HomeTabPage(activity: MainActivity) {
 }
 
 // 可滑动TabView
-@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
 @Composable
 fun ScrollableTab(pagerState: PagerState, categoryList: MutableList<CategoryM>) {

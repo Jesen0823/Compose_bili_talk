@@ -1,8 +1,8 @@
-package com.jesen.compose_bili.utils
+package com.jesen.common_util_lib.utils
 
+//import android.graphics.Color
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
 import kotlin.math.abs
 import kotlin.random.Random
@@ -71,16 +71,14 @@ object ColorUtil {
     /**
      * 随机色与目标色混合
      * */
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getRandomColor(mix: Color): Color {
-        var red: Int = Random.nextInt(256)
-        var green: Int = Random.nextInt(256)
-        var blue: Int = Random.nextInt(256)
-
+        var red: Float = Random.nextInt(256).toFloat()
+        var green: Float = Random.nextInt(256).toFloat()
+        var blue: Float = Random.nextInt(256).toFloat()
         // mix the color
-        red = (red + mix.red.toInt()) / 2
-        green = (green + mix.green.toInt()) / 2
-        blue = (blue + mix.blue.toInt()) / 2
+        red = (red + mix.red) / 2
+        green = (green + mix.green) / 2
+        blue = (blue + mix.blue) / 2
 
         return Color(red, green, blue)
     }
@@ -89,18 +87,19 @@ object ColorUtil {
     /**
      * 生成灰度相似的颜色
      * */
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getRandomColorB(mix: Color): Color {
         val red: Int = Random.nextInt(256)
         val green: Int = Random.nextInt(256)
-        val blue: Int = mix.blue.toInt()
+        val blue: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) mix.blue
+            .toInt() else Random.nextInt(256)
 
         var b = (blue - (red * 0.3 + green * 0.59)) / 0.11
         if (b < 0) b = abs(b)
         if (b > 255) b = 255.toDouble()
-        return Color(red, green, b.toInt())
+        return Color(red.toFloat(), green.toFloat(), b.toFloat())
     }
 }
+
 
 /*@RequiresApi(Build.VERSION_CODES.O)
 @Composable

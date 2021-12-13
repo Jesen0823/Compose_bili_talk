@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.exoplayer2.ui.BiliPlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/playerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:minHeight="200dp"
+    app:controller_layout_id="@layout/player_controller_layout"
+    app:keep_content_on_player_reset="false"
+    app:resize_mode="fixed_width"
+    app:show_buffering="when_playing"
+    app:shutter_background_color="@android:color/black"
+    app:surface_type="surface_view"
+    app:use_controller="true">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/bili_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="false"
+        app:lottie_cacheComposition="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lolitte_red_cat"
+        app:lottie_renderMode="hardware"
+        app:lottie_repeatMode="restart"
+        app:lottie_scale="1.2" />
+</com.google.android.exoplayer2.ui.BiliPlayerView>

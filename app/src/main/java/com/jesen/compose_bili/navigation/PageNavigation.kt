@@ -2,8 +2,6 @@ package com.jesen.compose_bili.navigation
 
 //import com.google.accompanist.navigation.animation.AnimatedNavHost
 //import com.google.accompanist.navigation.animation.composable
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
@@ -14,12 +12,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.ui.pages.MainPage
 import com.jesen.compose_bili.ui.pages.VideoDetailPage
 import com.jesen.compose_bili.ui.pages.user.LoginPage
 import com.jesen.compose_bili.ui.pages.user.RegisterPage
-import com.jesen.compose_bili.utils.oLog
 
 /**
  * 定义普通页面路由
@@ -36,7 +34,6 @@ object PageRoute {
  * */
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
-@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
@@ -164,6 +161,10 @@ fun PageNavHost(mainActivity: MainActivity) {
 /**
  * 页面跳转
  * */
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
 fun doPageNavigationTo(route: String) {
     val navController = MainActivity.pageNavController!!
     navController.navigate(route) {
@@ -181,6 +182,10 @@ fun doPageNavigationTo(route: String) {
 /**
  * 页面回退
  * */
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
 fun doPageNavBack(route: String?) {
     val navController = MainActivity.pageNavController!!
     route?.let {

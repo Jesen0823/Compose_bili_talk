@@ -26,8 +26,6 @@ import com.jesen.compose_bili.ui.theme.black87
 import com.jesen.compose_bili.ui.theme.gray600
 import com.jesen.compose_bili.utils.CoilCircleImage
 import com.jesen.compose_bili.utils.CoilImage
-import com.jesen.compose_bili.utils.countFormat
-import com.jesen.compose_bili.utils.durationTransform
 
 /**
  * 视频Item卡片
@@ -122,7 +120,7 @@ fun VideoInfo(modifier: Modifier, video: VideoM) {
         IconTextSmall(Icons.Rounded.FavoriteBorder, video.like, Modifier.padding(start = 24.dp))
         Spacer(modifier = Modifier.width(38.dp))
         Text(
-            text = durationTransform(video.duration),
+            text = com.jesen.common_util_lib.utils.durationTransform(video.duration),
             style = TextStyle(color = Color.White, fontSize = 12.sp)
         )
     }
@@ -147,7 +145,7 @@ fun IconTextSmall(
             tint = color
         )
         Text(
-            text = countFormat(count),
+            text = com.jesen.common_util_lib.utils.countFormat(count),
             modifier = Modifier.padding(start = 6.dp),
             style = TextStyle(fontSize = 12.sp, color = color)
         )

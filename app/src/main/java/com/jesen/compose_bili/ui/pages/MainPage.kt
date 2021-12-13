@@ -1,8 +1,6 @@
 package com.jesen.compose_bili.ui.pages
 
 //import androidx.compose.animation.ExperimentalAnimationApi
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
@@ -20,7 +18,6 @@ import com.jesen.compose_bili.navigation.BottomNavigationScreen
  * */
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
-@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable

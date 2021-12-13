@@ -1,8 +1,6 @@
 package com.jesen.compose_bili.navigation
 
-import android.os.Build
 import androidx.annotation.DrawableRes
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.compose_bili.BiliApp
 import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.R
 import com.jesen.compose_bili.ui.pages.mainchildren.FavoritePage
@@ -31,38 +30,40 @@ import com.jesen.compose_bili.ui.pages.mainchildren.ProfilePage
 import com.jesen.compose_bili.ui.pages.mainchildren.RankingPage
 import com.jesen.compose_bili.ui.theme.bili_90
 import com.jesen.compose_bili.ui.theme.gray400
-import com.jesen.compose_bili.utils.getResString
 
 /**
  * 首页底部页面路由定义
  * */
 
+val context = BiliApp.mContext
+
 object BottomNav {
     sealed class Screens(val title: String, val route: String, @DrawableRes val icons: Int) {
 
+
         object Home : Screens(
-            title = getResString(R.string.main_bottom_home),
+            title = context.getString(R.string.main_bottom_home),
             route = "home_route",
             icons = R.drawable.round_home_24
         )
 
         object Ranking :
             Screens(
-                title = getResString(R.string.main_bottom_rank),
+                title = context.getString(R.string.main_bottom_rank),
                 route = "ranking_route",
                 icons = R.drawable.round_filter_24
             )
 
         object Favorite :
             Screens(
-                title = getResString(R.string.main_bottom_fav),
+                title = context.getString(R.string.main_bottom_fav),
                 route = "fav_route",
                 icons = R.drawable.round_favorite_24
             )
 
         object Profile :
             Screens(
-                title = getResString(R.string.main_bottom_profile),
+                title = context.getString(R.string.main_bottom_profile),
                 route = "profile_route",
                 icons = R.drawable.round_person_24
             )
@@ -79,7 +80,6 @@ object BottomNav {
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
-@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
