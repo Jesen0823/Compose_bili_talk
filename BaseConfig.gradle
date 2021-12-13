@@ -19,8 +19,9 @@ ext {
     ]
 
     mIds = [
-            app       : "com.jesen.compose_bili",
-            bilibanner: "com.jesen.bilibanner",
+            app          : "com.jesen.compose_bili",
+            bilibanner   : "com.jesen.bilibanner",
+            biliexoplayer: "com.jesen.biliexoplayer"
     ]
 
     host_url = [
