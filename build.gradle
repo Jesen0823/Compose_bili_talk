@@ -10,6 +10,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
 
         // lottie 托管地址
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
