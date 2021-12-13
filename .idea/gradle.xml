@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/bilibanner" />
             <option value="$PROJECT_DIR$/biliexoplayer" />
+            <option value="$PROJECT_DIR$/common_util_lib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

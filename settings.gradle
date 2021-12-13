@@ -11,3 +11,4 @@ rootProject.name = "Compose_bili_talk"
 include ':app'
 include ':bilibanner'
 include ':biliexoplayer'
+include ':common_util_lib'
