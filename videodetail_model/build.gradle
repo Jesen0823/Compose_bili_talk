@@ -1,0 +1,81 @@
+plugins {
+    //id 'com.android.application' // 原依赖
+    id 'kotlin-android'
+}
+if (isDebug) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
+// 自定义选项
+def mVersions = rootProject.ext.mVersions
+def mDependencies = rootProject.ext.mDencies
+def mIds = rootProject.ext.mIds
+
+android {
+    compileSdk mVersions.compileSdk
+
+    defaultConfig {
+        applicationId mIds.videodetail_model
+        minSdk mVersions.minSdk
+        targetSdk mVersions.targetSdk
+        versionCode mVersions.versionCode
+        versionName mVersions.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            // 如果是组件化模式，需要单独运行时
+            if (isDebug) {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            } else {
+                // 集成化模式，整个项目打包apk
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java {
+                    // release 时 debug 目录下文件不需要合并到主工程
+                    exclude '**/debug/**'
+                }
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerVersion kotlin_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+
+    // 公共基本依赖
+    mDependencies.each { k, v -> implementation v }
+}
