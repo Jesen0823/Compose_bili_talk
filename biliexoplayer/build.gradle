@@ -1,8 +1,7 @@
 plugins {
-    //id 'com.android.application' // 原依赖
     id 'kotlin-android'
 }
-if (isDebug) {
+if (isDebug && !isDetailPageDebug) {
     apply plugin: 'com.android.application'
 } else {
     apply plugin: 'com.android.library'
@@ -13,13 +12,12 @@ if (isDebug) {
 def mVersions = rootProject.ext.mVersions
 def mDependencies = rootProject.ext.mDencies
 def mIds = rootProject.ext.mIds
-def host_url = rootProject.ext.host_url
 
 android {
     compileSdk mVersions.compileSdk
 
     defaultConfig {
-        if (isDebug) {
+        if (isDebug && !isDetailPageDebug) {
             applicationId mIds.biliexoplayer
         }
         minSdk mVersions.minSdk
@@ -91,7 +89,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
 
     //lottie
-    implementation 'com.airbnb.android:lottie:4.2.0'
+    implementation "com.airbnb.android:lottie:$lottie_version"
 
     // 播放控制器适配，可省略
     implementation 'org.checkerframework:checker-compat-qual:2.5.5'

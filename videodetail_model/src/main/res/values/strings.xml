@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VideoDetail_Model</string>
+    <string name="introduce_title">简介</string>
+    <string name="comment_title">评论</string>
 </resources>

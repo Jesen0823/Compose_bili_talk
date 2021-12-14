@@ -1,6 +1,8 @@
 ext {
 
-    isDebug = false
+    isDebug = true
+
+    isDetailPageDebug = true
 
     // 公共基本依赖
     compose_version = "1.1.0-beta01"

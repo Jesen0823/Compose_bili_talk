@@ -70,4 +70,13 @@ dependencies {
     // coil
     api "com.google.accompanist:accompanist-coil:$accompanist_coil"
     api "io.coil-kt:coil-compose:$compose_coil"
+
+    // Motion 动画
+    api "com.github.fornewid.material-motion-compose:core:$motion_anim_version"
+
+    // Dialog
+    implementation "io.github.vanpra.compose-material-dialogs:core:$compose_material_dialog"
+
+    // lottie
+    api "com.airbnb.android:lottie-compose:$lottie_compose"
 }

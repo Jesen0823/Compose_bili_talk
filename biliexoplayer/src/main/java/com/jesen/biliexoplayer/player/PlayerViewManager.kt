@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.activity.ComponentActivity
 import androidx.core.util.Pools
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.BiliPlayerView
 import com.jesen.biliexoplayer.R
-import com.jesen.biliexoplayer.debug.MainActivity
-import com.jesen.common_util_lib.utils.componentActivity
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.common_util_lib.utils.statusBarIsHide
 
@@ -26,7 +25,7 @@ object PlayerViewManager : ExoEventListener {
     var playerMode = PlayerMode.SINGLE_MODE
 
     var playerViewMode = PlayViewMode.HALF_SCREEN
-    var activity: MainActivity? = null
+    var activity: ComponentActivity? = null
 
 
     private val playerViewPool = Pools.SimplePool<BiliPlayerView>(2)
@@ -65,7 +64,7 @@ object PlayerViewManager : ExoEventListener {
 
 
     private fun initOther(playView: BiliPlayerView) {
-        PlayViewData.instance.activity = playView.context.componentActivity as MainActivity
+        PlayViewData.instance.activity = activity
 
         // 返回按钮
         val backExitBtn = playView.findViewById<ImageView>(R.id.back_play)

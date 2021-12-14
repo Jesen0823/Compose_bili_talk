@@ -1,8 +1,8 @@
-package com.jesen.videodetail_model.model
+package com.jesen.retrofit_lib.model
 
 
 import android.os.Parcelable
-import com.jesen.retrofit_lib.model.VideoM
+import com.jesen.retrofit_lib.com.BaseModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
@@ -11,17 +11,17 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class VideoDetailM(
     @Json(name = "code")
-    val code: Int,
+    override val code: Int,
     @Json(name = "data")
-    val `data`: DetailData,
+    override val `data`: VideoDetailData,
     @Json(name = "msg")
-    val msg: String
-) : Parcelable
+    override val msg: String
+) : BaseModel(code, data, msg), Parcelable
 
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class DetailData(
+data class VideoDetailData(
     @Json(name = "isFavorite")
     val isFavorite: Boolean,
     @Json(name = "isLike")

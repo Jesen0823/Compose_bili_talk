@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold() {
                         ExoComposePlayer(
+                            activity = this,
                             modifier = Modifier.fillMaxWidth(),
                             title = "测试测试测试",
                             url = "https://o.devio.org/files/video/v=eiDiKwbGfIY.mp4",
@@ -43,12 +44,6 @@ class MainActivity : ComponentActivity() {
             Configuration.ORIENTATION_PORTRAIT -> {
                 oLog("onConfigurationChanged PORTRAIT from Configuration, 横屏转回竖屏")
                 PlayerViewManager.exitFullScreen()
-            }
-            Configuration.ORIENTATION_SQUARE -> {
-                oLog("onConfigurationChanged SQUARE from Configuration")
-            }
-            Configuration.ORIENTATION_UNDEFINED -> {
-                oLog("onConfigurationChanged UNDEFINED from Configuration")
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.jesen.biliexoplayer.player
 
 import android.view.ViewGroup
+import androidx.activity.ComponentActivity
 import com.google.android.exoplayer2.ui.BiliPlayerView
-import com.jesen.biliexoplayer.debug.MainActivity
 
 class PlayViewData private constructor() {
 
@@ -11,7 +11,7 @@ class PlayViewData private constructor() {
     var fullPlayParent: ViewGroup? = null
 
     var curPlayerView: BiliPlayerView? = null
-    var activity: MainActivity? = null
+    var activity: ComponentActivity? = null
 
     companion object {
         val instance: PlayViewData by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {

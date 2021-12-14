@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.SizeF
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.MaterialTheme
@@ -34,6 +35,7 @@ import com.jesen.common_util_lib.utils.oLog
  * */
 @Composable
 fun ExoComposePlayer(
+    activity: ComponentActivity,
     modifier: Modifier = Modifier,
     title: String,
     url: String?,
@@ -107,7 +109,7 @@ fun ExoComposePlayer(
     }
 
     AndroidView(
-        modifier = Modifier.aspectRatio(size.width / size.height),
+        modifier = modifier.aspectRatio(size.width / size.height),
         factory = { context ->
             oLog("--ComposePlayer,factory")
             val frameLayout = FrameLayout(context)
@@ -116,6 +118,7 @@ fun ExoComposePlayer(
         },
         update = { frameLayout ->
             oLog("--ComposePlayer, update,frameLayout:$frameLayout")
+            PlayerViewManager.activity = activity
 
             if (playerUIEnable()) {
                 frameLayout.removeAllViews()

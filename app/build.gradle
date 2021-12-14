@@ -83,14 +83,10 @@ dependencies {
 
     implementation project(path: ':retrofit_lib')
     implementation project(path: ':bilibanner')
-    implementation project(path: ':biliexoplayer')
     implementation project(path: ':videodetail_model')
 
     // 可定义动画的Navigation库
-    implementation "com.google.accompanist:accompanist-navigation-animation:0.21.3-beta"
-
-    // lottie
-    implementation "com.airbnb.android:lottie-compose:$lottieVersion"
+    //implementation "com.google.accompanist:accompanist-navigation-animation:0.21.3-beta"
 
     //Paging 3.0
     implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
