@@ -72,13 +72,13 @@ object ColorUtil {
      * 随机色与目标色混合
      * */
     fun getRandomColor(mix: Color): Color {
-        var red: Float = Random.nextInt(256).toFloat()
-        var green: Float = Random.nextInt(256).toFloat()
-        var blue: Float = Random.nextInt(256).toFloat()
+        var red: Int = Random.nextInt(256)
+        var green: Int = Random.nextInt(256)
+        var blue: Int = Random.nextInt(256)
         // mix the color
-        red = (red + mix.red) / 2
-        green = (green + mix.green) / 2
-        blue = (blue + mix.blue) / 2
+        red = (red + mix.red).toInt() shr 1
+        green = (green + mix.green).toInt() shr 1
+        blue = (blue + mix.blue).toInt() shr 1
 
         return Color(red, green, blue)
     }
@@ -90,12 +90,15 @@ object ColorUtil {
     fun getRandomColorB(mix: Color): Color {
         val red: Int = Random.nextInt(256)
         val green: Int = Random.nextInt(256)
-        val blue: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) mix.blue
-            .toInt() else Random.nextInt(256)
 
-        var b = (blue - (red * 0.3 + green * 0.59)) / 0.11
+        var b: Double = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val blue = mix.blue
+            (blue - (red * 0.3 + green * 0.59)) / 0.11
+        } else {
+            Random.nextDouble(256.0)
+        }
+
         if (b < 0) b = abs(b)
-        if (b > 255) b = 255.toDouble()
         return Color(red.toFloat(), green.toFloat(), b.toFloat())
     }
 }

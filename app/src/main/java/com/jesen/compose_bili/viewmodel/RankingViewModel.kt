@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.jesen.compose_bili.datasource.RankingListPagingDataSource
-import com.jesen.compose_bili.network.api.ParamSort
+import com.jesen.retrofit_lib.api.ParamSort
 
 
 class RankingViewModel() : ViewModel() {

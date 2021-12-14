@@ -5,11 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jesen.compose_bili.datastore.DataStoreUtil
-import com.jesen.compose_bili.model.UserResult
+import com.jesen.common_util_lib.datastore.DataStoreUtil
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.repository.UserRepository
-import com.jesen.compose_bili.utils.BOARDING_PASS
-import com.jesen.compose_bili.utils.oLog
+import com.jesen.retrofit_lib.com.BOARDING_PASS
+import com.jesen.retrofit_lib.model.UserResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

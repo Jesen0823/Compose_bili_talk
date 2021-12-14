@@ -1,8 +1,8 @@
 package com.jesen.compose_bili.datasource
 
 import com.jesen.compose_bili.base.CommonListPagingDataSource
-import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.repository.LazyColumnRepository
+import com.jesen.retrofit_lib.model.VideoM
 
 /**
  * 收藏列表分页处理

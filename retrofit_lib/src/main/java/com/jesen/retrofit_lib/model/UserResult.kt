@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.model
+package com.jesen.retrofit_lib.model
 
 /**
  * 登录注册结果

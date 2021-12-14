@@ -1,6 +1,7 @@
 package com.jesen.compose_bili.ui.pages.mainchildren
 
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.R
 import com.jesen.compose_bili.ui.theme.bili_50
@@ -30,13 +32,13 @@ import com.jesen.compose_bili.ui.theme.gray100
 import com.jesen.compose_bili.ui.theme.gray50
 import com.jesen.compose_bili.ui.theme.gray700
 import com.jesen.compose_bili.ui.widget.RefreshColumnScreen
-import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.RankingViewModel
 import kotlinx.coroutines.launch
 
 /**
  * 排行榜
  * */
+@ExperimentalAnimationApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi

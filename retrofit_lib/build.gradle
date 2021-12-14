@@ -1,0 +1,64 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+def mVersions = rootProject.ext.mVersions
+
+android {
+
+    compileSdk mVersions.compileSdk
+
+    defaultConfig {
+        minSdk mVersions.minSdk
+        targetSdk mVersions.targetSdk
+        versionCode mVersions.versionCode
+        versionName mVersions.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        // src代码中有可能需要用到跨模块交互
+        buildConfigField("boolean", "isDebug", String.valueOf(isDebug))
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "isDebugMode", "false"
+        }
+
+        debug {
+            buildConfigField "boolean", "isDebugMode", "true"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "com.google.android.material:material:$material_version"
+
+    // moshi
+    implementation "com.squareup.moshi:moshi:1.12.0"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
+
+    //Retrofit
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    api "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    //okHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+}

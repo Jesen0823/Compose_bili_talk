@@ -1,11 +1,11 @@
 package com.jesen.compose_bili.datasource
 
 import com.jesen.compose_bili.base.CommonListPagingDataSource
-import com.jesen.compose_bili.model.CategoryM
-import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.repository.HomeCategoryRepository
 import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
 import com.jesen.compose_bili.viewmodel.HomeViewModel
+import com.jesen.retrofit_lib.model.CategoryM
+import com.jesen.retrofit_lib.model.VideoM
 
 /**
  * 首页各栏目的数据请求分页
@@ -33,7 +33,7 @@ class HomeContentPagingDataSource(
         if (responseResult.code == 0 && pageIndex == 0) {
             if (responseResult.data.categoryList?.isNotEmpty() == true && viewModel.categoryList.size == 1) {
                 viewModel.categoryList.clear()
-                viewModel.categoryList.addAll(responseResult.data.categoryList)
+                viewModel.categoryList.addAll(responseResult.data.categoryList!!)
             }
 
             responseResult.data.bannerList?.let {

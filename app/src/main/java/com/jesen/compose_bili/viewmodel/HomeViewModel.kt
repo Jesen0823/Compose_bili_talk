@@ -9,9 +9,9 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.jesen.bilibanner.bean.BannerData
 import com.jesen.compose_bili.datasource.HomeContentPagingDataSource
-import com.jesen.compose_bili.model.CategoryM
-import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
+import com.jesen.retrofit_lib.model.CategoryM
+import com.jesen.retrofit_lib.model.VideoM
 import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel : ViewModel() {

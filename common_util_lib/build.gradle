@@ -1,9 +1,12 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 def mVersions = rootProject.ext.mVersions
+def mDependencies = rootProject.ext.mDencies
 
 android {
     compileSdk mVersions.compileSdk
@@ -30,14 +33,26 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+        //kotlinCompilerVersion kotlin_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 
 dependencies {
 
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
+    // 公共基本依赖
+    mDependencies.each { k, v -> implementation v }
 
     // DataStore
     implementation "androidx.datastore:datastore-preferences:$datastore_preferences"
@@ -49,4 +64,10 @@ dependencies {
 
     // 导航
     api "androidx.navigation:navigation-compose:$navigation_compose"
+
+    // 类似ViewPager
+    api "com.google.accompanist:accompanist-pager:$accompanist_version"
+    // coil
+    api "com.google.accompanist:accompanist-coil:$accompanist_coil"
+    api "io.coil-kt:coil-compose:$compose_coil"
 }

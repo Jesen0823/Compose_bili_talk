@@ -29,8 +29,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.jesen.common_util_lib.utils.ColorUtil
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.MainActivity
-import com.jesen.compose_bili.model.CategoryM
-import com.jesen.compose_bili.model.VideoM
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavigationTo
 import com.jesen.compose_bili.ui.theme.bili_90
@@ -43,6 +41,8 @@ import com.jesen.compose_bili.ui.widget.MainTopBarUI
 import com.jesen.compose_bili.ui.widget.RefreshCategoryContentScreen
 import com.jesen.compose_bili.utils.replaceRegex
 import com.jesen.compose_bili.viewmodel.HomeViewModel
+import com.jesen.retrofit_lib.model.CategoryM
+import com.jesen.retrofit_lib.model.VideoM
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -185,7 +185,7 @@ fun ScrollableTab(pagerState: PagerState, categoryList: MutableList<CategoryM>) 
                 },
                 selected = selected,
                 unselectedContentColor = gray700,
-                selectedContentColor = ColorUtil.getRandomColorB(bili_90),
+                selectedContentColor = ColorUtil.getRandomColor(bili_90),
                 onClick = {
                     scope.launch {
                         pagerState.scrollToPage(index)

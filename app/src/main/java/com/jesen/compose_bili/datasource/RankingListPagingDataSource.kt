@@ -1,9 +1,9 @@
 package com.jesen.compose_bili.datasource
 
 import com.jesen.compose_bili.base.CommonListPagingDataSource
-import com.jesen.compose_bili.model.VideoM
-import com.jesen.compose_bili.network.api.ParamSort
 import com.jesen.compose_bili.repository.LazyColumnRepository
+import com.jesen.retrofit_lib.api.ParamSort
+import com.jesen.retrofit_lib.model.VideoM
 
 class RankingListPagingDataSource(private val sort: ParamSort) :
     CommonListPagingDataSource<VideoM>() {

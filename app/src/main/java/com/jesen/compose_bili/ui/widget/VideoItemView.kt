@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,11 +20,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
-import com.jesen.compose_bili.model.VideoM
+import com.jesen.common_util_lib.utils.CoilCircleImage
+import com.jesen.common_util_lib.utils.CoilImage
 import com.jesen.compose_bili.ui.theme.black87
 import com.jesen.compose_bili.ui.theme.gray600
-import com.jesen.compose_bili.utils.CoilCircleImage
-import com.jesen.compose_bili.utils.CoilImage
+import com.jesen.retrofit_lib.model.VideoM
+import com.jesen.videodetail_model.util.IconTextSmall
 
 /**
  * 视频Item卡片
@@ -127,30 +127,6 @@ fun VideoInfo(modifier: Modifier, video: VideoM) {
 }
 
 
-@Composable
-fun IconTextSmall(
-    imageVector: ImageVector,
-    count: Int,
-    modifier: Modifier? = null,
-    color: Color = Color.White
-) {
-    Row(
-        modifier = modifier ?: Modifier.wrapContentSize(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = imageVector,
-            contentDescription = null,
-            modifier = Modifier.size(12.dp),
-            tint = color
-        )
-        Text(
-            text = com.jesen.common_util_lib.utils.countFormat(count),
-            modifier = Modifier.padding(start = 6.dp),
-            style = TextStyle(fontSize = 12.sp, color = color)
-        )
-    }
-}
 
 @ExperimentalCoilApi
 @Composable

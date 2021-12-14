@@ -2,6 +2,8 @@ package com.jesen.compose_bili.ui.pages.mainchildren
 
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
@@ -18,15 +20,19 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ui.Scaffold
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.base.SwipeRefreshColumnLayout
 import com.jesen.compose_bili.ui.theme.gray600
-import com.jesen.compose_bili.ui.widget.SmallVideoCard
 import com.jesen.compose_bili.viewmodel.FavoriteListViewModel
+import com.jesen.videodetail_model.util.SmallVideoCard
 
 /**
  * 收藏列表页面
  * */
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable

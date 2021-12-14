@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.ui.widget
+package com.jesen.videodetail_model.util
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -11,8 +11,10 @@ import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.OndemandVideo
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -22,12 +24,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.annotation.ExperimentalCoilApi
-import com.jesen.compose_bili.model.VideoM
-import com.jesen.compose_bili.ui.theme.bili_90
-import com.jesen.compose_bili.ui.theme.black87
-import com.jesen.compose_bili.ui.theme.gray200
-import com.jesen.compose_bili.ui.theme.gray600
-import com.jesen.compose_bili.utils.CoilImage
+import com.jesen.common_util_lib.utils.CoilImage
+import com.jesen.retrofit_lib.model.VideoM
+import com.jesen.videodetail_model.ui.theme.bili_90
+import com.jesen.videodetail_model.ui.theme.black87
+import com.jesen.videodetail_model.ui.theme.gray200
+import com.jesen.videodetail_model.ui.theme.gray600
 
 
 @ExperimentalCoilApi
@@ -176,5 +178,31 @@ fun SmallVideoCard(
                     }
             )
         }
+    }
+}
+
+
+@Composable
+fun IconTextSmall(
+    imageVector: ImageVector,
+    count: Int,
+    modifier: Modifier? = null,
+    color: Color = Color.White
+) {
+    Row(
+        modifier = modifier ?: Modifier.wrapContentSize(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            modifier = Modifier.size(12.dp),
+            tint = color
+        )
+        Text(
+            text = com.jesen.common_util_lib.utils.countFormat(count),
+            modifier = Modifier.padding(start = 6.dp),
+            style = TextStyle(fontSize = 12.sp, color = color)
+        )
     }
 }

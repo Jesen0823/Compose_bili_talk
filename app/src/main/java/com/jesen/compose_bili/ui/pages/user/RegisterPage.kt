@@ -2,10 +2,11 @@ package com.jesen.compose_bili.ui.pages.user
 
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,21 +20,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.R
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.navigation.doPageNavBack
 import com.jesen.compose_bili.navigation.doPageNavigationTo
-import com.jesen.compose_bili.ui.theme.gray300
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
 import com.jesen.compose_bili.utils.LoadingLottieUI
-import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.InputViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 @Composable
 fun RegisterPage(activity: ComponentActivity) {
 
@@ -193,6 +198,10 @@ fun headPicEffect(viewModel: InputViewModel) {
 }
 
 
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 @Composable
 fun RegisterTopBarView(scope: CoroutineScope) {
     TopBarView(

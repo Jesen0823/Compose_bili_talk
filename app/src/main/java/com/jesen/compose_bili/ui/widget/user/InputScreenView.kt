@@ -8,7 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
@@ -20,12 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jesen.compose_bili.ui.theme.primaryColor
 import com.jesen.compose_bili.ui.theme.primaryDeepColor
-import com.jesen.compose_bili.utils.LoadingLottieUI
-import com.jesen.compose_bili.utils.oLog
 import com.jesen.compose_bili.viewmodel.InputViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 /**
  * 顶部TopBar

@@ -1,20 +1,20 @@
-package com.jesen.compose_bili.model
+package com.jesen.retrofit_lib.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class FavoriteListM(
+data class RankingM(
     @Json(name = "code")
     val code: Int,
     @Json(name = "msg")
     val msg: String,
     @Json(name = "data")
-    val data: FavoriteData?
+    val data: RankingData?
 )
 
 @JsonClass(generateAdapter = true)
-data class FavoriteData(
+data class RankingData(
     @Json(name = "total")
     val total: Int,
     @Json(name = "list")

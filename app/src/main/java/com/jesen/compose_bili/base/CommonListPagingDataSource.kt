@@ -16,8 +16,6 @@ abstract class CommonListPagingDataSource<T : Any>() :
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         return try {
             val currentPage = params.key ?: 1
-            val pageSize = params.loadSize
-
             val responseList = provideDataList(params)
 
             // 上一页页码

@@ -1,7 +1,8 @@
-package com.jesen.compose_bili.model
+package com.jesen.videodetail_model.model
 
 
 import android.os.Parcelable
+import com.jesen.retrofit_lib.model.VideoM
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
@@ -12,7 +13,7 @@ data class VideoDetailM(
     @Json(name = "code")
     val code: Int,
     @Json(name = "data")
-    val `data`: Data,
+    val `data`: DetailData,
     @Json(name = "msg")
     val msg: String
 ) : Parcelable
@@ -20,7 +21,7 @@ data class VideoDetailM(
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class Data(
+data class DetailData(
     @Json(name = "isFavorite")
     val isFavorite: Boolean,
     @Json(name = "isLike")

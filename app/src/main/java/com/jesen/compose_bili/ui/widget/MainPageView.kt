@@ -22,10 +22,10 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.bilibanner.BannerPager
 import com.jesen.bilibanner.bean.BannerData
+import com.jesen.common_util_lib.utils.CoilCircleImage
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.ui.theme.gray100
 import com.jesen.compose_bili.ui.theme.gray600
-import com.jesen.compose_bili.utils.CoilCircleImage
-import com.jesen.compose_bili.utils.oLog
 
 
 /**

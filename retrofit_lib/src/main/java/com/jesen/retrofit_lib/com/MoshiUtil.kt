@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.utils
+package com.jesen.retrofit_lib.com
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader

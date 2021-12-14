@@ -1,11 +1,10 @@
-package com.jesen.compose_bili.network.api
+package com.jesen.retrofit_lib.api
 
-import com.jesen.compose_bili.model.HomeM
-import com.jesen.compose_bili.network.BaseApi
-import com.jesen.compose_bili.utils.AUTH_TOKEN_K
-import com.jesen.compose_bili.utils.AUTH_TOKEN_V
-import com.jesen.compose_bili.utils.COURSE_FLAG_K
-import com.jesen.compose_bili.utils.COURSE_FLAG_V
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_K
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_V
+import com.jesen.retrofit_lib.com.COURSE_FLAG_K
+import com.jesen.retrofit_lib.com.COURSE_FLAG_V
+import com.jesen.retrofit_lib.model.HomeM
 import retrofit2.http.*
 
 /**
@@ -15,7 +14,7 @@ import retrofit2.http.*
  * [Flut] 请求参:{pageIndex: 1, pageSize: 10}
  */
 
-interface HomeServiceApi : BaseApi {
+interface HomeServiceApi : com.jesen.retrofit_lib.BaseApi {
 
     @Headers(
         "$AUTH_TOKEN_K: $AUTH_TOKEN_V",

@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/bilibanner" />
             <option value="$PROJECT_DIR$/biliexoplayer" />
             <option value="$PROJECT_DIR$/common_util_lib" />
+            <option value="$PROJECT_DIR$/retrofit_lib" />
             <option value="$PROJECT_DIR$/videodetail_model" />
           </set>
         </option>

@@ -1,11 +1,10 @@
-package com.jesen.compose_bili.network.api
+package com.jesen.retrofit_lib.api
 
-import com.jesen.compose_bili.model.UserResult
-import com.jesen.compose_bili.network.BaseApi
-import com.jesen.compose_bili.utils.AUTH_TOKEN_K
-import com.jesen.compose_bili.utils.AUTH_TOKEN_V
-import com.jesen.compose_bili.utils.COURSE_FLAG_K
-import com.jesen.compose_bili.utils.COURSE_FLAG_V
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_K
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_V
+import com.jesen.retrofit_lib.com.COURSE_FLAG_K
+import com.jesen.retrofit_lib.com.COURSE_FLAG_V
+import com.jesen.retrofit_lib.model.UserResult
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -19,18 +18,18 @@ import retrofit2.http.Query
  * response: {"code":5004,"msg":"请先购买课程@https://coding.imooc.com/class/487.html"}
  *
  * */
-interface LoginServiceApi : BaseApi {
+interface RegisterServiceApi : com.jesen.retrofit_lib.BaseApi {
 
     @Headers(
         "$AUTH_TOKEN_K: $AUTH_TOKEN_V",
         "$COURSE_FLAG_K: $COURSE_FLAG_V"
     )
-    @POST("/uapi/user/login")
-    suspend fun requestLogin(
+    @POST("/uapi/user/registration")
+    suspend fun requestRegister(
         @Query("userName") userName: String,
         @Query("password") password: String,
-        @Query("imoocId") imoocId: Int? = null,
-        @Query("orderId") orderId: Int? = null,
+        @Query("imoocId") imoocId: Int,
+        @Query("orderId") orderId: Int,
     ): UserResult
 
     override fun needLogin(): Boolean = false

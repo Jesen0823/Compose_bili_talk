@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.model
+package com.jesen.retrofit_lib.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
@@ -6,6 +6,7 @@ import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class HomeM(
     @Json(name = "code")
     val code: Int,
@@ -13,7 +14,7 @@ data class HomeM(
     val `data`: HomeData,
     @Json(name = "msg")
     val msg: String
-)
+) : Parcelable
 
 
 @JsonClass(generateAdapter = true)
@@ -79,12 +80,13 @@ data class BannerM(
 ) : Parcelable
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class CategoryM(
     @Json(name = "count")
     val count: Int,
     @Json(name = "name")
     val name: String
-)
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
@@ -98,6 +100,7 @@ data class OwnerM(
 ) : Parcelable
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class HomeData(
     @Json(name = "bannerList")
     val bannerList: List<BannerM>? = null,
@@ -105,5 +108,5 @@ data class HomeData(
     val categoryList: List<CategoryM>? = null,
     @Json(name = "videoList")
     val videoList: List<VideoM>
-)
+) : Parcelable
 

@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.network
+package com.jesen.retrofit_lib
 
 interface BaseApi {
 

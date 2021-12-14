@@ -1,8 +1,7 @@
-package com.jesen.compose_bili.network
+package com.jesen.retrofit_lib
 
-import com.jesen.common_util_lib.utils.oLog
-import com.jesen.compose_bili.BuildConfig
-import com.jesen.compose_bili.utils.BOARDING_PASS
+import com.jesen.retrofit_lib.com.BASE_URL
+import com.jesen.retrofit_lib.com.BOARDING_PASS
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -16,20 +15,20 @@ object RetrofitClient {
     private val instance: Retrofit by lazy {
 
         val logInterceptor = HttpLoggingInterceptor()
-        if (BuildConfig.DEBUG) {
-            //显示日志
-            logInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        } else {
+
+
+        //if (BuildConfig.DEBUG) {
+        //显示日志
+        logInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        /*} else {
             logInterceptor.level = HttpLoggingInterceptor.Level.NONE
-        }
+        }*/
 
         // 请求头拦截器
         val headerInterceptor = Interceptor { chain ->
             val original: Request = chain.request()
 
             val requestBuilder: Request.Builder = original.newBuilder().apply {
-                oLog("headerInterceptor:  ${original.url.pathSegments}")
-
                 // 检测是否追加请求头
                 if (checkPath(original.url.pathSegments)) {
                     header(BOARDING_PASS, "E793ED7A61088AAA70DD32614448F2C4AF")
@@ -49,7 +48,7 @@ object RetrofitClient {
 
         Retrofit.Builder()
             .client(okhttpClient)
-            .baseUrl("https://api.devio.org")
+            .baseUrl(BASE_URL)
             //.addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()

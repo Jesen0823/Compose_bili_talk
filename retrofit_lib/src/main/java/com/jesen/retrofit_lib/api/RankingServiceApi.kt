@@ -1,16 +1,15 @@
-package com.jesen.compose_bili.network.api
+package com.jesen.retrofit_lib.api
 
-import com.jesen.compose_bili.model.RankingM
-import com.jesen.compose_bili.network.BaseApi
-import com.jesen.compose_bili.utils.AUTH_TOKEN_K
-import com.jesen.compose_bili.utils.AUTH_TOKEN_V
-import com.jesen.compose_bili.utils.COURSE_FLAG_K
-import com.jesen.compose_bili.utils.COURSE_FLAG_V
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_K
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_V
+import com.jesen.retrofit_lib.com.COURSE_FLAG_K
+import com.jesen.retrofit_lib.com.COURSE_FLAG_V
+import com.jesen.retrofit_lib.model.RankingM
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-interface RankingServiceApi : BaseApi {
+interface RankingServiceApi : com.jesen.retrofit_lib.BaseApi {
 
     @Headers(
         "$AUTH_TOKEN_K: $AUTH_TOKEN_V",

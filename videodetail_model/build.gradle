@@ -7,6 +7,7 @@ if (isDebug) {
 } else {
     apply plugin: 'com.android.library'
 }
+apply plugin: 'kotlin-parcelize'
 
 // 自定义选项
 def mVersions = rootProject.ext.mVersions
@@ -17,7 +18,9 @@ android {
     compileSdk mVersions.compileSdk
 
     defaultConfig {
-        applicationId mIds.videodetail_model
+        if (isDebug) {
+            applicationId mIds.videodetail_model
+        }
         minSdk mVersions.minSdk
         targetSdk mVersions.targetSdk
         versionCode mVersions.versionCode
@@ -65,7 +68,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion kotlin_version
+        //kotlinCompilerVersion kotlin_version
     }
     packagingOptions {
         resources {
@@ -78,4 +81,11 @@ dependencies {
 
     // 公共基本依赖
     mDependencies.each { k, v -> implementation v }
+    implementation project(path: ':common_util_lib')
+    implementation project(path: ':retrofit_lib')
+
+    // ConstraintLayout
+    api "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
+    // Icons部分图标找不到的问题
+    api "androidx.compose.material:material-icons-extended:$compose_version"
 }
