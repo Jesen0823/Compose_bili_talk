@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
-import com.jesen.compose_bili.base.SwipeRefreshColumnLayout
+import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
 import com.jesen.compose_bili.viewmodel.RankingViewModel
 import com.jesen.retrofit_lib.model.VideoM
 import com.jesen.videodetail_model.util.SmallVideoCard

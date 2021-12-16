@@ -58,6 +58,4 @@ fun ImageCoilLoader(
         contentDescription = "",
         contentScale = contentScale
     )
-
-
 }

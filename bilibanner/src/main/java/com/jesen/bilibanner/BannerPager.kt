@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
@@ -61,7 +62,10 @@ fun BannerPager(
             }
         }
 
-        PointIndicator().DrawIndicator(pagerState)
+        PointIndicator(
+            selectIndicatorColor = config.selectedColor,
+            indicatorColor = config.indicatorColor,
+        ).DrawIndicator(pagerState)
     }
 }
 
@@ -78,6 +82,8 @@ data class BannerConfig(
     var contentScale: ContentScale = ContentScale.Crop,
     // 是否循环播放
     var repeat: Boolean = true,
+    var indicatorColor: Color = Color.Gray.copy(alpha = 0.7f),
+    var selectedColor: Color = Color.White
 )
 
 var mTimer: Timer? = null

@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.base
+package com.jesen.common_util_lib.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

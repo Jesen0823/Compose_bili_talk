@@ -13,11 +13,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.jesen.videodetail_model.R
+import com.jesen.videodetail_model.ui.theme.gray400
 import com.jesen.videodetail_model.viewmodel.DetailViewModel
 
 /**
@@ -34,11 +36,15 @@ fun LottieDetailLoading() {
                 R.raw.detail_loading_lottie
             )
         )
+
         LottieAnimation(
-            modifier = Modifier.size(360.dp),
+            modifier = Modifier
+                .size(360.dp)
+                .padding(20.dp),
             composition = composition,
             iterations = LottieConstants.IterateForever,
         )
+        Text(text = "加载中...", color = gray400, fontSize = 18.sp)
     }
 }
 

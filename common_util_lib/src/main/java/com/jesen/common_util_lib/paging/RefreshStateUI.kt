@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.base
+package com.jesen.common_util_lib.paging
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,12 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jesen.compose_bili.ui.theme.gray200
-import com.jesen.compose_bili.ui.theme.gray300
-import com.jesen.compose_bili.ui.theme.gray600
-import com.jesen.compose_bili.ui.theme.gray700
-import com.jesen.compose_bili.utils.pageErrorSrc
+import com.jesen.common_util_lib.R
+import com.jesen.common_util_lib.ui.theme.gray200
+import com.jesen.common_util_lib.ui.theme.gray300
+import com.jesen.common_util_lib.ui.theme.gray600
+import com.jesen.common_util_lib.ui.theme.gray700
 import kotlin.random.Random
+
+val pageErrorSrc =
+    arrayOf(R.drawable.ic_empty_page, R.drawable.ic_empty_page2, R.drawable.ic_empty_page3)
+
 
 /**
  * 底部加载更多失败处理

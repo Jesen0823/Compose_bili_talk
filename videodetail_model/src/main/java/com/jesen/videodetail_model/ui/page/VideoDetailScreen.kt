@@ -5,8 +5,11 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -21,6 +24,9 @@ import com.jesen.videodetail_model.ui.widget.VideoDesContent
 import com.jesen.videodetail_model.viewmodel.DetailViewModel
 import soup.compose.material.motion.MaterialFadeThrough
 
+@ExperimentalMaterialApi
+@ExperimentalCoilApi
+@ExperimentalComposeUiApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
@@ -79,6 +85,10 @@ fun VideoDetailScreen(
 /**
  * 详情页布局
  * */
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+@ExperimentalCoilApi
+@ExperimentalComposeUiApi
 @ExperimentalPagerApi
 @Composable
 private fun DetailPageInfo(viewModel: DetailViewModel, videoDetail: VideoDetailM) {
@@ -98,8 +108,12 @@ private fun DetailPageInfo(viewModel: DetailViewModel, videoDetail: VideoDetailM
             count = 2
         ) {
             when (it) {
-                0 -> VideoDesContent(viewModel, videoDetail.data)
-                1 -> CommentListContent(viewModel)
+                0 -> VideoDesContent(
+                    pagerState = pagerState,
+                    viewModel = viewModel,
+                    detailData = videoDetail.data
+                )
+                1 -> CommentListContent(pagerState = pagerState, viewModel = viewModel)
             }
         }
 

@@ -9,6 +9,10 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+/**
+ * 收藏列表请求
+ *
+ * */
 interface FavoriteListApi : com.jesen.retrofit_lib.BaseApi {
 
     @Headers(

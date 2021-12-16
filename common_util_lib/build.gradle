@@ -79,4 +79,12 @@ dependencies {
 
     // lottie
     api "com.airbnb.android:lottie-compose:$lottie_compose"
+
+    //Paging 3.0
+    api 'androidx.paging:paging-compose:1.0.0-alpha14'
+    api "androidx.paging:paging-runtime-ktx:3.1.0-rc01"
+
+    // 下拉刷新
+    api "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
+
 }

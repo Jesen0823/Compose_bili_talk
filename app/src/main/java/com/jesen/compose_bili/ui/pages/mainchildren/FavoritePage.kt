@@ -21,8 +21,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
 import com.jesen.compose_bili.MainActivity
-import com.jesen.compose_bili.base.SwipeRefreshColumnLayout
 import com.jesen.compose_bili.ui.theme.gray600
 import com.jesen.compose_bili.viewmodel.FavoriteListViewModel
 import com.jesen.videodetail_model.util.SmallVideoCard

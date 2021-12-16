@@ -26,6 +26,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import com.jesen.bilibanner.BannerConfig
 import com.jesen.common_util_lib.utils.ColorUtil
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.MainActivity
@@ -131,6 +132,12 @@ fun HomeTabPage(activity: MainActivity) {
                                 BiliBanner(
                                     modifier = Modifier.fillMaxWidth(),
                                     items = viewModel.bannerDataList,
+                                    config = BannerConfig(
+                                        indicatorColor = Color.Gray.copy(0.8f),
+                                        selectedColor = Color.White.copy(0.8f),
+                                        intervalTime = 3000
+                                    ),
+
                                     itemOnClick = { banner ->
                                         // 点击banner
                                     }

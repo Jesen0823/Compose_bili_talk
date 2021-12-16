@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.bilibanner.BannerConfig
 import com.jesen.bilibanner.BannerPager
 import com.jesen.bilibanner.bean.BannerData
 import com.jesen.common_util_lib.utils.CoilCircleImage
@@ -95,11 +96,13 @@ fun MainTopBarUI(
 fun BiliBanner(
     modifier: Modifier = Modifier,
     items: MutableList<BannerData>,
+    config: BannerConfig = BannerConfig(),
     itemOnClick: (BannerData) -> Unit
 ) {
     BannerPager(
         modifier = modifier.padding(top = 10.dp),
         items = items,
+        config = config
     ) { data ->
         oLog(" banner, click it，id:${data.id}, url:${data.url}")
         itemOnClick(data)

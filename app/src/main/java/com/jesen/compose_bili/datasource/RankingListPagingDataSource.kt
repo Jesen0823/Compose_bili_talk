@@ -1,6 +1,6 @@
 package com.jesen.compose_bili.datasource
 
-import com.jesen.compose_bili.base.CommonListPagingDataSource
+import com.jesen.common_util_lib.paging.CommonListPagingDataSource
 import com.jesen.compose_bili.repository.LazyColumnRepository
 import com.jesen.retrofit_lib.api.ParamSort
 import com.jesen.retrofit_lib.model.VideoM

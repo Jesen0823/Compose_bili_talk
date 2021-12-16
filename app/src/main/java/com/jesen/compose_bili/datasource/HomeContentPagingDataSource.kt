@@ -1,6 +1,6 @@
 package com.jesen.compose_bili.datasource
 
-import com.jesen.compose_bili.base.CommonListPagingDataSource
+import com.jesen.common_util_lib.paging.CommonListPagingDataSource
 import com.jesen.compose_bili.repository.HomeCategoryRepository
 import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
 import com.jesen.compose_bili.viewmodel.HomeViewModel

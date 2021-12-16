@@ -1,5 +1,7 @@
 package com.jesen.common_util_lib.utils
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -21,6 +23,9 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.jesen.common_util_lib.R
+
+fun showToast(context: Context, msg: String) =
+    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
 
 @Composable

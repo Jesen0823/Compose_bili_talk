@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.base
+package com.jesen.common_util_lib.paging
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth

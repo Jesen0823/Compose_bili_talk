@@ -1,4 +1,4 @@
-package com.jesen.videodetail_model.ui.theme
+package com.jesen.common_util_lib.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -6,7 +6,6 @@ val Purple200 = Color(0xFFBB86FC)
 val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
-
 
 val primaryColor = Color(0xffff9db5)
 val primaryDeepColor = Color(0xfffb7299)
@@ -26,8 +25,3 @@ val bili_50 = Color(0xfffb7299)
 val bili_90 = Color(0xffff9db5)
 val bili_120 = Color(0xfff10a40)
 val bili_20 = Color(0xfff6a5b8)
-
-
-val goldenrod = Color(0xFFDAA520)
-val plum = Color(0xFFDDA0DD)
-val silver = Color(0xFFC0C0C0)

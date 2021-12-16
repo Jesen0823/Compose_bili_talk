@@ -6,9 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
+import androidx.compose.ui.ExperimentalComposeUiApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.biliexoplayer.player.PlayerViewManager
 import com.jesen.common_util_lib.utils.oLog
@@ -20,6 +22,8 @@ class MainActivity : ComponentActivity() {
 
     val viewModel by viewModels<DetailViewModel>()
 
+    @ExperimentalMaterialApi
+    @ExperimentalComposeUiApi
     @ExperimentalAnimationApi
     @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {

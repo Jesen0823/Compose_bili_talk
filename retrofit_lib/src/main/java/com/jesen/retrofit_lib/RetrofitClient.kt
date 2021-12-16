@@ -8,7 +8,16 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 object RetrofitClient {
 
@@ -46,6 +55,32 @@ object RetrofitClient {
             .connectTimeout(5, TimeUnit.SECONDS)//设置超时时间
             .retryOnConnectionFailure(true).build()
 
+
+        // https证书相关
+        val trustManagers = arrayOf<TrustManager>(object : X509TrustManager {
+            @Throws(CertificateException::class)
+            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
+            }
+
+            @Throws(CertificateException::class)
+            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
+            }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate> {
+                return emptyArray()
+            }
+        })
+        try {
+            val ssl = SSLContext.getInstance("SSL")
+            ssl.init(null, trustManagers, SecureRandom())
+            HttpsURLConnection.setDefaultSSLSocketFactory(ssl.socketFactory)
+            HttpsURLConnection.setDefaultHostnameVerifier { hostname, session -> true }
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        } catch (e: KeyManagementException) {
+            e.printStackTrace()
+        }
+
         Retrofit.Builder()
             .client(okhttpClient)
             .baseUrl(BASE_URL)
@@ -58,7 +93,9 @@ object RetrofitClient {
         contains("home") ||
                 contains("ranking") ||
                 contains("favorites") ||
-                contains("detail")
+                contains("detail") ||
+                contains("like") ||
+                contains("favorite")
     }
 
 

@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.base
+package com.jesen.common_util_lib.paging
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,8 +13,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.jesen.bilibanner.bean.BannerData
-import com.jesen.compose_bili.ui.widget.BiliBanner
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -128,18 +127,5 @@ fun <T : Any> handlerLoadState(
     }
 }
 
-@ExperimentalPagerApi
-@Composable
-fun extendContent(modifier: Modifier, bannerDataList: MutableList<BannerData>?) {
-    bannerDataList?.let {
-        BiliBanner(
-            modifier = modifier.fillMaxWidth(),
-            items = it,
-            itemOnClick = { banner ->
-                // 点击banner
-            }
-        )
-    }
-}
 
 
