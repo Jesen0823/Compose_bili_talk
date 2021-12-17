@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.jesen.bilibanner", appContext.packageName)
+        assertEquals("com.jesen.bilibanner_module", appContext.packageName)
     }
 }

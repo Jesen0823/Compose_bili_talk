@@ -10,7 +10,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Compose_bili_talk"
 include ':app'
-include ':bilibanner'
+include ':bilibanner_module'
 include ':biliexoplayer'
 include ':common_util_lib'
 include ':videodetail_model'

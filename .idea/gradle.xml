@@ -12,7 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/bilibanner" />
+            <option value="$PROJECT_DIR$/bilibanner_module" />
             <option value="$PROJECT_DIR$/biliexoplayer" />
             <option value="$PROJECT_DIR$/bilisplash_module" />
             <option value="$PROJECT_DIR$/common_util_lib" />
