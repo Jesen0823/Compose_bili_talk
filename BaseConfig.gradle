@@ -23,7 +23,7 @@ ext {
     mIds = [
             app              : "com.jesen.compose_bili",
             bilibanner       : "com.jesen.bilibanner_module",
-            biliexoplayer    : "com.jesen.biliexoplayer",
+            biliexoplayer    : "com.jesen.biliexoplayer_module",
             videodetail_model: "com.jesen.videodetail_model",
             splashmodule     : "com.jesen.bilisplash_model",
     ]

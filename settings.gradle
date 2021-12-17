@@ -11,7 +11,7 @@ dependencyResolutionManagement {
 rootProject.name = "Compose_bili_talk"
 include ':app'
 include ':bilibanner_module'
-include ':biliexoplayer'
+include ':biliexoplayer_module'
 include ':common_util_lib'
 include ':videodetail_model'
 include ':retrofit_lib'

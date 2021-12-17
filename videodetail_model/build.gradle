@@ -82,7 +82,7 @@ dependencies {
     mDependencies.each { k, v -> implementation v }
     implementation project(path: ':common_util_lib')
     implementation project(path: ':retrofit_lib')
-    implementation project(path: ':biliexoplayer')
+    implementation project(path: ':biliexoplayer_module')
 
     // ConstraintLayout
     api "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
