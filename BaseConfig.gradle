@@ -24,7 +24,8 @@ ext {
             app              : "com.jesen.compose_bili",
             bilibanner       : "com.jesen.bilibanner",
             biliexoplayer    : "com.jesen.biliexoplayer",
-            videodetail_model: "com.jesen.videodetail_model"
+            videodetail_model: "com.jesen.videodetail_model",
+            splashmodule     : "com.jesen.bilisplash_model",
     ]
 
     host_url = [

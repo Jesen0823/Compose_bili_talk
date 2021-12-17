@@ -1,8 +1,15 @@
-plugins {
+/*plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlin-parcelize'
+}*/
+
+plugins {
+    id 'kotlin-android'
+}
+if (isDebug) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
 }
 
 // 自定义选项
@@ -14,7 +21,11 @@ android {
     compileSdk mVersions.compileSdk
 
     defaultConfig {
-        applicationId mIds.app
+        if (isDebug) {
+            applicationId mIds.splashmodule
+        }
+
+
         minSdk mVersions.minSdk
         targetSdk mVersions.targetSdk
         versionCode mVersions.versionCode
@@ -24,9 +35,6 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
-
-        // src代码中有可能需要用到跨模块交互
-        buildConfigField("boolean", "isDebug", String.valueOf(isDebug))
     }
 
     buildTypes {
@@ -39,10 +47,14 @@ android {
     sourceSets {
         main {
             // 如果是组件化模式，需要单独运行时
-            if (!isDebug){
+            if (isDebug) {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            } else {
+                // 集成化模式，整个项目打包apk
+                manifest.srcFile 'src/main/AndroidManifest.xml'
                 java {
-                    // release 时 test 目录下文件不需要合并到主工程
-                    exclude '**/test/**'
+                    // release 时 debug 目录下文件不需要合并到主工程
+                    exclude '**/debug/**'
                 }
             }
         }
@@ -56,12 +68,13 @@ android {
         jvmTarget = '1.8'
         useIR = true
     }
+
     buildFeatures {
         compose true
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        //kotlinCompilerVersion kotlin_version
+        kotlinCompilerVersion kotlin_version
     }
     packagingOptions {
         resources {
@@ -70,24 +83,11 @@ android {
     }
 }
 
-
 dependencies {
 
     // 公共基本依赖
     mDependencies.each { k, v -> implementation v }
 
-    implementation project(path: ':bilisplash_model')
-
-    implementation project(path: ':common_util_lib')
-
-   /* releaseImplementation project(path: ':retrofit_lib', configuration: 'release')
-    debugImplementation project(path: ':retrofit_lib', configuration: 'debug')*/
-
-    implementation project(path: ':retrofit_lib')
-    implementation project(path: ':bilibanner')
-    implementation project(path: ':videodetail_model')
-
-    // 可定义动画的Navigation库
-    //implementation "com.google.accompanist:accompanist-navigation-animation:0.21.3-beta"
-
+    // Splash screen
+    implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
 }
