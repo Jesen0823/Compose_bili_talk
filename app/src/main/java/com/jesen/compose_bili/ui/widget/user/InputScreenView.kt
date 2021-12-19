@@ -3,6 +3,7 @@ package com.jesen.compose_bili.ui.widget.user
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,10 +11,13 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -61,19 +65,21 @@ fun InputTextField(
     type: String? = null,
     viewModel: InputViewModel,
     leadingIcon: ImageVector,
+    focusManager: FocusManager,
 ) {
 
     // 密码输入类型设置
     val visualTransformation =
         if (!viewModel.showPwd && (type == "password" || type == "rePassword")) PasswordVisualTransformation() else VisualTransformation.None
-
     TextField(
         value = value,
         onValueChange = onValueChanged,
         textStyle = LocalTextStyle.current,
         label = { Text(text = label) },
         visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Next
+        ),
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .fillMaxWidth()
@@ -92,6 +98,11 @@ fun InputTextField(
                 contentDescription = null
             )
         },
+        keyboardActions = KeyboardActions(
+            onNext = {
+                focusManager.moveFocus(FocusDirection.Down)
+            }
+        ),
         trailingIcon = {
             if (type == "password") {
                 if (viewModel.showPwd) {

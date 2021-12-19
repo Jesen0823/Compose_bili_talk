@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -116,6 +117,7 @@ fun InputRegisterScreen(
         val showPwd by remember {
             mutableStateOf(true)
         }
+        val focusManager = LocalFocusManager.current
 
         InputTextField(
             label = "用户名",
@@ -125,6 +127,7 @@ fun InputRegisterScreen(
             type = "userName",
             viewModel = viewModel,
             leadingIcon = Icons.Default.AccountBox,
+            focusManager = focusManager,
         )
         InputTextField(
             label = "密码",
@@ -135,6 +138,7 @@ fun InputRegisterScreen(
             type = "password",
             viewModel = viewModel,
             leadingIcon = Icons.Default.Lock,
+            focusManager = focusManager,
         )
         InputTextField(
             label = "密码确认",
@@ -145,6 +149,7 @@ fun InputRegisterScreen(
             type = "rePassword",
             viewModel = viewModel,
             leadingIcon = Icons.Default.LockOpen,
+            focusManager = focusManager,
         )
         InputTextField(
             label = "身份",
@@ -155,6 +160,7 @@ fun InputRegisterScreen(
             type = "mocId",
             viewModel = viewModel,
             leadingIcon = Icons.Default.VpnKey,
+            focusManager = focusManager,
         )
         InputTextField(
             label = "服务id",
@@ -165,6 +171,7 @@ fun InputRegisterScreen(
             type = "orderId",
             viewModel = viewModel,
             leadingIcon = Icons.Default.AdminPanelSettings,
+            focusManager = focusManager,
         )
 
         InputTogButton("注册", scope, viewModel, scaffoldState, onClick = { viewModel.doRegister() })

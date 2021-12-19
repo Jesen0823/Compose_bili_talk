@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -107,6 +108,7 @@ fun InputLoginScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val focusManager = LocalFocusManager.current
 
         InputTextField(
             label = "用户名",
@@ -116,17 +118,19 @@ fun InputLoginScreen(
             type = "userName",
             viewModel = viewModel,
             leadingIcon = Icons.Default.AccountBox,
+            focusManager = focusManager,
         )
 
         InputTextField(
-            type = "password",
             label = "密码",
-            leadingIcon = Icons.Default.Lock,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             value = viewModel.pwd,
             hint = "请输入密码",
             onValueChanged = { viewModel.onPwdChange(it) },
+            type = "password",
             viewModel = viewModel,
+            leadingIcon = Icons.Default.Lock,
+            focusManager = focusManager,
         )
 
         InputTogButton(
