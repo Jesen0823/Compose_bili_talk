@@ -25,3 +25,7 @@ val bili_50 = Color(0xfffb7299)
 val bili_90 = Color(0xffff9db5)
 val bili_120 = Color(0xfff10a40)
 val bili_20 = Color(0xfff6a5b8)
+val deepOrange_800 = Color(0xFFEF6C00)
+val pink_400 = Color(0xFFEC407A)
+
+

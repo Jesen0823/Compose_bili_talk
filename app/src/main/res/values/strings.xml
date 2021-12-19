@@ -10,4 +10,16 @@
     <string name="rank_tab_hot">最热</string>
     <string name="rank_tab_fav">收藏</string>
 
+    <string-array name="hot_search">
+        <item>我的畜生朋友</item>
+        <item>知网怎么了</item>
+        <item>咒术会战0 PV ~.~</item>
+        <item>绿皮火车为什么不取消</item>
+        <item>洗面奶要买贵的吗</item>
+        <item>羞羞羞~(@^_^@)~</item>
+        <item>破解了黑客大神</item>
+        <item>是老胡没错了</item>
+        <item>在阳光照不到的地方</item>
+    </string-array>
+
 </resources>

@@ -16,6 +16,7 @@ import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.ui.pages.MainPage
 import com.jesen.compose_bili.ui.pages.NoticeListPage
+import com.jesen.compose_bili.ui.pages.SearchPage
 import com.jesen.compose_bili.ui.pages.VideoDetailPage
 import com.jesen.compose_bili.ui.pages.user.LoginPage
 import com.jesen.compose_bili.ui.pages.user.RegisterPage
@@ -29,6 +30,7 @@ object PageRoute {
     const val VIDEO_DETAIL_ROUTE = "video_detail_route/{videoId}"
     const val MAIN_PAGE = "main_route"
     const val NOTICE_ROUTE = "notice_list"
+    const val SEARCH_ROUTE = "search_route"
 }
 
 /**
@@ -68,6 +70,9 @@ fun PageNavHost(mainActivity: MainActivity) {
         }
         composable(route = PageRoute.NOTICE_ROUTE) {
             NoticeListPage(activity = mainActivity)
+        }
+        composable(route = PageRoute.SEARCH_ROUTE) {
+            SearchPage(activity = mainActivity)
         }
     }
 

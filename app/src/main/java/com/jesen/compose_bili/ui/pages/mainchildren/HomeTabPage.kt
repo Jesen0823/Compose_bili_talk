@@ -82,10 +82,12 @@ fun HomeTabPage(activity: MainActivity) {
             MainTopBarUI(
                 {
                     scope.launch {
-                        doPageNavigationTo(replaceRegex(PageRoute.VIDEO_DETAIL_ROUTE, "7688021"))
+                        doPageNavigationTo(PageRoute.SEARCH_ROUTE)
                     }
                 }, {
-                    // 搜索
+                    scope.launch {
+                        doPageNavigationTo(replaceRegex(PageRoute.VIDEO_DETAIL_ROUTE, "7688021"))
+                    }
                 }, {
                     scope.launch {
                         doPageNavigationTo(PageRoute.NOTICE_ROUTE)
