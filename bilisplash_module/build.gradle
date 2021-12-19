@@ -35,6 +35,9 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        // src代码中有可能需要用到跨模块交互
+        buildConfigField("boolean", "isDebug", String.valueOf(isDebug))
     }
 
     buildTypes {
@@ -88,6 +91,12 @@ dependencies {
     // 公共基本依赖
     mDependencies.each { k, v -> implementation v }
 
+    implementation project(path: ':common_util_lib')
+
     // Splash screen
-    implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
+    implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
+
+    // 可定义动画的Navigation库
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.21.3-beta"
+
 }

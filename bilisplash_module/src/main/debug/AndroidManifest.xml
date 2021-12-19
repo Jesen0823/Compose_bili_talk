@@ -12,14 +12,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Compose_bili_talk">
         <activity
-            android:name=".debug.MainActivity"
+            android:name=".debug.DebugMainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Compose_bili_talk.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="compose.bili.com"
+                    android:pathPrefix="/main/"
+                    android:scheme="https" />
+                <data
+                    android:host="compose.bili.com"
+                    android:pathPrefix="/common/"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
     </application>
