@@ -84,8 +84,14 @@ fun HomeTabPage(activity: MainActivity) {
                     scope.launch {
                         doPageNavigationTo(replaceRegex(PageRoute.VIDEO_DETAIL_ROUTE, "7688021"))
                     }
-
-                }, {}, {})
+                }, {
+                    // 搜索
+                }, {
+                    scope.launch {
+                        doPageNavigationTo(PageRoute.NOTICE_ROUTE)
+                    }
+                }
+            )
         }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {

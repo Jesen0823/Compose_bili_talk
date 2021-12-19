@@ -9,8 +9,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.jesen.bilibanner.bean.BannerData
 import com.jesen.compose_bili.datasource.HomeContentPagingDataSource
+import com.jesen.compose_bili.datasource.NoticeListPagingDataSource
 import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
 import com.jesen.retrofit_lib.model.CategoryM
+import com.jesen.retrofit_lib.model.Notice
 import com.jesen.retrofit_lib.model.VideoM
 import kotlinx.coroutines.flow.Flow
 
@@ -40,4 +42,17 @@ class HomeViewModel : ViewModel() {
         ).also {
             allCategoryVideoMap?.put(category, it)
         }
+
+    fun getNoticePagingDataList(): Flow<PagingData<Notice>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 5,
+                initialLoadSize = 10, // 第一次加载数量
+                prefetchDistance = 1,
+            )
+        ) {
+
+            NoticeListPagingDataSource()
+        }.flow.cachedIn(viewModelScope)
+
 }

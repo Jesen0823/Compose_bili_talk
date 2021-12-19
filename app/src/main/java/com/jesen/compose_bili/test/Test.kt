@@ -2,6 +2,7 @@ package com.jesen.compose_bili.test
 
 
 
+/*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -324,4 +325,4 @@ fun NavigateBackButton(navController: NavController) {
             Text(text = "Go to Previous screen")
         }
     }
-}
+}*/

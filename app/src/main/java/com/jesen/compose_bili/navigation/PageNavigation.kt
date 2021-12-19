@@ -15,6 +15,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.ui.pages.MainPage
+import com.jesen.compose_bili.ui.pages.NoticeListPage
 import com.jesen.compose_bili.ui.pages.VideoDetailPage
 import com.jesen.compose_bili.ui.pages.user.LoginPage
 import com.jesen.compose_bili.ui.pages.user.RegisterPage
@@ -27,6 +28,7 @@ object PageRoute {
     const val REGISTER_ROUTE = "register_route"
     const val VIDEO_DETAIL_ROUTE = "video_detail_route/{videoId}"
     const val MAIN_PAGE = "main_route"
+    const val NOTICE_ROUTE = "notice_list"
 }
 
 /**
@@ -63,6 +65,9 @@ fun PageNavHost(mainActivity: MainActivity) {
         }
         composable(route = PageRoute.MAIN_PAGE) {
             MainPage(activity = mainActivity)
+        }
+        composable(route = PageRoute.NOTICE_ROUTE) {
+            NoticeListPage(activity = mainActivity)
         }
     }
 
@@ -186,7 +191,7 @@ fun doPageNavigationTo(route: String) {
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
-fun doPageNavBack(route: String?) {
+fun doPageNavBack(route: String? = null) {
     val navController = MainActivity.pageNavController!!
     route?.let {
         navController.popBackStack(route = it, inclusive = false)
