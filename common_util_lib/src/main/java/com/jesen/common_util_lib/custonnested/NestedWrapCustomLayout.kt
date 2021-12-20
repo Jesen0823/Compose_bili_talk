@@ -27,13 +27,13 @@ import androidx.compose.ui.unit.dp
 fun NestedWrapCustomLayout(
     columnTop: Dp = 200.dp,
     scrollableAppBarHeight: Dp = columnTop,
-    navigationParentHeight: Dp = scrollableAppBarHeight,
     toolBarHeight: Dp = 56.dp,
     navigationIconSize: Dp = 50.dp,
     navigationIcon: @Composable (() -> Unit),
     scrollableAppBarBgColor: Color,
     headerTop: @Composable (() -> Unit),
-    header: @Composable (() -> Unit),
+    toolBar: @Composable (() -> Unit),
+    backSlideProgress: (Float) -> Unit,
     columnState: LazyListState = rememberLazyListState(),
     listContent: LazyListScope.() -> Unit
 ) {
@@ -86,10 +86,10 @@ fun NestedWrapCustomLayout(
                 toolBarHeight = toolBarHeight,
                 navigationIcon = navigationIcon,
                 headerTop = headerTop,
-                header = header,
+                toolBar = toolBar,
                 navigationIconSize = navigationIconSize,
                 background = scrollableAppBarBgColor,
-                navigationParentHeight = navigationParentHeight,
+                backSlideProgress = backSlideProgress
             )
         }
     }

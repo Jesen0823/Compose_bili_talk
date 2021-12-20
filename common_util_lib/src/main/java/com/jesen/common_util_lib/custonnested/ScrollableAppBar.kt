@@ -31,7 +31,7 @@ import kotlin.math.roundToInt
 fun ScrollableAppBar(
     modifier: Modifier = Modifier,
     headerBgColor: Color = Color.White,
-    header: @Composable (() -> Unit) = { DefaultHeader(toolbarOffsetHeightPx = toolbarOffsetHeightPx) },
+    toolBar: @Composable (() -> Unit) = { DefaultToolBar(toolbarOffsetHeightPx = toolbarOffsetHeightPx) },
     navigationIcon: @Composable (() -> Unit) = { DefaultNavigationLeftTop() }, //默认为返回图标
     headerTop: @Composable (() -> Unit) = { DefaultHeaderTop() }, // toolBar顶部定义
     background: Color = MaterialTheme.colors.primary,
@@ -39,7 +39,7 @@ fun ScrollableAppBar(
     toolbarOffsetHeightPx: MutableState<Float>, //向上偏移量
     toolBarHeight: Dp = 56.dp, // 应用栏高度
     navigationIconSize: Dp = 50.dp,// 导航图标大小
-    navigationParentHeight: Dp,
+    backSlideProgress: (Float) -> Unit
 ) {
 
     // 应用栏最大向上偏移量
@@ -53,7 +53,7 @@ fun ScrollableAppBar(
 
     // 滑动比例，从100% -> 0%
     var slidePercent = (maxOffsetHeightPx + toolbarOffsetHeightPx.value) / maxOffsetHeightPx
-
+    backSlideProgress(slidePercent)
     Box(modifier = Modifier
         .height(scrollableAppBarHeight)
         .offset {
@@ -104,7 +104,7 @@ fun ScrollableAppBar(
             contentAlignment = Alignment.CenterStart
         ) {
             //header()
-            DefaultHeader(toolbarOffsetHeightPx = toolbarOffsetHeightPx)
+            DefaultToolBar(toolbarOffsetHeightPx = toolbarOffsetHeightPx)
         }
     }
 }
@@ -119,7 +119,7 @@ fun DefaultNavigationLeftTop() {
 }
 
 @Composable
-fun DefaultHeader(toolbarOffsetHeightPx: MutableState<Float>) {
+fun DefaultToolBar(toolbarOffsetHeightPx: MutableState<Float>) {
     Text(
         text = "toolbar offset is px:${toolbarOffsetHeightPx.value},dp:}",
         color = Color.Blue,

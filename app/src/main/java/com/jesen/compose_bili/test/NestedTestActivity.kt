@@ -34,12 +34,14 @@ class NestedTestActivity : ComponentActivity() {
                     navigationIconSize = 50.dp,
                     toolBarHeight = 56.dp,
                     scrollableAppBarHeight = 200.dp,
-                    navigationParentHeight = 160.dp,
                     columnState = rememberLazyListState(),
                     scrollableAppBarBgColor = Color.LightGray,
-                    header = { MyHeader() },
+                    toolBar = { MyToolBar() },
                     navigationIcon = { MyNavigationLeftTop() }, //默认为返回图标
                     headerTop = { MyHeaderTop() },
+                    backSlideProgress = { progress ->
+
+                    }
                 ) {
                     items(100) { index ->
                         Text(
@@ -69,7 +71,7 @@ fun MyNavigationLeftTop() {
 }
 
 @Composable
-fun MyHeader() {
+fun MyToolBar() {
     Text(
         text = "toolbar toolbar toolbar toolbar",
         color = Color.Blue,
