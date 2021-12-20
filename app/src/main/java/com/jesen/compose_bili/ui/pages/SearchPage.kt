@@ -33,6 +33,10 @@ fun SearchPage(activity: MainActivity) {
     // 是否展示默认热词界面
     var showDefault = remember { mutableStateOf(true) }
 
+    // 加载热词
+    viewModel.getHotWordsInfo()
+    val hotInfo = viewModel.searchHotInfo.collectAsState()
+
     Scaffold(
         topBar = {
             SearchTopBar(
@@ -79,12 +83,15 @@ fun SearchPage(activity: MainActivity) {
             }
 
         }
-        if (showDefault.value) {
-            SearchDefaultUIShow(hotClick = {
-                // 点击热词自动更新输入框内容
-                needInput = it
-                viewModel.translatingInput(it)
-            })
+        if (showDefault.value && hotInfo.value.isNotEmpty()) {
+            SearchDefaultUIShow(
+                hotInfo = hotInfo.value,
+                hotClick = { key, value ->
+                    // 点击热词自动更新输入框内容
+                    needInput = value
+                    viewModel.translatingInput(key)
+                }
+            )
         }
     }
 }

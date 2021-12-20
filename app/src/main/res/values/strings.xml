@@ -21,5 +21,16 @@
         <item>是老胡没错了</item>
         <item>在阳光照不到的地方</item>
     </string-array>
+    <string-array name="hot_keys">
+        <item>朋友</item>
+        <item>知网</item>
+        <item>咒术</item>
+        <item>绿皮火车</item>
+        <item>洗面奶</item>
+        <item>害羞</item>
+        <item>破解</item>
+        <item>老胡</item>
+        <item>阳光</item>
+    </string-array>
 
 </resources>

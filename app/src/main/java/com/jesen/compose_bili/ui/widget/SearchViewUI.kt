@@ -188,9 +188,10 @@ fun SearchTopBar(
  * */
 @ExperimentalFoundationApi
 @Composable
-fun SearchDefaultUIShow(hotClick: (String) -> Unit) {
+fun SearchDefaultUIShow(hotClick: (String, String) -> Unit, hotInfo: Map<String, String>) {
     val context = LocalContext.current
-    val hotSearch = context.resources.getStringArray(R.array.hot_search)
+    val hotKeys = context.resources.getStringArray(R.array.hot_keys)
+
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -204,14 +205,24 @@ fun SearchDefaultUIShow(hotClick: (String) -> Unit) {
                 .fillMaxWidth(),
             cells = GridCells.Fixed(2)
         ) {
-            items(hotSearch.size) { index ->
+
+            items(hotInfo.size) { index ->
+
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 4.dp, vertical = 12.dp)
-                        .clickable { hotClick(hotSearch[index]) }) {
+                        .clickable { hotClick(hotKeys[index], hotInfo[hotKeys[index]] ?: "") }) {
                     Text(
                         text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = black87)) { append("$index  ${hotSearch[index]} ") }
+                            withStyle(style = SpanStyle(color = black87)) {
+                                append(
+                                    "$index  ${
+                                        hotInfo.getValue(
+                                            hotKeys[index]
+                                        )
+                                    } "
+                                )
+                            }
                             if (index % 5 == 0) {
                                 withStyle(
                                     style = SpanStyle(
@@ -256,6 +267,13 @@ fun SearchItem(index: Int, entry: TransEntry) {
                     .show()
             }
     ) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .padding(horizontal = 16.dp)
+                .background(color = gray200)
+        )
         Text(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = bili_20)) { append("$index. |") }
@@ -272,11 +290,6 @@ fun SearchItem(index: Int, entry: TransEntry) {
             fontSize = 16.sp,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
-        )
-        Spacer(
-            modifier = Modifier
-                .height(1.dp)
-                .background(color = Color.Gray)
         )
     }
 }
