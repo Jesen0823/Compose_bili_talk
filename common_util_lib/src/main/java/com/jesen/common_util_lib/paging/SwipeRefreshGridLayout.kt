@@ -1,10 +1,14 @@
 package com.jesen.common_util_lib.paging
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyGridScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -13,7 +17,6 @@ import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -52,6 +55,8 @@ fun <T : Any> SwipeRefreshGridLayout(
             LazyVerticalGrid(
                 cells = GridCells.Fixed(2),
                 state = lazyListState,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
                 contentPadding = PaddingValues(start = 5.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,12 +64,12 @@ fun <T : Any> SwipeRefreshGridLayout(
 
                 ) {
                 listContent()
-                handlerLoadState(
+                /*handlerLoadState(
                     pagingItems = collectAsLazyPagingItems,
                     contextGrid = this,
                     scope = coroutineScope,
                     lazyListState = lazyListState,
-                )
+                )*/
             }
         }
     }
@@ -74,7 +79,6 @@ fun <T : Any> SwipeRefreshGridLayout(
 fun <T : Any> handlerLoadState(
     pagingItems: LazyPagingItems<T>,
     contextGrid: LazyGridScope? = null,
-    contextColumn: LazyListScope? = null,
     scope: CoroutineScope,
     lazyListState: LazyListState,
 ) {

@@ -3,15 +3,13 @@ package com.jesen.compose_bili.ui.widget
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -64,7 +62,11 @@ fun RefreshCategoryContentScreen(
                         if (itemIndex < videoCategoryList.itemCount) {
                             Box(
                                 modifier = Modifier
-                                    .weight(1f, fill = true),
+                                    .weight(1f, fill = true)
+                                    .padding(
+                                        start = if (itemIndex % 2 == 0) 0.dp else 2.dp,
+                                        end = if (itemIndex % 2 == 0) 2.dp else 0.dp
+                                    ),
                                 propagateMinConstraints = true
                             ) {
                                 videoCategoryList[itemIndex]?.let {

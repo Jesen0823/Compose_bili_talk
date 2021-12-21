@@ -37,7 +37,6 @@ import com.jesen.common_util_lib.utils.countFormat
 import com.jesen.retrofit_lib.model.VideoM
 import com.jesen.videodetail_model.ui.theme.bili_90
 import com.jesen.videodetail_model.ui.theme.black87
-import com.jesen.videodetail_model.ui.theme.gray200
 import com.jesen.videodetail_model.ui.theme.gray600
 
 /**
@@ -62,20 +61,10 @@ fun SmallVideoCard(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentSize()
+                .fillMaxHeight()
                 .padding(start = 15.dp, end = 15.dp, bottom = 5.dp)
         ) {
-            val (divideLine, coverImage, length, title, upTag, upName, viewNum, replyNum, moreIcon) = createRefs()
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(divideLine) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-
-                    }, color = gray200, thickness = 1.dp
-            )
+            val (coverImage, length, title, upTag, upName, viewNum, replyNum, moreIcon) = createRefs()
             CoilImage(
                 url = video.cover,
                 modifier = Modifier
@@ -83,7 +72,7 @@ fun SmallVideoCard(
                     .padding(bottom = 8.dp)
                     .aspectRatio(16 / 9f)
                     .constrainAs(coverImage) {
-                        top.linkTo(divideLine.bottom, margin = 8.dp)
+                        top.linkTo(parent.top, margin = 8.dp)
                         start.linkTo(parent.start)
                     },
                 topRight = 8f,
@@ -106,7 +95,7 @@ fun SmallVideoCard(
             Text(
                 modifier = Modifier
                     .constrainAs(title) {
-                        top.linkTo(divideLine.bottom, margin = 12.dp)
+                        top.linkTo(parent.top, margin = 12.dp)
                         start.linkTo(coverImage.end, margin = 8.dp)
                         end.linkTo(parent.end, margin = 6.dp)
                         width = Dimension.preferredWrapContent

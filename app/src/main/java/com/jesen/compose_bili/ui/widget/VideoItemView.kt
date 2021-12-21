@@ -41,13 +41,7 @@ fun VideoItemCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(224.dp)
-            .padding(
-                top = 4.dp,
-                bottom = 4.dp,
-                start = if ((index and 1) == 0) 0.dp else 3.dp,
-                end = if ((index and 1) == 0) 3.dp else 0.dp,
-            ),
+            .height(224.dp),
         shape = RoundedCornerShape(6.dp),
         elevation = 4.dp,
         backgroundColor = MaterialTheme.colors.surface,

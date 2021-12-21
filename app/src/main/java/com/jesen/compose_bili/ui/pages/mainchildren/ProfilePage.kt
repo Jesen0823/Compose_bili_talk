@@ -102,7 +102,6 @@ fun ProfileContentScreen(viewModel: ProfileViewModel, profileData: DataProfile) 
         }
     ) {
         /** 广告banner */
-        /** 广告banner */
         item {
             BiliBanner(
                 modifier = Modifier.fillMaxWidth(),
