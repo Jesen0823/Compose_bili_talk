@@ -26,7 +26,7 @@ ext {
             biliexoplayer    : "com.jesen.biliexoplayer_module",
             videodetail_model: "com.jesen.videodetail_model",
             splashmodule     : "com.jesen.bilisplash_model",
-            webview_model:"com.jesen.webview"
+            webview_model:"com.jesen.biliwebview_module"
     ]
 
     host_url = [
