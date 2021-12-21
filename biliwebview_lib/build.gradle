@@ -3,17 +3,22 @@ plugins {
     id 'kotlin-android'
 }
 
+def mVersions = rootProject.ext.mVersions
+
 android {
-    compileSdk 31
+    compileSdk mVersions.compileSdk
 
     defaultConfig {
-        minSdk 23
-        targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        minSdk mVersions.minSdk
+        targetSdk mVersions.targetSdk
+        versionCode mVersions.versionCode
+        versionName mVersions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        // src代码中有可能需要用到跨模块交互
+        buildConfigField("boolean", "isDebug", String.valueOf(isDebug))
     }
 
     buildTypes {
@@ -33,10 +38,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "com.google.android.material:material:$material_version"
 }
