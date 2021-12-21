@@ -45,12 +45,12 @@ fun SearchPage(activity: MainActivity) {
                     viewModel.translatingInput(keyword)
                 },
                 onCancel = {
-                    viewModel.searchResultState.value = DataState.Empty
+                    viewModel.searchResultState.value = DataState.Empty()
                     doPageNavBack()
                 },
                 onClearInput = {
                     needInput = ""
-                    viewModel.searchResultState.value = DataState.Empty
+                    viewModel.searchResultState.value = DataState.Empty()
                 }
             )
         }) {

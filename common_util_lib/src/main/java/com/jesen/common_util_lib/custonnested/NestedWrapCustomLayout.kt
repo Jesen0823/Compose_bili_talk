@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jesen.common_util_lib.utils.oLog
+import kotlin.math.absoluteValue
+
 
 /**
  * 自定义嵌套滑动布局
@@ -40,7 +43,7 @@ import com.jesen.common_util_lib.utils.oLog
 @Composable
 fun NestedWrapCustomLayout(
     columnTop: Dp = 200.dp,
-    scrollableAppBarHeight: Dp = columnTop,
+    scrollableAppBarHeight: Dp = 200.dp,
     toolBarHeight: Dp = 56.dp,
     navigationIconSize: Dp = 50.dp,
     navigationIcon: @Composable (() -> Unit),
@@ -52,19 +55,28 @@ fun NestedWrapCustomLayout(
     columnState: LazyListState = rememberLazyListState(),
     listContent: LazyListScope.() -> Unit
 ) {
+
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color.Gray
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = toolBarHeight.plus(8.dp)),
+        color = MaterialTheme.colors.surface
     ) {
-        // ToolBar 最大向上位移量56
+        //  最大向上位移量56
         val maxUpPx = with(LocalDensity.current) {
             columnTop.roundToPx().toFloat() - toolBarHeight.roundToPx().toFloat()
         }
+
         // ToolBar 最小向上位移量
         val minUpPx = 0f
 
         // 偏移折叠工具栏上移高度
-        val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
+        val slideOffsetHeightPx = remember { mutableStateOf(0f) }
+        val slideProgress = slideOffsetHeightPx.value.div(maxUpPx)
+
+        val abstractOffset = 1 - slideProgress.absoluteValue
+        // 回调进度给外部，可选
+        backSlideProgress(abstractOffset)
 
         // 创建与嵌套滚动系统的连接nestedScrollConnection,监听LazyColumn 中的滚动
         val nestedScrollConnection = remember {
@@ -76,8 +88,8 @@ fun NestedWrapCustomLayout(
                     val delta = available.y
                     oLog("scroll: delta:$delta")
                     // 累加LazyColumn滑动距离
-                    val newOffset = toolbarOffsetHeightPx.value + delta
-                    toolbarOffsetHeightPx.value = newOffset.coerceIn(-maxUpPx, minUpPx)
+                    val newOffset = slideOffsetHeightPx.value + delta
+                    slideOffsetHeightPx.value = newOffset.coerceIn(-maxUpPx, minUpPx)
                     return Offset.Zero
                 }
             }
@@ -102,15 +114,14 @@ fun NestedWrapCustomLayout(
             }
 
             ScrollableAppBar(
+                slideProgress = slideProgress,
                 scrollableAppBarHeight = scrollableAppBarHeight,
-                toolbarOffsetHeightPx = toolbarOffsetHeightPx,
                 toolBarHeight = toolBarHeight,
                 navigationIcon = navigationIcon,
                 headerTop = headerTop,
                 toolBar = toolBar,
                 navigationIconSize = navigationIconSize,
                 background = scrollableAppBarBgColor,
-                backSlideProgress = backSlideProgress,
                 extendUsrInfo = extendUsrInfo
             )
         }

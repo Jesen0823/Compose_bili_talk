@@ -16,12 +16,15 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel : ViewModel() {
 
-    var profileDataState = MutableStateFlow<DataState<ProfileM>>(DataState.Empty)
+    private val _profileDataState = MutableStateFlow<DataState<ProfileM>>(DataState.Empty())
+
+    val profileDataState: StateFlow<DataState<ProfileM>> = _profileDataState
 
     var bannerDataList = mutableStateListOf<BannerData>()
 
     fun loadProfileInfo() = viewModelScope.launch {
-        profileDataState.value = DataState.Loading
+        oLog("profileViewModel--, loadProfileInfo")
+        _profileDataState.value = DataState.Loading()
         flow {
             val result = ProfileRepository.getProfileData()
 
@@ -34,7 +37,7 @@ class ProfileViewModel : ViewModel() {
             }
             .collect { response ->
                 if (response.isSuccess()) {
-                    profileDataState.value = DataState.Success(response.read())
+                    _profileDataState.value = DataState.Success(response.read())
 
                     // 提前把banner数据转换一下，因为封装时为了兼容指定了banner数据实体
                     if (bannerDataList.isEmpty()) {
@@ -46,7 +49,7 @@ class ProfileViewModel : ViewModel() {
                         }
                     }
                 } else {
-                    profileDataState.value =
+                    _profileDataState.value =
                         DataState.Error(response.errorMessage(), response.code())
                 }
             }

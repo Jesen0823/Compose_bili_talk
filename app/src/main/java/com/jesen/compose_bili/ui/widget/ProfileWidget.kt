@@ -198,13 +198,15 @@ fun VerticalNumText(num: String, tex: String) {
 fun CourseItemView(course: Course, onclick: (String) -> Unit) {
     Box(modifier = Modifier
         .fillMaxWidth()
-        .height(120.dp)
+        .aspectRatio(ratio = 27 / 10f)
         .clickable { onclick(course.url) }) {
         CoilImage(
             url = course.cover,
-            modifier = Modifier.fillMaxWidth(),
-            topLeft = 8f,
-            topRight = 8f,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp),
+            topLeft = 12f,
+            topRight = 12f,
             bottomLeft = 8f,
             bottomRight = 8f
         )
@@ -230,4 +232,42 @@ fun BenefitItemView(benefit: Benefit, onclick: (String) -> Unit) {
             .clickable { onclick(benefit.url) },
         text = benefit.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White
     )
+}
+
+@Composable
+fun CourseListView(courseList: List<Course>) {
+    // 需要展示几列
+    val columnSize = 2
+    // rows 总共几行
+    var rowSize = courseList.size.div(columnSize)
+    rowSize = if (courseList.size.mod(columnSize) == 0) rowSize else rowSize.plus(1)
+
+    for (rowIndex in 0 until rowSize) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)) {
+            for (columnIndex in 0 until columnSize) {
+                //itemIndex List数据位置
+                val itemIndex = rowIndex * columnSize + columnIndex
+                if (itemIndex < courseList.size) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = if (itemIndex % 2 == 0) 0.dp else 3.dp,
+                                end = if (itemIndex % 2 == 0) 3.dp else 0.dp,
+                                bottom = 6.dp
+                            )
+                            .weight(1f, fill = true),
+                        propagateMinConstraints = true
+                    ) {
+                        CourseItemView(course = courseList[itemIndex], onclick = {})
+                    }
+                } else {
+                    Spacer(Modifier.fillMaxSize())
+                }
+            }
+        }
+
+    }
 }

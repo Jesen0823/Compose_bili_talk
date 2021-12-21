@@ -15,14 +15,14 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
 
-    var searchResultState = MutableStateFlow<DataState<TranslationM>>(DataState.Empty)
+    var searchResultState = MutableStateFlow<DataState<TranslationM>>(DataState.Empty())
 
     val searchHotInfo = MutableStateFlow<MutableMap<String, String>>(mutableMapOf())
 
 
     fun translatingInput(key: String) =
         viewModelScope.launch {
-            searchResultState.value = DataState.Loading
+            searchResultState.value = DataState.Loading()
 
             flow {
                 val result = SearchRepository.searchTranslation(keyword = key)

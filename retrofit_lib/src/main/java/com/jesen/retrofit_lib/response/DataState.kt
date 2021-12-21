@@ -4,8 +4,8 @@ package com.jesen.retrofit_lib.response
  * 数据加载状态
  * */
 sealed class DataState<out T> {
-    object Empty : DataState<Nothing>()
-    object Loading : DataState<Nothing>()
+    data class Empty<T>(val code: Int = -1) : DataState<T>()
+    data class Loading<T>(val code: Int = -1) : DataState<T>()
 
     data class Error(
         val message: String,

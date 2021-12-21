@@ -21,21 +21,21 @@ import kotlinx.coroutines.launch
 class DetailViewModel : ViewModel() {
 
     // 详情页数据状态
-    val videoDetailState = MutableStateFlow<DataState<VideoDetailM>>(DataState.Empty)
+    val videoDetailState = MutableStateFlow<DataState<VideoDetailM>>(DataState.Empty())
 
     // 关注/取关作者状态，没有对应API，来个假的
-    private val upFollowState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty)
+    private val upFollowState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
 
     // 点赞/取消赞状态
-    private val videoLikeState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty)
+    private val videoLikeState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
 
     // 收藏/取消收藏状态
-    private val videoFavoriteState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty)
+    private val videoFavoriteState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
 
     var testVideoM: VideoM = videoDataDemoJson.fromJson<VideoM>()!!
 
     fun loadVideoInfo2(vid: String) = viewModelScope.launch {
-        videoDetailState.value = DataState.Loading
+        videoDetailState.value = DataState.Loading()
         flow {
             val result = VideoDetailRepository.getVideDetailData(vid)
 
@@ -60,7 +60,7 @@ class DetailViewModel : ViewModel() {
 
     fun requestFollow(isFollow: Boolean, result: (response: Response<InteractionM>?) -> Unit) =
         viewModelScope.launch {
-            upFollowState.value = DataState.Loading
+            upFollowState.value = DataState.Loading()
             var response: Response<InteractionM>? = null
 
             flow {
@@ -91,7 +91,7 @@ class DetailViewModel : ViewModel() {
         result: (response: Response<InteractionM>?) -> Unit
     ) =
         viewModelScope.launch {
-            videoLikeState.value = DataState.Loading
+            videoLikeState.value = DataState.Loading()
             var response: Response<InteractionM>? = null
 
             flow {
@@ -122,7 +122,7 @@ class DetailViewModel : ViewModel() {
         result: (response: Response<InteractionM>?) -> Unit
     ) =
         viewModelScope.launch {
-            videoFavoriteState.value = DataState.Loading
+            videoFavoriteState.value = DataState.Loading()
             var response: Response<InteractionM>? = null
 
             flow {
