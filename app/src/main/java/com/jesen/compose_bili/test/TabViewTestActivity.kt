@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.material.Surface
 import androidx.compose.ui.graphics.Color
 import com.jesen.compose_bili.ui.theme.Compose_bili_talkTheme
-import com.jesen.compose_bili.ui.widget.TestIndicatorOfTabView
 
 class TabViewTestActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -18,7 +17,8 @@ class TabViewTestActivity : ComponentActivity() {
         setContent {
             Compose_bili_talkTheme {
                 Surface(color = Color.Yellow.copy(alpha = 0.5f)) {
-                    TestIndicatorOfTabView()
+                    NestedScrollTest()
+                    //TestIndicatorOfTabView()
                     /*LazyColumn(modifier = Modifier.fillMaxSize()) {
                         item {
                             Text(text = "1. TestFancyIndicatorContainerTabs: ")

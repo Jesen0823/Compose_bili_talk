@@ -303,7 +303,7 @@ fun SearchLoading() {
 }
 
 @Composable
-fun SearchError() {
+fun SinglePageError() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.ic_empty_page3),

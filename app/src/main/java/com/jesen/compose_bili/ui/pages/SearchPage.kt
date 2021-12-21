@@ -78,7 +78,7 @@ fun SearchPage(activity: MainActivity) {
                 }
                 is DataState.Error -> {
                     showDefault.value = false
-                    SearchError()
+                    SinglePageError()
                 }
             }
 

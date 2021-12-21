@@ -1,4 +1,4 @@
-package com.jesen.compose_bili.test
+package com.jesen.common_util_lib.custonnested
 
 import ScrollableAppBar
 import androidx.compose.foundation.layout.*
@@ -19,9 +19,23 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.jesen.common_util_lib.utils.oLog
 
 /**
  * 自定义嵌套滑动布局
+ * @param columnTop 滑动列表到顶部距离
+ * @param scrollableAppBarHeight 整个顶部的高度，可以与[columnTop]相等
+ * @param toolBarHeight 自定义toolbar的高度
+ * @param navigationIconSize 左上角图标的大小，主要是方便偏移计算
+ * @param navigationIcon 左上角图标，如头像
+ * @param scrollableAppBarBgColor 整个顶部的背景色
+ * @param headerTop 顶部图片或颜色布局
+ * @param toolBar 自定义toolbar
+ * @param extendUsrInfo 左上角图标靠右的布局内容，如用户名
+ * @param backSlideProgress 滑动进度监听回调
+ * @param columnState LazyColumn的状态参数
+ * @param listContent LazyColumn的内容 @[不能是嵌套 LazyColumn]
+ *
  */
 @Composable
 fun NestedWrapCustomLayout(
@@ -33,6 +47,7 @@ fun NestedWrapCustomLayout(
     scrollableAppBarBgColor: Color,
     headerTop: @Composable (() -> Unit),
     toolBar: @Composable (() -> Unit),
+    extendUsrInfo: @Composable (() -> Unit)? = null,
     backSlideProgress: (Float) -> Unit,
     columnState: LazyListState = rememberLazyListState(),
     listContent: LazyListScope.() -> Unit
@@ -47,9 +62,11 @@ fun NestedWrapCustomLayout(
         }
         // ToolBar 最小向上位移量
         val minUpPx = 0f
+
         // 偏移折叠工具栏上移高度
         val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-        // 现在，让我们创建与嵌套滚动系统的连接并聆听子 LazyColumn 中发生的滚动
+
+        // 创建与嵌套滚动系统的连接nestedScrollConnection,监听LazyColumn 中的滚动
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
                 override fun onPreScroll(
@@ -57,12 +74,15 @@ fun NestedWrapCustomLayout(
                     source: NestedScrollSource
                 ): Offset {
                     val delta = available.y
+                    oLog("scroll: delta:$delta")
+                    // 累加LazyColumn滑动距离
                     val newOffset = toolbarOffsetHeightPx.value + delta
                     toolbarOffsetHeightPx.value = newOffset.coerceIn(-maxUpPx, minUpPx)
                     return Offset.Zero
                 }
             }
         }
+        // 父滑动列表
         Box(
             Modifier
                 .fillMaxSize()
@@ -77,6 +97,7 @@ fun NestedWrapCustomLayout(
                     .fillMaxHeight(),
 
                 ) {
+                // 滑动列表的内容
                 listContent()
             }
 
@@ -89,7 +110,8 @@ fun NestedWrapCustomLayout(
                 toolBar = toolBar,
                 navigationIconSize = navigationIconSize,
                 background = scrollableAppBarBgColor,
-                backSlideProgress = backSlideProgress
+                backSlideProgress = backSlideProgress,
+                extendUsrInfo = extendUsrInfo
             )
         }
     }

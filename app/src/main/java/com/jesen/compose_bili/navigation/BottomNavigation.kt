@@ -95,7 +95,7 @@ fun BottomNavHost(navHostController: NavHostController, activity: MainActivity) 
             FavoritePage(activity)
         }
         composable(route = BottomNav.Screens.Profile.route) {
-            ProfilePage()
+            ProfilePage(activity)
         }
     }
 }

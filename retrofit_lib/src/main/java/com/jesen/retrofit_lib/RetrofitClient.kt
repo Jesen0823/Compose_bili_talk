@@ -96,7 +96,8 @@ object RetrofitClient {
                 contains("detail") ||
                 contains("like") ||
                 contains("favorite") ||
-                contains("notice")
+                contains("notice") ||
+                contains("profile")
     }
 
 

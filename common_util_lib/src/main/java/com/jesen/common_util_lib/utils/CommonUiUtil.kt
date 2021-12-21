@@ -2,6 +2,7 @@ package com.jesen.common_util_lib.utils
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -14,12 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import coil.transform.BlurTransformation
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.jesen.common_util_lib.R
@@ -42,15 +45,17 @@ fun SnackbarShow(content: String) {
     )
 }
 
-/**
- * coil图片
- */
 @ExperimentalCoilApi
 @Composable
-fun CoilImage(
-    url: String?, modifier: Modifier,
+fun CoilImageBlur(
+    url: Any?, modifier: Modifier,
     topLeft: Float = 0f, topRight: Float = 0f,
-    bottomLeft: Float = 0f, bottomRight: Float = 0f
+    bottomLeft: Float = 0f, bottomRight: Float = 0f,
+    context: Context = LocalContext.current,
+    blurRadius: Float = 2f,
+    blurSampling: Float = 2f,
+    contentScale: ContentScale = ContentScale.Fit
+
 ) {
     Image(
         painter = rememberImagePainter(
@@ -62,15 +67,57 @@ fun CoilImage(
                         topRight = topRight,
                         bottomLeft = bottomLeft,
                         bottomRight = bottomRight
+                    ),
+                    BlurTransformation(
+                        context = context,
+                        radius = blurRadius,
+                        sampling = blurSampling
                     )
                 )
+                crossfade(true)
+                placeholder(R.drawable.place_img)
+                error(R.drawable.place_img)
+            },
+        ),
+        contentScale = contentScale,
+        contentDescription = null,
+        modifier = modifier,
+        alignment = Alignment.Center
+    )
+}
+
+/**
+ * coil图片
+ */
+@ExperimentalCoilApi
+@Composable
+fun CoilImage(
+    url: Any?, modifier: Modifier,
+    topLeft: Float = 0f, topRight: Float = 0f,
+    bottomLeft: Float = 0f, bottomRight: Float = 0f,
+    contentScale: ContentScale = ContentScale.Fit,
+) {
+    Image(
+        painter = rememberImagePainter(
+            data = url,
+            builder = {
+                transformations(
+                    RoundedCornersTransformation(
+                        topLeft = topLeft,
+                        topRight = topRight,
+                        bottomLeft = bottomLeft,
+                        bottomRight = bottomRight
+                    ),
+                )
+                crossfade(true)
                 placeholder(R.drawable.place_img)
                 error(R.drawable.place_img)
             },
         ),
         contentDescription = null,
         modifier = modifier,
-        alignment = Alignment.Center
+        alignment = Alignment.Center,
+        contentScale = contentScale
     )
 }
 
@@ -80,7 +127,7 @@ fun CoilImage(
  */
 @ExperimentalCoilApi
 @Composable
-fun CoilCircleImage(url: String?, modifier: Modifier) {
+fun CoilCircleImage(url: Any?, modifier: Modifier) {
     Image(
         painter = rememberImagePainter(
             data = url,
@@ -88,6 +135,7 @@ fun CoilCircleImage(url: String?, modifier: Modifier) {
                 transformations(
                     CircleCropTransformation()
                 )
+                fadeIn()
                 placeholder(R.drawable.place_head)
                 error(R.drawable.place_head)
             },

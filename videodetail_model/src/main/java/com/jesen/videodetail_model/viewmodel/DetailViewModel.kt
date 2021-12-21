@@ -39,7 +39,7 @@ class DetailViewModel : ViewModel() {
         flow {
             val result = VideoDetailRepository.getVideDetailData(vid)
 
-            oLog(" login result: ${result.msg}")
+            oLog(" video detail result: ${result.msg}")
             emit(result)
 
         }.flowOn(Dispatchers.IO)

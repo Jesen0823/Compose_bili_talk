@@ -27,5 +27,7 @@ val bili_120 = Color(0xfff10a40)
 val bili_20 = Color(0xfff6a5b8)
 val deepOrange_800 = Color(0xFFEF6C00)
 val pink_400 = Color(0xFFEC407A)
-
+val goldenrod = Color(0xFFDAA520)
+val plum = Color(0xFFDDA0DD)
+val silver = Color(0xFFC0C0C0)
 
