@@ -82,4 +82,5 @@ dependencies {
     mDependencies.each { k, v -> implementation v }
     implementation("org.java-websocket:Java-WebSocket:1.5.2")
     implementation project(path: ':retrofit_lib')
+    implementation project(path: ':common_util_lib')
 }

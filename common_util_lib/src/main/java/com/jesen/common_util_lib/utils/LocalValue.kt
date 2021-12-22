@@ -1,4 +1,4 @@
-package com.jesen.bilisplash_module.ui
+package com.jesen.common_util_lib.utils
 
 import android.content.res.Configuration
 import androidx.compose.runtime.compositionLocalOf

@@ -31,9 +31,9 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jesen.bilisplash_module.splash.SplashScreen
 import com.jesen.bilisplash_module.splash.SplashViewModel
-import com.jesen.bilisplash_module.ui.LocalNavController
-import com.jesen.bilisplash_module.ui.LocalScreenOrientation
 import com.jesen.bilisplash_module.ui.theme.Compose_bili_talkTheme
+import com.jesen.common_util_lib.utils.LocalNavController
+import com.jesen.common_util_lib.utils.LocalScreenOrientation
 import com.jesen.common_util_lib.utils.oLog
 
 val test = "* Compatibly class for the SplashScreen API introduced in API 31.\n" +
