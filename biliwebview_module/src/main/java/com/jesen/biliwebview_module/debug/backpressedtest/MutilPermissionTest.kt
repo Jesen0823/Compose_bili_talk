@@ -34,7 +34,6 @@ fun MutilPermissionTest() {
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
-
         it.entries.filter { entry ->
             oLog("请求结果：权限${entry.key}${if (entry.value) "通过" else "被拒绝"}")
             entry.value

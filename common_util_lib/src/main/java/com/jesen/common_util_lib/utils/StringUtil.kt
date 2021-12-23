@@ -1,6 +1,7 @@
 package com.jesen.common_util_lib.utils
 
 import android.util.Log
+import java.net.URLEncoder
 
 /// 时间转换将秒转换为分钟:秒
 fun durationTransform(seconds: Int): String {
@@ -19,3 +20,6 @@ fun countFormat(count: Int): String = if (count > 9999) {
 fun oLog(msg: String) {
     Log.d("Bi--", msg)
 }
+
+
+fun String?.extUrlEncode(): String? = URLEncoder.encode(this, "utf-8")

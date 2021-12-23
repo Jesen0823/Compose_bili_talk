@@ -10,6 +10,13 @@ def mVersions = rootProject.ext.mVersions
 def mDependencies = rootProject.ext.mDencies
 def mIds = rootProject.ext.mIds
 
+// 签名属性配置
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     compileSdk mVersions.compileSdk
 
@@ -27,6 +34,15 @@ android {
 
         // src代码中有可能需要用到跨模块交互
         buildConfigField("boolean", "isDebug", String.valueOf(isDebug))
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
     }
 
     buildTypes {
