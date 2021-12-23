@@ -19,6 +19,7 @@ import com.jesen.compose_bili.ui.pages.MainPage
 import com.jesen.compose_bili.ui.pages.NoticeListPage
 import com.jesen.compose_bili.ui.pages.SearchPage
 import com.jesen.compose_bili.ui.pages.VideoDetailPage
+import com.jesen.compose_bili.ui.pages.delegate.DelegateWebView
 import com.jesen.compose_bili.ui.pages.user.LoginPage
 import com.jesen.compose_bili.ui.pages.user.RegisterPage
 
@@ -32,6 +33,7 @@ object PageRoute {
     const val MAIN_PAGE = "main_route"
     const val NOTICE_ROUTE = "notice_list"
     const val SEARCH_ROUTE = "search_route"
+    const val WEBVIEW_ROUTE = "web_view"
 }
 
 /**
@@ -75,6 +77,9 @@ fun PageNavHost(mainActivity: MainActivity) {
         }
         composable(route = PageRoute.SEARCH_ROUTE) {
             SearchPage(activity = mainActivity)
+        }
+        composable(route = PageRoute.WEBVIEW_ROUTE) {
+            DelegateWebView(url = "https://www.baidu.com")
         }
     }
 

@@ -98,7 +98,7 @@ dependencies {
 
    /* releaseImplementation project(path: ':retrofit_lib', configuration: 'release')
     debugImplementation project(path: ':retrofit_lib', configuration: 'debug')*/
-
+    implementation project(path: ':biliwebview_module')
     implementation project(path: ':retrofit_lib')
     implementation project(path: ':bilibanner_module')
     implementation project(path: ':videodetail_model')
