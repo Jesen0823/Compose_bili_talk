@@ -41,7 +41,7 @@ object PageRoute {
     const val MAIN_PAGE = "main/{bottomIndex}"
     const val NOTICE_ROUTE = "notice_list"
     const val SEARCH_ROUTE = "search"
-    const val WEB_VIEW_ROUTE = "web_view/web?link={link}"
+    const val WEB_VIEW_ROUTE = "web_view/web?link={linkUrl}"
 }
 
 /**

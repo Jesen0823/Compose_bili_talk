@@ -69,7 +69,12 @@ fun ProfilePage() {
                 }
                 is DataState.Success -> {
                     // 展示详情内容
-                    ProfileContentScreen(coroutineScope, viewModel,columnLazyState, dataStoreData.value.read().data)
+                    ProfileContentScreen(
+                        coroutineScope,
+                        viewModel,
+                        columnLazyState,
+                        dataStoreData.value.read().data
+                    )
                 }
                 is DataState.Error -> {
                     SinglePageError()
@@ -92,7 +97,7 @@ fun ProfilePage() {
 fun ProfileContentScreen(
     coroutineScope: CoroutineScope,
     viewModel: ProfileViewModel,
-    columnLazyState:LazyListState,
+    columnLazyState: LazyListState,
     profileData: DataProfile
 ) {
     Scaffold(
@@ -140,7 +145,10 @@ fun ProfileContentScreen(
                     itemOnClick = { banner ->
                         // 点击banner
                         coroutineScope.launch {
-                            NavUtil.doPageNavigationTo(navController, PageRoute.WEB_VIEW_ROUTE)
+                            NavUtil.doPageNavigationTo(
+                                navController,
+                                PageRoute.WEB_VIEW_ROUTE.replaceAfter("=", banner.url)
+                            )
                         }
                     }
                 )
@@ -160,7 +168,7 @@ fun ProfileContentScreen(
             stickyHeader {
                 ColumnStickHeader(title = "增值服务", subTitle = "点击子项可以跳转web")
             }
-            profileData.benefitList?.let {
+            profileData.benefitList?.let { nenefitList ->
                 item {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
@@ -169,10 +177,21 @@ fun ProfileContentScreen(
                         state = rememberLazyListState(),
                         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 2.dp),
                         content = {
-                            items(count = it.size) { index ->
+                            items(count = nenefitList.size) { index ->
                                 BenefitItemView(
-                                    it[index],
-                                    onclick = {})
+                                    nenefitList[index],
+                                    onclick = {
+                                        coroutineScope.launch {
+                                            NavUtil.doPageNavigationTo(
+                                                navController,
+                                                PageRoute.WEB_VIEW_ROUTE.replaceAfter(
+                                                    "=",
+                                                    nenefitList[index].url
+                                                )
+                                            )
+                                        }
+                                    }
+                                )
                             }
                         }
                     )
