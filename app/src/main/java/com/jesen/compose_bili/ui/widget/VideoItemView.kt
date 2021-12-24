@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.annotation.ExperimentalCoilApi
 import com.jesen.common_util_lib.utils.CoilCircleImage
 import com.jesen.common_util_lib.utils.CoilImage
 import com.jesen.compose_bili.ui.theme.black87
@@ -31,7 +30,6 @@ import com.jesen.videodetail_model.util.IconTextSmall
  * 视频Item卡片
  * */
 @ExperimentalMaterialApi
-@ExperimentalCoilApi
 @Composable
 fun VideoItemCard(
     video: VideoM,
@@ -122,7 +120,6 @@ fun VideoInfo(modifier: Modifier, video: VideoM) {
 
 
 
-@ExperimentalCoilApi
 @Composable
 fun AuthorInfo(modifier: Modifier, authImg: String, authName: String) {
     Row(

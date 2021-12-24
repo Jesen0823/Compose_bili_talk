@@ -1,6 +1,5 @@
 package com.jesen.compose_bili.ui.widget.user
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
@@ -161,21 +159,4 @@ fun InputTogButton(
     ) {
         Text(text, color = Color.White, fontSize = 18.sp)
     }
-}
-
-/**
- * 绘制分割线
- * */
-@Composable
-fun drawDiverLine() {
-    Canvas(modifier = Modifier
-        .fillMaxWidth()
-        .height(2.dp), onDraw = {
-        drawLine(
-            start = Offset(0f, 0f),
-            end = Offset(size.width, size.height),
-            color = Color.Gray,
-            strokeWidth = 2f
-        )
-    })
 }

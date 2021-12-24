@@ -29,16 +29,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
 import com.google.accompanist.insets.navigationBarsPadding
 import com.jesen.bilisplash_module.R
 import com.jesen.bilisplash_module.ui.theme.bili_20
+import com.jesen.common_util_lib.utils.CoilImage
 
 enum class SplashType { SPLASH_ONE, SPLASH_TWO }
 
 @ExperimentalAnimationApi
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun SplashScreen(
     splashViewModel: SplashViewModel,
@@ -71,12 +69,11 @@ fun SplashScreen(
                     .wrapContentHeight(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+                CoilImage(
                     modifier = Modifier
                         .width(50.dp)
                         .height(115.dp),
-                    painter = rememberImagePainter(R.drawable.bili_man),
-                    contentDescription = null,
+                    url = R.drawable.bili_man
                 )
                 Column(
                     modifier = Modifier.background(

@@ -1,6 +1,5 @@
 package com.jesen.bilibanner
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -8,10 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.rememberCoilPainter
 import com.jesen.bilibanner.bean.BannerData
+import com.jesen.common_util_lib.utils.CoilImage
 
 /**
  * Banner 图片展示卡片
@@ -28,34 +26,19 @@ fun BannerItem(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(10.dp),
     contentScale: ContentScale,
+    allCorner:Float=12f,
     onItemClick: (BannerData) -> Unit,
 ) {
     Card(
         shape = shape,
         modifier = modifier
     ) {
-        ImageCoilLoader(
-            data.imgUrl,
-            Modifier.clickable(onClick = { onItemClick(data) }),
-            contentScale
+        CoilImage(
+            contentScale=contentScale,
+            allCorner=allCorner,
+            url = data.imgUrl,
+            modifier = Modifier.clickable(onClick = { onItemClick(data) }
+            )
         )
     }
-}
-
-
-@Composable
-fun ImageCoilLoader(
-    data: String?,
-    modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Crop,
-) {
-    val imgPainter = if (data.isNullOrBlank()) painterResource(R.drawable.defaultload)
-    else rememberCoilPainter(data)
-
-    Image(
-        modifier = modifier,
-        painter = imgPainter,
-        contentDescription = "",
-        contentScale = contentScale
-    )
 }

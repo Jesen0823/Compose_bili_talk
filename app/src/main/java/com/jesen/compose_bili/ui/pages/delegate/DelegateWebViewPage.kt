@@ -22,7 +22,7 @@ import com.jesen.common_util_lib.utils.LocalNavController
 fun DelegateWebView(url: String) {
     val navController = LocalNavController.current
     var title by remember {
-        mutableStateOf("")
+        mutableStateOf("加载中...")
     }
     Scaffold(topBar = {
         BiliTopBar(

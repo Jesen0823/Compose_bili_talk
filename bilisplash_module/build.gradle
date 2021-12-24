@@ -91,6 +91,7 @@ dependencies {
     // 公共基本依赖
     mDependencies.each { k, v -> implementation v }
 
+    implementation project(path: ':retrofit_lib')
     implementation project(path: ':common_util_lib')
 
     // Splash screen

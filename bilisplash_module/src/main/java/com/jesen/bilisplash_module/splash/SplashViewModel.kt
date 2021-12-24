@@ -6,13 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesen.common_util_lib.datastore.DataStoreUtil
+import com.jesen.retrofit_lib.com.BOARDING_PASS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class SplashViewModel : ViewModel() {
 
@@ -24,13 +25,15 @@ class SplashViewModel : ViewModel() {
     private fun checkLogin() {
         checkingLoginState.value = true
         viewModelScope.launch {
-            // 模拟判断是否登录
+
+            // 查询登录令牌是否已保存来模拟判断是否已经登录
             flow {
                 delay(5000)
-                val result = Random.nextInt(0, 2)
+                val boardingPass = DataStoreUtil.readStringData(BOARDING_PASS)
+                val result = if (boardingPass.isBlank()) 0 else 1
                 emit(result)
             }.flowOn(Dispatchers.IO).collect {
-                Log.d("splash--:", "islogin:$it")
+                Log.d("splash--:", "loginState:$it")
                 loginState = it
                 checkingLoginState.value = false
             }

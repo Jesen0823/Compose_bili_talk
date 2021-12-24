@@ -16,11 +16,11 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.jesen.biliwebview_module.debug.backpressedtest.TestActivityResultContract
+import com.jesen.biliwebview_module.TestWebView
 import com.jesen.biliwebview_module.debug.localprovidertest.Book
 import com.jesen.biliwebview_module.ui.theme.Compose_bili_talkTheme
 import com.jesen.common_util_lib.datastore.DataStoreUtil
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CompositionLocalProvider(
                 // 这是测试页面，设定一个默认值防止有使用NavController的地方异常
-                LocalNavController provides NavController(context = this.applicationContext),
+                LocalNavController provides NavHostController(context = this.applicationContext),
                 //ActiveUser provides userNew
             ) {
                 ProvideWindowInsets {
@@ -70,9 +70,9 @@ class MainActivity : ComponentActivity() {
                         Surface(color = MaterialTheme.colors.background) {
                             Column(modifier = Modifier.fillMaxSize()) {
                                 Spacer(modifier = Modifier.statusBarsHeight())
-                                TestActivityResultContract()
+                                //TestActivityResultContract()
 
-                                //TestWebView()
+                                TestWebView()
 
 
                                 //TestEnterScreen()

@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
@@ -21,9 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
 import com.jesen.biliwebview_module.debug.utils.FileUtil
+import com.jesen.common_util_lib.utils.CoilImage
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.common_util_lib.utils.showToast
 
@@ -118,7 +116,6 @@ fun TakePicPreviewTest() {
     }
 }
 
-@ExperimentalCoilApi
 @Composable
 fun TakePicTest() {
     val context = LocalContext.current
@@ -136,13 +133,7 @@ fun TakePicTest() {
     result.value.let { success ->
         oLog("TakePicTest, is success:$success")
         if (success) {
-            Image(
-                painter = rememberImagePainter(data = Uri.parse(fileUri.encodedPath)),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
-            )
-
-            // CoilImage(url = Uri.parse(fileUri.encodedPath), modifier = Modifier.fillMaxWidth())
+            CoilImage(url = Uri.parse(fileUri.encodedPath), modifier = Modifier.fillMaxWidth())
         }
     }
 }

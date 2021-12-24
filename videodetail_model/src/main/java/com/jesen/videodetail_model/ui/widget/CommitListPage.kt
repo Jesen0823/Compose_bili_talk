@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
@@ -17,7 +16,6 @@ import com.jesen.common_util_lib.utils.showToast
 import com.jesen.videodetail_model.viewmodel.DetailViewModel
 
 @ExperimentalPagerApi
-@ExperimentalCoilApi
 @ExperimentalAnimationApi
 @Composable
 fun CommentListContent(viewModel: DetailViewModel, pagerState: PagerState) {

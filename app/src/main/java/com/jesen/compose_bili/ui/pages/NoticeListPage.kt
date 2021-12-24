@@ -13,24 +13,30 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
-import com.jesen.compose_bili.MainActivity
-import com.jesen.compose_bili.navigation.doPageNavBack
+import com.jesen.common_util_lib.utils.LocalMainActivity
+import com.jesen.common_util_lib.utils.LocalNavController
+import com.jesen.compose_bili.navigation.NavUtil
 import com.jesen.compose_bili.ui.widget.NoticeItemView
 import com.jesen.compose_bili.viewmodel.HomeViewModel
+import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun NoticeListPage(activity: MainActivity) {
+fun NoticeListPage() {
+    val activity = LocalMainActivity.current
     val viewModel by activity.viewModels<HomeViewModel>()
+    val coroutineScope = rememberCoroutineScope()
+    val navController = LocalNavController.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -43,7 +49,9 @@ fun NoticeListPage(activity: MainActivity) {
                 },
                 navigationIcon = {
                     IconButton(modifier = Modifier.size(48.dp), onClick = {
-                        doPageNavBack()
+                        coroutineScope.launch {
+                            NavUtil.doPageNavBack(navController)
+                        }
                     }) {
                         Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "返回")
                     }

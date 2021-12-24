@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,8 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import com.jesen.common_util_lib.utils.CoilImage
 import com.jesen.common_util_lib.utils.oLog
 
 /**
@@ -55,7 +53,6 @@ fun rememberGetContentActivityResult(): GetContentActivityResult {
 
 
 /*********************************test :**************************************/
-@ExperimentalCoilApi
 @Composable
 fun ContactPagePhoto() {
     // 拿到构造好的发射器管理对象，点击click的时候调用它的发射方法，结果会回调在第二个成员变量uri中
@@ -69,13 +66,12 @@ fun ContactPagePhoto() {
         oLog("--ContactPagePhoto, uri: ${getContent.uri}")
         // 拿到结果
         getContent.uri?.let { uri ->
-            Image(
+            CoilImage(
+                url = uri,
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxSize(1f),
-                contentDescription = "selected image",
                 contentScale = ContentScale.Crop,
-                painter = rememberImagePainter(data = uri)
             )
         }
     }

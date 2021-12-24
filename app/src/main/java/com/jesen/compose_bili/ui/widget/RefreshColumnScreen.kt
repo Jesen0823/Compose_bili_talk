@@ -8,7 +8,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
 import com.jesen.compose_bili.viewmodel.RankingViewModel
 import com.jesen.retrofit_lib.model.VideoM
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.Flow
 /**
  * 列表Item的装载 ---下拉刷新，加载更多动效
  * */
-@ExperimentalCoilApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable

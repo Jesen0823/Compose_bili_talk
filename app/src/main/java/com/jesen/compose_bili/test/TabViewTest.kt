@@ -91,7 +91,6 @@ fun TestTextAndIconTabs() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TestLeadingIconTabs() {
     var state by remember { mutableStateOf(0) }

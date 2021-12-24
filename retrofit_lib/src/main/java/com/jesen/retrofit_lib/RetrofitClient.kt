@@ -1,5 +1,6 @@
 package com.jesen.retrofit_lib
 
+import com.jesen.common_util_lib.datastore.DataStoreUtil
 import com.jesen.retrofit_lib.com.BASE_URL
 import com.jesen.retrofit_lib.com.BOARDING_PASS
 import okhttp3.Interceptor
@@ -40,7 +41,7 @@ object RetrofitClient {
             val requestBuilder: Request.Builder = original.newBuilder().apply {
                 // 检测是否追加请求头
                 if (checkPath(original.url.pathSegments)) {
-                    header(BOARDING_PASS, "E793ED7A61088AAA70DD32614448F2C4AF")
+                    header(BOARDING_PASS, DataStoreUtil.readStringData(BOARDING_PASS))
                 }
             }
                 .header("content-type", "application/json")

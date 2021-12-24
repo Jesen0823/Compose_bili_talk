@@ -21,17 +21,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.jesen.bilibanner.BannerConfig
 import com.jesen.common_util_lib.utils.ColorUtil
+import com.jesen.common_util_lib.utils.LocalMainActivity
+import com.jesen.common_util_lib.utils.LocalNavController
 import com.jesen.common_util_lib.utils.oLog
-import com.jesen.compose_bili.MainActivity
+import com.jesen.compose_bili.navigation.NavUtil
 import com.jesen.compose_bili.navigation.PageRoute
-import com.jesen.compose_bili.navigation.doPageNavigationTo
 import com.jesen.compose_bili.ui.theme.bili_90
 import com.jesen.compose_bili.ui.theme.gray100
 import com.jesen.compose_bili.ui.theme.gray50
@@ -57,14 +57,14 @@ import kotlinx.coroutines.launch
  *
  * */
 
-@ExperimentalCoilApi
+
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
-fun HomeTabPage(activity: MainActivity) {
-
+fun HomeTabPage(categoryIndex: Int) {
+    val activity = LocalMainActivity.current
     val viewModel by activity.viewModels<HomeViewModel>()
 
     val tabState = remember {
@@ -74,23 +74,25 @@ fun HomeTabPage(activity: MainActivity) {
     val scope = rememberCoroutineScope()
 
     val pagerState = rememberPagerState(
-        initialPage = 0 //初始页面
+        initialPage = categoryIndex //初始页面
     )
+
+    val navController = LocalNavController.current
 
     Scaffold(
         topBar = {
             MainTopBarUI(
                 {
                     scope.launch {
-                        doPageNavigationTo(PageRoute.SEARCH_ROUTE)
+                        NavUtil.doPageNavigationTo(navController,PageRoute.SEARCH_ROUTE)
                     }
                 }, {
                     scope.launch {
-                        doPageNavigationTo(replaceRegex(PageRoute.VIDEO_DETAIL_ROUTE, "7688021"))
+                        NavUtil.doPageNavigationTo(navController,replaceRegex(PageRoute.VIDEO_DETAIL_ROUTE, "7688021"))
                     }
                 }, {
                     scope.launch {
-                        doPageNavigationTo(PageRoute.NOTICE_ROUTE)
+                        NavUtil.doPageNavigationTo(navController,PageRoute.NOTICE_ROUTE)
                     }
                 }
             )

@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
 import com.jesen.common_util_lib.paging.SwipeRefreshGridLayout
@@ -22,7 +21,6 @@ import com.jesen.retrofit_lib.model.VideoM
  * 首页列表加载 ---下拉刷新，加载更多动效
  * */
 @ExperimentalPagerApi
-@ExperimentalCoilApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable

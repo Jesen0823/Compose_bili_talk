@@ -8,7 +8,6 @@ package com.jesen.compose_bili.utils
  * @return 真正路径
  * */
 fun replaceRegex(routeModel: String, params: String): String {
-    // 正则的规则为检测数字，如果为数字则替换成字符串`kotlin`
     // 替换{}中的内容
     val regex1 = """(?<=\{).*?(?=\})""".toRegex()
     // 替换{}以及它里面的内容

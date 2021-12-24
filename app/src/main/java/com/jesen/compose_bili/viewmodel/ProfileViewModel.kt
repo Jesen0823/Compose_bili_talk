@@ -1,10 +1,14 @@
 package com.jesen.compose_bili.viewmodel
 
+import android.app.Application
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.ViewModel
+import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.jesen.bilibanner.bean.BannerData
 import com.jesen.common_util_lib.utils.oLog
+import com.jesen.compose_bili.R
+import com.jesen.compose_bili.navigation.context
 import com.jesen.compose_bili.repository.ProfileRepository
 import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
 import com.jesen.retrofit_lib.model.ProfileM
@@ -14,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _profileDataState = MutableStateFlow<DataState<ProfileM>>(DataState.Empty())
 
@@ -22,7 +26,22 @@ class ProfileViewModel : ViewModel() {
 
     var bannerDataList = mutableStateListOf<BannerData>()
 
-    fun loadProfileInfo() = viewModelScope.launch {
+    private fun getDrawable(resId: Int) =
+        ResourcesCompat.getDrawable(context.resources, resId, null)
+
+
+    private val defaultBannerSource = mapOf(
+        getDrawable(R.drawable.banner1) to "https://docs.compose.net.cn/",
+        getDrawable(R.drawable.banner2) to "https://docs.compose.net.cn/design/gesture/nested_scroll/",
+        getDrawable(R.drawable.banner3) to "https://blog.csdn.net/weixin_40611659/article/details/119645712",
+        getDrawable(R.drawable.banner4) to "https://howtodoandroid.com/getting-started-with-workmanager/",
+        getDrawable(R.drawable.banner5) to "https://howtodoandroid.com/category/jetpack/"
+    ).map {
+        it
+    }
+
+
+    val loadProfileInfo = viewModelScope.launch {
         oLog("profileViewModel--, loadProfileInfo")
         _profileDataState.value = DataState.Loading()
         flow {
@@ -43,7 +62,13 @@ class ProfileViewModel : ViewModel() {
                     if (bannerDataList.isEmpty()) {
                         response.read().data.bannerList?.let {
                             val bannerList = it.map { banner ->
-                                EntityBannerMapper().map(banner)
+
+                                // 这里api给的广告太恶心了转为本地图片
+                                val index = it.indexOf(banner)
+                                val bannerData = EntityBannerMapper().map(banner)
+                                bannerData.url = defaultBannerSource[index].value
+                                bannerData.imgUrl = defaultBannerSource[index].key!!
+                                bannerData
                             }
                             bannerDataList.addAll(bannerList)
                         }
@@ -55,4 +80,10 @@ class ProfileViewModel : ViewModel() {
             }
     }
 
+    // 退出登录账号
+    fun logoutAccount() {
+        viewModelScope.launch {
+            ProfileRepository.logoutAccount()
+        }
+    }
 }

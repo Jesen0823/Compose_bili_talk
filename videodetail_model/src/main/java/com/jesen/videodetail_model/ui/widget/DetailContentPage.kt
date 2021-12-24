@@ -14,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.jesen.common_util_lib.utils.oLog
@@ -29,7 +28,6 @@ import kotlinx.coroutines.launch
  * */
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
-@ExperimentalCoilApi
 @ExperimentalComposeUiApi
 @Composable
 fun VideoDesContent(

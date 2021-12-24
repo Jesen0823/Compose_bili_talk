@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.jesen.common_util_lib.datastore.DataStoreUtil
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.repository.UserRepository
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_K
+import com.jesen.retrofit_lib.com.AUTH_TOKEN_V
 import com.jesen.retrofit_lib.com.BOARDING_PASS
 import com.jesen.retrofit_lib.model.UserResult
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +71,31 @@ class InputViewModel : ViewModel() {
 
     val userUIState: StateFlow<UserUIState> = _loginUIState
 
+    // 默认登录 仅供测试
+    fun defaultLogin() = viewModelScope.launch {
+        _loginUIState.value = UserUIState.Loading(UserAction.LOGIN)
+        delay(2000)
+        flow {
+            val result: UserResult = UserResult(
+                code = 0,
+                msg = "登录成功",
+                data = "E793ED7A61088AAA70DD32614448F2C4AF",
+                extra = "默认账号"
+            )
+            emit(result)
+        }.flowOn(Dispatchers.IO)
+            .collect { userResult ->
+                // 存储登录令牌，方便其他API调用
+                saveUserToken(userResult, UserAction.LOGIN)
+                userResult.data = AUTH_TOKEN_V
+                saveUserToken(userResult, UserAction.REGISTER)
+
+                // 更新UI状态
+                _loginUIState.value =
+                    UserUIState.Success(result = userResult, action = UserAction.LOGIN)
+            }
+    }
+
     /**
      * 登录行为
      * */
@@ -82,7 +109,7 @@ class InputViewModel : ViewModel() {
 
     private fun userRequest(action: UserAction) = viewModelScope.launch {
         _loginUIState.value = UserUIState.Loading(action)
-        delay(2000)
+        delay(1500)
         flow {
             val result: UserResult = if (action == UserAction.LOGIN) {
                 UserRepository.startLogin(name, pwd)
@@ -117,9 +144,8 @@ class InputViewModel : ViewModel() {
                 }
             }
             .collect { userResult ->
-
                 // 存储登录令牌，方便其他API调用
-                saveUserToken(userResult)
+                saveUserToken(userResult, action = action)
 
                 // 更新UI状态
                 _loginUIState.value =
@@ -131,16 +157,23 @@ class InputViewModel : ViewModel() {
      * 保存登录令牌
      * 登录后保存，其他页面API会用到
      */
-    private fun saveUserToken(userResult: UserResult) {
+    private fun saveUserToken(userResult: UserResult, action: UserAction) {
         userResult.data?.let {
             if (userResult.code == 0 && it.isNotEmpty()) {
                 viewModelScope.launch {
-                    DataStoreUtil.saveStringData(BOARDING_PASS, it)
+                    if (action == UserAction.LOGIN) {
+                        DataStoreUtil.saveStringData(BOARDING_PASS, it)
+                    } else {
+                        DataStoreUtil.saveStringData(AUTH_TOKEN_K, it)
+                    }
                 }
             }
         }
     }
 
+    fun clearState() {
+        _loginUIState.value = UserUIState.Empty(action = null)
+    }
 
     /**
      * UI状态管理

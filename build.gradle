@@ -37,6 +37,7 @@ ext {
     paging_runtime = "3.1.0-rc01"
 
     navigation_compose = "2.4.0-alpha09"
+    navigation_animation= "0.21.3-beta"
 
     okhttp3_version = "4.9.0"
     retrofit_version = "2.9.0"

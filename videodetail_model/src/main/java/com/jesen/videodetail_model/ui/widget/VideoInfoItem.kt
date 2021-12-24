@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.annotation.ExperimentalCoilApi
 import com.jesen.common_util_lib.utils.CoilCircleImage
 import com.jesen.common_util_lib.utils.countFormat
 import com.jesen.common_util_lib.utils.showToast
@@ -34,7 +33,6 @@ import com.jesen.videodetail_model.util.VerticalIconText
 import com.jesen.videodetail_model.viewmodel.DetailViewModel
 
 @ExperimentalComposeUiApi
-@ExperimentalCoilApi
 @Composable
 fun VideoInfoItem(viewModel: DetailViewModel, detailData: VideoDetailData) {
     val videoInfo = detailData.videoInfo

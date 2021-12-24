@@ -16,6 +16,6 @@ class NoticeListPagingDataSource : CommonListPagingDataSource<Notice>() {
         return NoticeListRepository.requestNotices(
             pageIndex = currentPage,
             pageSize = pageSize
-        ).data?.list ?: emptyList()
+        ).data.list ?: emptyList()
     }
 }

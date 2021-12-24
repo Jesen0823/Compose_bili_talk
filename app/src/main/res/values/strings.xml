@@ -9,6 +9,12 @@
     <string name="rank_tab_new">最新</string>
     <string name="rank_tab_hot">最热</string>
     <string name="rank_tab_fav">收藏</string>
+    <string name="alert_login_title">Hello,我是Compose视频</string>
+    <string name="alert_login_content">账号注册暂未放开，如果你已有Flutter账号请直接登录，也可以选择默认账号登录哦~</string>
+    <string name="alert_confire_t">试试看</string>
+    <string name="alert_cancel_t">不用了</string>
+    <string name="alert_logout_title">账号登出提醒</string>
+    <string name="alert_logout_content">确定当前账号要退出登录吗？</string>
 
     <string-array name="hot_search">
         <item>我的畜生朋友</item>

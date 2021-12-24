@@ -36,6 +36,29 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="compose.bili.com"
+                    android:pathPrefix="/main/"
+                    android:scheme="https" />
+                <data
+                    android:host="compose.bili.com"
+                    android:pathPrefix="/web_view/"
+                    android:scheme="https" />
+                <data
+                    android:host="compose.bili.com"
+                    android:pathPrefix="/detail/"
+                    android:scheme="https" />
+                <data
+                    android:host="compose.bili.com"
+                    android:pathPrefix="/bottom_home/"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
     </application>
 

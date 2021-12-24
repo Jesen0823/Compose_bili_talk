@@ -13,7 +13,7 @@ import com.google.accompanist.insets.navigationBarsWithImePadding
  * 视频详情页
  * */
 @Composable
-fun VideoDetailPage(param: String?) {
+fun VideoDetailPage(videoJson: String?) {
     Scaffold() {
         Column(
             modifier = Modifier

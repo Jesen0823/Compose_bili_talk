@@ -18,11 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
-import com.jesen.compose_bili.MainActivity
+import com.jesen.common_util_lib.utils.LocalMainActivity
 import com.jesen.compose_bili.ui.theme.gray600
 import com.jesen.compose_bili.viewmodel.FavoriteListViewModel
 import com.jesen.videodetail_model.util.SmallVideoCard
@@ -33,10 +32,10 @@ import com.jesen.videodetail_model.util.SmallVideoCard
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
-fun FavoritePage(activity: MainActivity) {
+fun FavoritePage() {
+    val activity = LocalMainActivity.current
     val viewModel by activity.viewModels<FavoriteListViewModel>()
 
     Scaffold(

@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.bilibanner.BannerConfig
 import com.jesen.bilibanner.BannerPager
@@ -32,7 +31,6 @@ import com.jesen.compose_bili.ui.theme.gray600
 /**
  * 首页顶部 AppBar
  */
-@ExperimentalCoilApi
 @Composable
 fun MainTopBarUI(
     searchClick: () -> Unit,

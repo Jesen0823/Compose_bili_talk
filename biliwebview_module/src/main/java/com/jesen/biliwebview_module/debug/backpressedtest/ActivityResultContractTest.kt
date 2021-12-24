@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import coil.annotation.ExperimentalCoilApi
 
 /**
  * androidx/activity/result/contract/ActivityResultContracts.kt
  * */
 
 
-@ExperimentalCoilApi
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun TestActivityResultContract() {

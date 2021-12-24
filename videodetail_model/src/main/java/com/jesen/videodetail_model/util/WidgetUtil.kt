@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import coil.annotation.ExperimentalCoilApi
 import com.jesen.common_util_lib.utils.CoilImage
 import com.jesen.common_util_lib.utils.countFormat
 import com.jesen.retrofit_lib.model.VideoM
@@ -42,7 +41,7 @@ import com.jesen.videodetail_model.ui.theme.gray600
 /**
  * 视频小卡片
  * */
-@ExperimentalCoilApi
+
 @ExperimentalMaterialApi
 @Composable
 fun SmallVideoCard(

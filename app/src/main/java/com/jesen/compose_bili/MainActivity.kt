@@ -1,5 +1,7 @@
 package com.jesen.compose_bili
 
+//import androidx.navigation.NavHostController
+//import androidx.navigation.compose.rememberNavController
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,11 +17,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.jesen.common_util_lib.utils.LocalMainActivity
 import com.jesen.common_util_lib.utils.LocalNavController
 import com.jesen.common_util_lib.utils.LocalScreenOrientation
 import com.jesen.compose_bili.navigation.PageNavHost
@@ -31,10 +33,6 @@ import com.jesen.compose_bili.ui.theme.Compose_bili_talkTheme
 @ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
 
-    companion object {
-        var pageNavController: NavHostController? = null
-    }
-
     private var screenOrientation by mutableStateOf(Configuration.ORIENTATION_PORTRAIT)
 
     @ExperimentalComposeUiApi
@@ -42,13 +40,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            pageNavController = rememberNavController()
+            // 普通导航
+            // val pageNavController = rememberNavController()
             // 可定义动画的Navigation库
-            //pageNavController = rememberAnimatedNavController()
+            val pageNavController = rememberAnimatedNavController()
+
             CompositionLocalProvider(
                 LocalScreenOrientation provides screenOrientation,
                 LocalNavController provides pageNavController!!,
-                LocalOverScrollConfiguration provides null
+                LocalOverScrollConfiguration provides null,
+                LocalMainActivity provides this,
             ) {
                 // 加入ProvideWindowInsets
                 ProvideWindowInsets {
@@ -75,7 +76,7 @@ class MainActivity : ComponentActivity() {
                             color = MaterialTheme.colors.background,
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            PageNavHost(this)
+                            PageNavHost()
                         }
                     }
                 }

@@ -4,10 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
@@ -21,14 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.annotation.ExperimentalCoilApi
-import com.jesen.common_util_lib.utils.CoilCircleImage
-import com.jesen.common_util_lib.utils.CoilImage
-import com.jesen.common_util_lib.utils.CoilImageBlur
-import com.jesen.common_util_lib.utils.advancedShadow
+import com.jesen.common_util_lib.utils.*
 import com.jesen.compose_bili.R
 import com.jesen.compose_bili.ui.theme.bili_120
+import com.jesen.compose_bili.ui.theme.bili_5
 import com.jesen.compose_bili.ui.theme.black87
+import com.jesen.compose_bili.ui.theme.gray700
 import com.jesen.retrofit_lib.model.Benefit
 import com.jesen.retrofit_lib.model.Course
 import com.jesen.retrofit_lib.model.DataProfile
@@ -96,12 +98,11 @@ fun UserNameUI(profileData: DataProfile) {
                 append("  VIP 12")
             }
         },
-        fontSize = 24.sp,
+        fontSize = 20.sp,
         color = black87
     )
 }
 
-@ExperimentalCoilApi
 @Composable
 fun UserAdvertImg(advert: String) {
     val testUrl =
@@ -243,9 +244,11 @@ fun CourseListView(courseList: List<Course>) {
     rowSize = if (courseList.size.mod(columnSize) == 0) rowSize else rowSize.plus(1)
 
     for (rowIndex in 0 until rowSize) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
             for (columnIndex in 0 until columnSize) {
                 //itemIndex List数据位置
                 val itemIndex = rowIndex * columnSize + columnIndex
@@ -268,6 +271,101 @@ fun CourseListView(courseList: List<Course>) {
                 }
             }
         }
-
     }
+}
+
+/**
+ * 设置栏
+ */
+@Composable
+fun ColumnSetting(
+    onLogoutClick: () -> Unit,
+    onSwitchChange:(Boolean)->Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        SettingItemBg{
+            val switchState = rememberSaveable { mutableStateOf(false) }
+            Switch(
+                modifier=Modifier.padding(start = 14.dp, top = 3.dp, bottom = 3.dp),
+                checked = switchState.value,
+                onCheckedChange = {
+                    onSwitchChange(it)
+                    switchState.value = it
+                },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colors.secondary,
+                    checkedTrackColor = MaterialTheme.colors.primary,
+                    checkedTrackAlpha = 0.54f,
+                    uncheckedThumbColor = MaterialTheme.colors.surface,
+                    uncheckedTrackColor = MaterialTheme.colors.surface,
+                    uncheckedTrackAlpha = 0.38f,
+                )
+            )
+            Text(text = if (switchState.value) "夜间模式" else "日间模式",color = gray700)
+        }
+
+        SettingItemBg{
+            IconButton(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(horizontal = 8.dp, vertical = 3.dp),
+                onClick = { onLogoutClick() }
+            ) {
+                Icon(
+                    modifier = Modifier.size(38.dp),
+                    imageVector = Icons.Rounded.Logout,
+                    contentDescription = "logout",
+                    tint = MaterialTheme.colors.surface
+                )
+            }
+            Text(text = "退出登录", color = gray700)
+        }
+    }
+}
+
+/**
+ * 设置Item背景容器
+ * */
+@Composable
+fun SettingItemBg(
+    children: @Composable RowScope.() -> Unit
+){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth().height(52.dp)
+            .padding(start = 16.dp, top = 3.dp, bottom = 3.dp)
+            .background(
+                brush = Brush.horizontalGradient(
+                    colorStops = arrayOf(
+                        0.0f to MaterialTheme.colors.primary.copy(alpha = 0.8f),
+                        0.2f to MaterialTheme.colors.primaryVariant.copy(alpha = 0.6f),
+                        0.4f to bili_5.copy(alpha = 0.5f),
+                        0.8f to Color.White
+                    )
+                ),
+                alpha = 0.6f
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        children()
+    }
+}
+
+/**
+ * 登出账号弹窗
+ */
+@ExperimentalComposeUiApi
+@Composable
+fun LogoutAlderDialog(confirmClick:()->Unit) {
+    val context = LocalContext.current
+    showAlertDialog(
+        titleStr = context.getString(R.string.alert_logout_title),
+        contentStr = context.getString(R.string.alert_logout_content),
+        confirmClick = {confirmClick()},
+        dismissClick = {}
+    )
 }

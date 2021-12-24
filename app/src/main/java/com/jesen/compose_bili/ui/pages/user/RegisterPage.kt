@@ -1,6 +1,5 @@
 package com.jesen.compose_bili.ui.pages.user
 
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,11 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.common_util_lib.utils.LocalMainActivity
+import com.jesen.common_util_lib.utils.LocalNavController
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.R
+import com.jesen.compose_bili.navigation.NavUtil
 import com.jesen.compose_bili.navigation.PageRoute
-import com.jesen.compose_bili.navigation.doPageNavBack
-import com.jesen.compose_bili.navigation.doPageNavigationTo
 import com.jesen.compose_bili.ui.widget.user.InputTextField
 import com.jesen.compose_bili.ui.widget.user.InputTogButton
 import com.jesen.compose_bili.ui.widget.user.TopBarView
@@ -41,24 +41,27 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun RegisterPage(activity: ComponentActivity) {
+fun RegisterPage() {
 
+    val activity = LocalMainActivity.current
     val inputViewModel by activity.viewModels<InputViewModel>()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     var isLoading by remember { mutableStateOf(false) }
 
-
+    val navController = LocalNavController.current
     // 注册UI更新，结果处理
     LaunchedEffect(key1 = inputViewModel.userUIState) {
         activity.lifecycleScope.launch {
             inputViewModel.userUIState.collect {
                 when (it) {
                     is InputViewModel.UserUIState.Success -> {
-                        // 登录成功
+                        // 注册成功
                         isLoading = false
                         scaffoldState.snackbarHostState.showSnackbar("注册成功")
                         oLog(" register page success :${it.result.code}")
+
+                        NavUtil.doPageNavigationTo(navController=navController, route = PageRoute.LOGIN_ROUTE, allowBack = false)
                     }
                     is InputViewModel.UserUIState.Error -> {
                         isLoading = false
@@ -211,17 +214,20 @@ fun headPicEffect(viewModel: InputViewModel) {
 @ExperimentalFoundationApi
 @Composable
 fun RegisterTopBarView(scope: CoroutineScope) {
+    val navController = LocalNavController.current
     TopBarView(
         iconEvent = {
             IconButton(onClick = {
-                doPageNavBack(route = null)
+                scope.launch{
+                    NavUtil.doPageNavBack(navController,route = null)
+                }
             }) {
                 Icon(Icons.Filled.ArrowBack, null)
             }
         },
         actionEvent = {
             TextButton(onClick = {
-                scope.launch { doPageNavigationTo(PageRoute.LOGIN_ROUTE) }
+                scope.launch { NavUtil.doPageNavigationTo(navController,PageRoute.LOGIN_ROUTE) }
 
             }) {
                 Text(text = "登录", color = Color.Gray, fontSize = 18.sp)

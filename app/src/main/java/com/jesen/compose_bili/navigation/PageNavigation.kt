@@ -1,24 +1,31 @@
 package com.jesen.compose_bili.navigation
 
-//import com.google.accompanist.navigation.animation.AnimatedNavHost
-//import com.google.accompanist.navigation.animation.composable
+//import androidx.navigation.compose.NavHost
+//import androidx.navigation.compose.composable
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.jesen.common_util_lib.utils.oLog
-import com.jesen.compose_bili.MainActivity
+import com.jesen.common_util_lib.utils.LocalNavController
+import com.jesen.common_util_lib.utils.extUrlEncode
 import com.jesen.compose_bili.ui.pages.MainPage
 import com.jesen.compose_bili.ui.pages.NoticeListPage
 import com.jesen.compose_bili.ui.pages.SearchPage
 import com.jesen.compose_bili.ui.pages.VideoDetailPage
+import com.jesen.compose_bili.ui.pages.delegate.DelegateSplash
 import com.jesen.compose_bili.ui.pages.delegate.DelegateWebView
 import com.jesen.compose_bili.ui.pages.user.LoginPage
 import com.jesen.compose_bili.ui.pages.user.RegisterPage
@@ -27,13 +34,14 @@ import com.jesen.compose_bili.ui.pages.user.RegisterPage
  * 定义普通页面路由
  * */
 object PageRoute {
-    const val LOGIN_ROUTE = "login_route"
-    const val REGISTER_ROUTE = "register_route"
-    const val VIDEO_DETAIL_ROUTE = "video_detail_route/{videoId}"
-    const val MAIN_PAGE = "main_route"
+    const val SPLASH_ROUTE = "splash"
+    const val LOGIN_ROUTE = "login"
+    const val REGISTER_ROUTE = "register"
+    const val VIDEO_DETAIL_ROUTE = "detail/videoDetail?videoM={videoM}"
+    const val MAIN_PAGE = "main/{bottomIndex}"
     const val NOTICE_ROUTE = "notice_list"
-    const val SEARCH_ROUTE = "search_route"
-    const val WEBVIEW_ROUTE = "web_view"
+    const val SEARCH_ROUTE = "search"
+    const val WEB_VIEW_ROUTE = "web_view/web?link={link}"
 }
 
 /**
@@ -45,13 +53,13 @@ object PageRoute {
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun PageNavHost(mainActivity: MainActivity) {
-    val navHostController = MainActivity.pageNavController!!
-    val isLogined = true // 是否登录
+fun PageNavHost() {
+    val navHostController = LocalNavController.current
 
-    // 初始页面
-    val initRoute = if (isLogined) PageRoute.MAIN_PAGE else PageRoute.LOGIN_ROUTE
-    NavHost(navController = navHostController, startDestination = initRoute) {
+    /*NavHost(navController = navHostController, startDestination = PageRoute.SPLASH_ROUTE) {
+        composable(route = PageRoute.SPLASH_ROUTE) {
+            DelegateSplash()
+        }
         composable(route = PageRoute.LOGIN_ROUTE) {
             LoginPage(activity = mainActivity)
         }
@@ -78,134 +86,104 @@ fun PageNavHost(mainActivity: MainActivity) {
         composable(route = PageRoute.SEARCH_ROUTE) {
             SearchPage(activity = mainActivity)
         }
-        composable(route = PageRoute.WEBVIEW_ROUTE) {
+        composable(route = PageRoute.WEB_VIEW_ROUTE) {
             DelegateWebView(url = "https://www.baidu.com")
         }
-    }
+    }*/
 
     // 可定义动画的导航库的使用 https://google.github.io/accompanist/navigation-animation/
-    /* AnimatedNavHost(navController = navHostController, startDestination = initRoute) {
-         composable(
-             route = LOGIN_ROUTE,
-             enterTransition = {
-                 when (initialState.destination.route) {
-                     REGISTER_ROUTE ->
-                         expandHorizontally()
-                         //slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(1000))
-                         //slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(1200))
-                     else -> null
-                 }
-             },
-             exitTransition = {
-                 when (targetState.destination.route) {
-                     REGISTER_ROUTE ->
-                         slideOutHorizontally(targetOffsetX = { -0 }, animationSpec = tween(1000))
-                        // slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(1200))
-                     else -> null
-                 }
-             },
-             popEnterTransition = {
-                 when (initialState.destination.route) {
-                     REGISTER_ROUTE ->
-                         slideInHorizontally(initialOffsetX = { -0 }, animationSpec = tween(1000))
-                         //slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(1200))
-                     else -> null
-                 }
-             },
-             popExitTransition = {
-                 when (targetState.destination.route) {
-                     REGISTER_ROUTE ->
-                         slideOutHorizontally(targetOffsetX = { 0 }, animationSpec = tween(1000))
-                         //slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(1200))
-                     else -> null
-                 }
-             }
-         ) {
-             LoginPage(activity = mainActivity)
-         }
-         composable(
-             route = PageRoute.REGISTER_ROUTE,
-             enterTransition = {
-                 when (initialState.destination.route) {
-                     REGISTER_ROUTE ->
-                         slideIntoContainer(
-                             AnimatedContentScope.SlideDirection.Up, animationSpec = tween(1200)
-                         )
-                     else -> null
-                 }
-             },
-             exitTransition = {
-                 when (targetState.destination.route) {
-                     REGISTER_ROUTE ->
-                         slideOutOfContainer(
-                             AnimatedContentScope.SlideDirection.Up, animationSpec = tween(1200)
-                         )
-                     else -> null
-                 }
-             },
-             popEnterTransition = {
-                 when (initialState.destination.route) {
-                     REGISTER_ROUTE ->
-                         slideIntoContainer(
-                             AnimatedContentScope.SlideDirection.Down, animationSpec = tween(1200)
-                         )
-                     else -> null
-                 }
-             },
-             popExitTransition = {
-                 when (targetState.destination.route) {
-                     REGISTER_ROUTE ->
-                         slideOutOfContainer(
-                             AnimatedContentScope.SlideDirection.Down, animationSpec = tween(1200)
-                         )
-                     else -> null
-                 }
-             }
-             ) {
-             RegisterPage(activity = mainActivity)
-         }
-         composable(route = PageRoute.VIDEO_DETAIL_ROUTE,
-         ) {
-             VideoDetailPage()
-         }
-         composable(route = PageRoute.MAIN_PAGE) {
-             MainPage()
-         }
-     }*/
-
-}
-
-/**
- * 页面跳转
- * */
-@ExperimentalFoundationApi
-@ExperimentalMaterialApi
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
-fun doPageNavigationTo(route: String) {
-    val navController = MainActivity.pageNavController!!
-    navController.navigate(route) {
-        launchSingleTop = false
-
-        popUpTo(navController.graph.findStartDestination().id) {
-            // 防止状态丢失
-            saveState = true
+    AnimatedNavHost(
+        modifier = Modifier.fillMaxSize(),
+        navController = navHostController,
+        startDestination = PageRoute.SPLASH_ROUTE,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { it },
+                animationSpec = tween()
+            )
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { -it },
+                animationSpec = tween()
+            ) + fadeOut(
+                animationSpec = tween()
+            )
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { -it },
+                animationSpec = tween()
+            )
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween()
+            )
         }
-        // 恢复Composable的状态
-        restoreState = true
+    ) {
+        composable(
+            route = PageRoute.SPLASH_ROUTE,
+            exitTransition = { fadeOut() }
+        ) {
+            DelegateSplash()
+        }
+        composable(route = PageRoute.LOGIN_ROUTE) {
+            LoginPage()
+        }
+        composable(route = PageRoute.REGISTER_ROUTE) {
+            RegisterPage()
+        }
+        composable(
+            route = PageRoute.MAIN_PAGE,
+            arguments = listOf(
+                navArgument("bottomIndex") {
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+            ),
+            deepLinks = listOf(NavDeepLink("https://compose.bili.com/main/{bottomIndex}"))
+        ) {
+            MainPage(bottomIndex = it.arguments?.getInt("bottomIndex") ?: 0)
+        }
+        composable(
+            // 定义参数类型
+            route = PageRoute.VIDEO_DETAIL_ROUTE,
+            arguments = listOf(
+                navArgument(name = "videoM") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            ),
+            deepLinks = listOf(
+                NavDeepLink("https://compose.bili.com/detail/videoDetail?videoM={videoM}")
+            )
+        ) { backStackEntry ->
+            // 接收参数
+            val videoM = backStackEntry.arguments?.getString("videoM")
+            VideoDetailPage(videoJson = videoM)
+        }
+        composable(route = PageRoute.NOTICE_ROUTE) {
+            NoticeListPage()
+        }
+        composable(route = PageRoute.SEARCH_ROUTE) {
+            SearchPage()
+        }
+        composable(
+            route = PageRoute.WEB_VIEW_ROUTE,
+            arguments = listOf(
+                navArgument(name = "linkUrl") {
+                    type = NavType.StringType
+                    defaultValue = "https:www.baidu.com".extUrlEncode()
+                }
+            ),
+            deepLinks = listOf(
+                NavDeepLink("https://compose.bili.com/web_view/web?link={linkUrl}")
+            )
+        ) { backStackEntry ->
+            val link = backStackEntry.arguments?.getString("linkUrl")
+            DelegateWebView(url = link!!)
+        }
     }
-}
-
-/**
- * 页面回退
- * */
-@ExperimentalFoundationApi
-@ExperimentalMaterialApi
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
-fun doPageNavBack(route: String? = null) {
-    val navController = MainActivity.pageNavController!!
-    route?.let {
-        navController.popBackStack(route = it, inclusive = false)
-    } ?: navController.popBackStack()
 }

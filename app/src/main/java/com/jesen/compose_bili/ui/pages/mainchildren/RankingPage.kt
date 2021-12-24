@@ -19,13 +19,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import com.jesen.common_util_lib.utils.LocalMainActivity
 import com.jesen.common_util_lib.utils.oLog
-import com.jesen.compose_bili.MainActivity
 import com.jesen.compose_bili.R
 import com.jesen.compose_bili.ui.theme.bili_50
 import com.jesen.compose_bili.ui.theme.gray100
@@ -39,12 +38,12 @@ import kotlinx.coroutines.launch
  * 排行榜
  * */
 @ExperimentalAnimationApi
-@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
-fun RankingPage(activity: MainActivity) {
+fun RankingPage() {
+    val activity = LocalMainActivity.current
     val viewModel by activity.viewModels<RankingViewModel>()
 
     val pagerState = rememberPagerState(

@@ -8,11 +8,13 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.jesen.compose_bili.MainActivity
-import com.jesen.compose_bili.navigation.doPageNavBack
+import com.jesen.common_util_lib.utils.LocalMainActivity
+import com.jesen.common_util_lib.utils.LocalNavController
+import com.jesen.compose_bili.navigation.NavUtil
 import com.jesen.compose_bili.ui.widget.*
 import com.jesen.compose_bili.viewmodel.SearchViewModel
 import com.jesen.retrofit_lib.response.DataState
+import kotlinx.coroutines.launch
 import soup.compose.material.motion.MaterialFadeThrough
 
 /**
@@ -24,18 +26,22 @@ import soup.compose.material.motion.MaterialFadeThrough
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun SearchPage(activity: MainActivity) {
+fun SearchPage() {
+    val activity = LocalMainActivity.current
     val viewModel by activity.viewModels<SearchViewModel>()
 
     // 是否需要指定输入内容，如点击热词项
     var needInput by remember { mutableStateOf("") }
 
     // 是否展示默认热词界面
-    var showDefault = remember { mutableStateOf(true) }
+    val showDefault = remember { mutableStateOf(true) }
 
     // 加载热词
     viewModel.getHotWordsInfo()
     val hotInfo = viewModel.searchHotInfo.collectAsState()
+
+    val navController = LocalNavController.current
+    val contentScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -46,7 +52,9 @@ fun SearchPage(activity: MainActivity) {
                 },
                 onCancel = {
                     viewModel.searchResultState.value = DataState.Empty()
-                    doPageNavBack()
+                    contentScope.launch {
+                        NavUtil.doPageNavBack(navController)
+                    }
                 },
                 onClearInput = {
                     needInput = ""

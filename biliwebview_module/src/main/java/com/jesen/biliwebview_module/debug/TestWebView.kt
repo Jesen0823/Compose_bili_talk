@@ -39,7 +39,7 @@ fun TestWebView(
     }) {
         BiliWebView(
             modifier = Modifier.fillMaxSize(),
-            link = "https://blog.csdn.net/songnigo6/article/details/110282484",
+            link = "https://docs.compose.net.cn/",
             session = SessionManager.session
         ) {
             title = it
