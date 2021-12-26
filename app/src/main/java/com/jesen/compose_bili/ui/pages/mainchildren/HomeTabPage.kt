@@ -84,16 +84,21 @@ fun HomeTabPage(categoryIndex: Int) {
             MainTopBarUI(
                 {
                     scope.launch {
-                        NavUtil.doPageNavigationTo(navController,PageRoute.SEARCH_ROUTE)
+                        NavUtil.doPageNavigationTo(navController, PageRoute.SEARCH_ROUTE)
+                    }
+                    scope.run {
+                        NavUtil.doPageNavigationTo(navController, PageRoute.SEARCH_ROUTE)
                     }
                 }, {
                     scope.launch {
                         NavUtil.doPageNavigationTo(navController,replaceRegex(PageRoute.VIDEO_DETAIL_ROUTE, "7688021"))
                     }
+                    //scope.run { NavUtil.doPageNavigationTo(navController,replaceRegex(PageRoute.VIDEO_DETAIL_ROUTE, "7688021")) }
                 }, {
                     scope.launch {
                         NavUtil.doPageNavigationTo(navController,PageRoute.NOTICE_ROUTE)
                     }
+                    //scope.run { NavUtil.doPageNavigationTo(navController,PageRoute.NOTICE_ROUTE) }
                 }
             )
         }

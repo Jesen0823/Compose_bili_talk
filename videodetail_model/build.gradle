@@ -89,10 +89,10 @@ dependencies {
     // Icons部分图标找不到的问题
     api "androidx.compose.material:material-icons-extended:$compose_version"
 
-    if(isDebug && isDetailPageDebug){
+    //if(isDebug && isDetailPageDebug){
         // 状态栏相关
         api "com.google.accompanist:accompanist-insets:$accompanist_version"
         api "com.google.accompanist:accompanist-insets-ui:$accompanist_version"
         api "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
-    }
+    //}
 }

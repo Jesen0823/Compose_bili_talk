@@ -14,7 +14,7 @@ import com.jesen.compose_bili.navigation.NavUtil
 import com.jesen.compose_bili.ui.widget.*
 import com.jesen.compose_bili.viewmodel.SearchViewModel
 import com.jesen.retrofit_lib.response.DataState
-import kotlinx.coroutines.launch
+//import kotlinx.coroutines.launch
 import soup.compose.material.motion.MaterialFadeThrough
 
 /**
@@ -52,7 +52,10 @@ fun SearchPage() {
                 },
                 onCancel = {
                     viewModel.searchResultState.value = DataState.Empty()
-                    contentScope.launch {
+                    /*contentScope.launch {
+                        NavUtil.doPageNavBack(navController)
+                    }*/
+                    contentScope.run {
                         NavUtil.doPageNavBack(navController)
                     }
                 },

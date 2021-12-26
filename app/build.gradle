@@ -96,6 +96,8 @@ dependencies {
 
     implementation project(path: ':common_util_lib')
 
+    implementation project(path: ':QRzxing_lib')
+
     // releaseImplementation project(path: ':retrofit_lib', configuration: 'release')
     // debugImplementation project(path: ':retrofit_lib', configuration: 'debug')
     implementation project(path: ':biliwebview_module')

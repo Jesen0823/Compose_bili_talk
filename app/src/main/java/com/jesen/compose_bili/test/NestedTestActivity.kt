@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -22,37 +21,45 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jesen.common_util_lib.custonnested.NestedWrapCustomLayout
 import com.jesen.compose_bili.ui.theme.Compose_bili_talkTheme
+import com.jesen.qrzxing.compose.ScanDecoration
 
 class NestedTestActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Compose_bili_talkTheme {
-                NestedWrapCustomLayout(
-                    columnTop = 200.dp,
-                    navigationIconSize = 50.dp,
-                    toolBarHeight = 56.dp,
-                    scrollableAppBarHeight = 200.dp,
-                    columnState = rememberLazyListState(),
-                    scrollableAppBarBgColor = Color.LightGray,
-                    toolBar = { MyToolBar() },
-                    navigationIcon = { MyNavigationLeftTop() }, //默认为返回图标
-                    headerTop = { MyHeaderTop() },
-                    backSlideProgress = { progress ->
+                /* NestedWrapCustomLayout(
+                     columnTop = 200.dp,
+                     navigationIconSize = 50.dp,
+                     toolBarHeight = 56.dp,
+                     scrollableAppBarHeight = 200.dp,
+                     columnState = rememberLazyListState(),
+                     scrollableAppBarBgColor = Color.LightGray,
+                     toolBar = { MyToolBar() },
+                     navigationIcon = { MyNavigationLeftTop() }, //默认为返回图标
+                     headerTop = { MyHeaderTop() },
+                     backSlideProgress = { progress ->
 
-                    }
-                ) {
-                    items(100) { index ->
-                        Text(
-                            "I'm item $index",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        )
-                    }
-                }
+                     }
+                 ) {
+                     items(100) { index ->
+                         Text(
+                             "I'm item $index",
+                             modifier = Modifier
+                                 .fillMaxWidth()
+                                 .padding(16.dp)
+                         )
+                     }
+                 }*/
+                //ZxingDrawTestPage()
+                //HourglassTest()
+                //AnimDemoPendulumTest()
+                ScanDecoration(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Color.Transparent)
+                )
             }
         }
     }

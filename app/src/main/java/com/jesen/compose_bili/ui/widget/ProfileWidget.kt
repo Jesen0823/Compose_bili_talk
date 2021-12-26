@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Logout
+import androidx.compose.material.icons.rounded.QrCodeScanner
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -280,7 +281,8 @@ fun CourseListView(courseList: List<Course>) {
 @Composable
 fun ColumnSetting(
     onLogoutClick: () -> Unit,
-    onSwitchChange:(Boolean)->Unit
+    onSwitchChange: (Boolean) -> Unit,
+    onQRClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -324,6 +326,23 @@ fun ColumnSetting(
             }
             Text(text = "退出登录", color = gray700)
         }
+
+        SettingItemBg {
+            IconButton(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(horizontal = 8.dp, vertical = 3.dp),
+                onClick = { onQRClick() }
+            ) {
+                Icon(
+                    modifier = Modifier.size(38.dp),
+                    imageVector = Icons.Rounded.QrCodeScanner,
+                    contentDescription = "QR",
+                    tint = MaterialTheme.colors.surface
+                )
+            }
+            Text(text = "扫一扫", color = gray700)
+        }
     }
 }
 
@@ -336,7 +355,8 @@ fun SettingItemBg(
 ){
     Row(
         modifier = Modifier
-            .fillMaxWidth().height(52.dp)
+            .fillMaxWidth()
+            .height(52.dp)
             .padding(start = 16.dp, top = 3.dp, bottom = 3.dp)
             .background(
                 brush = Brush.horizontalGradient(

@@ -27,6 +27,7 @@ import com.jesen.compose_bili.ui.pages.SearchPage
 import com.jesen.compose_bili.ui.pages.VideoDetailPage
 import com.jesen.compose_bili.ui.pages.delegate.DelegateSplash
 import com.jesen.compose_bili.ui.pages.delegate.DelegateWebView
+import com.jesen.compose_bili.ui.pages.delegate.DelegateZxingPage
 import com.jesen.compose_bili.ui.pages.user.LoginPage
 import com.jesen.compose_bili.ui.pages.user.RegisterPage
 
@@ -42,6 +43,7 @@ object PageRoute {
     const val NOTICE_ROUTE = "notice_list"
     const val SEARCH_ROUTE = "search"
     const val WEB_VIEW_ROUTE = "web_view/web?link={linkUrl}"
+    const val ZXING_ROUTE = "zxingQR"
 }
 
 /**
@@ -184,6 +186,9 @@ fun PageNavHost() {
         ) { backStackEntry ->
             val link = backStackEntry.arguments?.getString("linkUrl")
             DelegateWebView(url = link!!)
+        }
+        composable(route = PageRoute.ZXING_ROUTE) {
+            DelegateZxingPage()
         }
     }
 }

@@ -32,6 +32,7 @@ import com.jesen.retrofit_lib.model.DataProfile
 import com.jesen.retrofit_lib.response.DataState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+//import kotlinx.coroutines.launch
 import soup.compose.material.motion.MaterialFadeThrough
 
 
@@ -50,6 +51,7 @@ fun ProfilePage() {
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = viewModel.profileDataState) {
+        viewModel.loadProfileInfo
         activity.lifecycleScope.launch {
             viewModel.loadProfileInfo
         }
@@ -150,6 +152,12 @@ fun ProfileContentScreen(
                                 PageRoute.WEB_VIEW_ROUTE.replaceAfter("=", banner.url)
                             )
                         }
+                        /*coroutineScope.run {
+                            NavUtil.doPageNavigationTo(
+                                navController,
+                                PageRoute.WEB_VIEW_ROUTE.replaceAfter("=", banner.url)
+                            )
+                        }*/
                     }
                 )
             }
@@ -190,6 +198,15 @@ fun ProfileContentScreen(
                                                 )
                                             )
                                         }
+                                        /*coroutineScope.run {
+                                            NavUtil.doPageNavigationTo(
+                                                navController,
+                                                PageRoute.WEB_VIEW_ROUTE.replaceAfter(
+                                                    "=",
+                                                    nenefitList[index].url
+                                                )
+                                            )
+                                        }*/
                                     }
                                 )
                             }
@@ -209,6 +226,11 @@ fun ProfileContentScreen(
                     },
                     onSwitchChange = {
 
+                    },
+                    onQRClick = {
+                        coroutineScope.launch {
+                            NavUtil.doPageNavigationTo(navController, PageRoute.ZXING_ROUTE)
+                        }
                     }
                 )
             }
@@ -222,6 +244,9 @@ fun ProfileContentScreen(
                     coroutineScope.launch {
                         NavUtil.doPageNavigationTo(navController, PageRoute.LOGIN_ROUTE, false)
                     }
+                    /*coroutineScope.run {
+                        NavUtil.doPageNavigationTo(navController, PageRoute.LOGIN_ROUTE, false)
+                    }*/
                 }
             )
         }
