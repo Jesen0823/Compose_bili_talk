@@ -34,7 +34,6 @@ import com.jesen.videodetail_model.util.IconTextSmall
 fun VideoItemCard(
     video: VideoM,
     onClick: () -> Unit,
-    index: Int
 ) {
     Card(
         modifier = Modifier
@@ -86,8 +85,8 @@ fun VideoItemCard(
                     .height(40.dp),
                 //.align(alignment = Alignment.Vertical.)
                 //.padding(bottom = 8.dp),
-                authImg = video.owner.face,
-                authName = video.owner.name
+                authImg = video.owner?.face ?: "",
+                authName = video.owner?.name ?: ""
             )
         }
     }

@@ -16,7 +16,11 @@ object NavUtil {
     @ExperimentalMaterialApi
     @ExperimentalAnimationApi
     @ExperimentalPagerApi
-    fun doPageNavigationTo(navController:NavHostController,route: String,allowBack:Boolean=true) {
+    fun doPageNavigationTo(
+        navController: NavHostController,
+        route: String,
+        allowBack: Boolean = true
+    ) {
         navController.navigate(route) {
             launchSingleTop = false
 
@@ -24,7 +28,7 @@ object NavUtil {
                 if (allowBack) {
                     // 防止状态丢失
                     saveState = true
-                }else{
+                } else {
                     inclusive = true
                 }
             }
@@ -40,7 +44,7 @@ object NavUtil {
     @ExperimentalMaterialApi
     @ExperimentalAnimationApi
     @ExperimentalPagerApi
-    fun doPageNavBack(navController:NavHostController,route: String? = null) {
+    fun doPageNavBack(navController: NavHostController, route: String? = null) {
         route?.let {
             navController.popBackStack(route = it, inclusive = false)
         } ?: navController.popBackStack()

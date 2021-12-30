@@ -155,6 +155,15 @@ fun HomeTabPage(categoryIndex: Int) {
 
                                     itemOnClick = { banner ->
                                         // 点击banner
+                                        scope.launch {
+                                            NavUtil.doPageNavigationTo(
+                                                navController,
+                                                PageRoute.WEB_VIEW_ROUTE.replaceAfter(
+                                                    "=",
+                                                    banner.url
+                                                )
+                                            )
+                                        }
                                     }
                                 )
                             }

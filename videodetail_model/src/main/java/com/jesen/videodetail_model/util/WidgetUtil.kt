@@ -133,7 +133,7 @@ fun SmallVideoCard(
                         bottom.linkTo(viewNum.top, margin = 8.dp)
                         start.linkTo(upTag.end, margin = 8.dp)
                     },
-                text = video.owner.name,
+                text = video.owner?.name ?: "null",
                 style = TextStyle(
                     fontSize = 12.sp,
                     color = Color.Gray,

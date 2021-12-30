@@ -1,16 +1,15 @@
 package com.jesen.biliexoplayer.player
 
 import android.net.Uri
+import android.util.Log
 import android.util.SizeF
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
@@ -18,17 +17,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavBackStackEntry
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.ui.BiliPlayerView
+import com.google.android.exoplayer2.ui.BiliStyledPlayerView
 import com.google.android.exoplayer2.util.Util
+import com.jesen.biliexoplayer.player.PlayerViewManager.TOP_BACK_TAG
 import com.jesen.biliexoplayer.player.cache.VideoDataSourceHolder
-import com.jesen.common_util_lib.utils.isFreeNetwork
 import com.jesen.common_util_lib.utils.oLog
+
 
 /**
  * 简单播放器封装
@@ -37,55 +36,30 @@ import com.jesen.common_util_lib.utils.oLog
 fun ExoComposePlayer(
     activity: ComponentActivity,
     modifier: Modifier = Modifier,
-    title: String,
     url: String?,
+    onBackCall: () -> Unit,
     size: SizeF = SizeF(1280f, 720f),
     autoPlayVideo: Boolean = true,
-    autoPlayOnWifi: Boolean = true
+    autoPlayOnWifi: Boolean = true,
+    title: String
 ) {
     val context = LocalContext.current
 
+    PlayerViewManager.init(activity = activity)
+
     // 获取播放器实例
     val exoPlayer = remember { ExoPlayerHolder.get(context = context) }
-    var playerView: BiliPlayerView? = null
 
-    val systemUiController = rememberSystemUiController()
-    val primaryColor = MaterialTheme.colors.background
-    val dark = MaterialTheme.colors.isLight
-    SideEffect {
-        systemUiController.setNavigationBarColor(
-            primaryColor,
-            darkIcons = dark
-        )
-        systemUiController.setStatusBarColor(
-            Color.Transparent,
-            darkIcons = dark
-        )
+    val playerView = remember {
+        PlayerViewManager.get(context)
     }
 
-    BackHandler(
-        enabled = PlayerViewManager.playerViewMode == PlayViewMode.HALF_SCREEN
-    ) {
+    BackHandler() {
         oLog("--ComposePlayer, BackHandler")
-        PlayerViewManager.switchPlayerViewMode()
-    }
-
-    OnLifecycleEvent { owner, event ->
-        if (owner is NavBackStackEntry) {
-            oLog("--ComposePlayer,OnLifecycleEvent event:${event.name}")
-            when (event) {
-                Lifecycle.Event.ON_PAUSE -> {
-                    PlayerViewManager.playOrPause(true)
-                }
-                Lifecycle.Event.ON_RESUME -> {
-                    PlayerViewManager.playOrPause(false)
-                }
-                Lifecycle.Event.ON_STOP -> {
-
-                }
-                else -> {
-                }
-            }
+        if (playerView.playerController.isFullScreen) {
+            playerView.playerController.switchFullScreenMode()
+        } else {
+            onBackCall()
         }
     }
 
@@ -109,61 +83,70 @@ fun ExoComposePlayer(
     }
 
     AndroidView(
-        modifier = modifier.aspectRatio(size.width / size.height),
+        modifier = modifier
+            .aspectRatio(size.width / size.height)
+            .wrapContentHeight(),
         factory = { context ->
             oLog("--ComposePlayer,factory")
             val frameLayout = FrameLayout(context)
             frameLayout.setBackgroundColor(context.getColor(android.R.color.background_dark))
+            frameLayout.removeAllViews()
+
+            // 切换播放器
+            BiliStyledPlayerView.switchTargetView(
+                exoPlayer,
+                PlayViewData.instance.curPlayerView,
+                playerView
+            )
+            PlayViewData.instance.curPlayerView = playerView
+
+            playerView.apply {
+                player?.playWhenReady =
+                    autoPlayVideo || (autoPlayOnWifi)
+                setControllerOnExtendButtonEventListener { button ->
+                    Log.d("Manager--", "button:$button")
+                    if (button.tag.equals(TOP_BACK_TAG)) {
+                        onBackCall()
+                    }
+                }
+            }
+
+            frameLayout.addView(
+                playerView,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
+            playerView.let {
+                PlayerViewManager.setVideoTitleContent(it, title)
+            }
             frameLayout
         },
-        update = { frameLayout ->
-            oLog("--ComposePlayer, update,frameLayout:$frameLayout")
-            PlayerViewManager.activity = activity
+        update = {
 
-            if (playerUIEnable()) {
-                frameLayout.removeAllViews()
-                playerView = PlayerViewManager.get(frameLayout.context)
+        }
 
-                // 切换播放器
-                BiliPlayerView.switchTargetView(
-                    exoPlayer,
-                    PlayViewData.instance.curPlayerView,
-                    playerView
-                )
+    )
 
-                PlayViewData.instance.curPlayerView = playerView
-                PlayerViewManager.setVideoTitle(true, title)
-
-                playerView?.apply {
-                    player?.playWhenReady =
-                        autoPlayVideo || (autoPlayOnWifi && context.isFreeNetwork())
+    OnLifecycleEvent { owner, event ->
+        if (owner is NavBackStackEntry) {
+            when (event) {
+                Lifecycle.Event.ON_PAUSE -> {
+                    exoPlayer.pause()
                 }
-
-                playerView?.apply {
-                    (parent as? ViewGroup)?.removeView(this)
+                Lifecycle.Event.ON_RESUME -> {
+                    exoPlayer.play()
                 }
-                frameLayout.addView(
-                    playerView,
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT
-                )
-                PlayViewData.instance.halfPlayParent = frameLayout
+                else -> {
+                }
             }
         }
-    )
+    }
 
     DisposableEffect(key1 = url) {
         onDispose {
             oLog("--ComposePlayer,DisposableEffect--onDispose")
-
-            playerView?.apply {
-                (parent as? ViewGroup)?.removeView(this)
-            }
             exoPlayer.stop()
-            playerView?.let {
-                PlayerViewManager.release(it)
-            }
-            playerView = null
+            PlayViewData.instance.curPlayerView = null
         }
     }
 }
@@ -184,9 +167,4 @@ fun OnLifecycleEvent(onEvent: (owner: LifecycleOwner, event: Lifecycle.Event) ->
             lifecycle.removeObserver(observer)
         }
     }
-}
-
-fun playerUIEnable(): Boolean = when (PlayerViewManager.playerMode) {
-    PlayerMode.SINGLE_MODE -> true
-    PlayerMode.LIST_MODE -> PlayerViewManager.playerViewMode == PlayViewMode.HALF_SCREEN
 }

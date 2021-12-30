@@ -24,14 +24,18 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.jesen.common_util_lib.utils.LocalMainActivity
+import com.jesen.common_util_lib.utils.LocalNavController
 import com.jesen.common_util_lib.utils.oLog
 import com.jesen.compose_bili.R
+import com.jesen.compose_bili.navigation.NavUtil
+import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.ui.theme.bili_50
 import com.jesen.compose_bili.ui.theme.gray100
 import com.jesen.compose_bili.ui.theme.gray50
 import com.jesen.compose_bili.ui.theme.gray700
 import com.jesen.compose_bili.ui.widget.RefreshColumnScreen
 import com.jesen.compose_bili.viewmodel.RankingViewModel
+import com.jesen.retrofit_lib.model.videoModel2Js
 import kotlinx.coroutines.launch
 
 /**
@@ -58,7 +62,7 @@ fun RankingPage() {
     val tabState = remember {
         mutableStateOf(tabTitles[0])
     }
-
+    val navController = LocalNavController.current
     Scaffold {
         Column(modifier = Modifier.fillMaxSize()) {
             // 顶部导航
@@ -76,7 +80,12 @@ fun RankingPage() {
                 RefreshColumnScreen(
                     indexPage = indexPage,
                     viewModel = viewModel,
-                    context = activity,
+                    onItemClick = {
+                        NavUtil.doPageNavigationTo(
+                            navController = navController,
+                            PageRoute.VIDEO_DETAIL_ROUTE.replaceAfter("=", videoModel2Js(it))
+                        )
+                    },
                     pagingDataList = viewModel.rankListData[indexPage].second
                 )
             }

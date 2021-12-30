@@ -53,7 +53,7 @@ fun VideoInfoItem(viewModel: DetailViewModel, detailData: VideoDetailData) {
         ) {
             // 头像
             CoilCircleImage(
-                url = videoInfo.owner.face,
+                url = videoInfo.owner?.face,
                 modifier = Modifier
                     .size(72.dp)
                     .padding(16.dp),
@@ -66,7 +66,7 @@ fun VideoInfoItem(viewModel: DetailViewModel, detailData: VideoDetailData) {
             ) {
                 // 用户名
                 Text(
-                    text = videoInfo.owner.name,
+                    text = videoInfo.owner?.name ?: "null",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = bili_50
@@ -75,7 +75,7 @@ fun VideoInfoItem(viewModel: DetailViewModel, detailData: VideoDetailData) {
                 Text(
                     modifier = Modifier
                         .padding(top = 5.dp),
-                    text = "${countFormat(videoInfo.owner.fans)}粉丝",
+                    text = "${countFormat(videoInfo.owner?.fans ?: 0)}粉丝",
                     color = Color.Gray,
                     fontSize = 12.sp
                 )

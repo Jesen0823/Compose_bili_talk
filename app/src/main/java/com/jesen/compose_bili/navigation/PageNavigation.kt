@@ -24,8 +24,8 @@ import com.jesen.common_util_lib.utils.extUrlEncode
 import com.jesen.compose_bili.ui.pages.MainPage
 import com.jesen.compose_bili.ui.pages.NoticeListPage
 import com.jesen.compose_bili.ui.pages.SearchPage
-import com.jesen.compose_bili.ui.pages.VideoDetailPage
 import com.jesen.compose_bili.ui.pages.delegate.DelegateSplash
+import com.jesen.compose_bili.ui.pages.delegate.DelegateVideoDetail
 import com.jesen.compose_bili.ui.pages.delegate.DelegateWebView
 import com.jesen.compose_bili.ui.pages.delegate.DelegateZxingPage
 import com.jesen.compose_bili.ui.pages.user.LoginPage
@@ -163,8 +163,8 @@ fun PageNavHost() {
             )
         ) { backStackEntry ->
             // 接收参数
-            val videoM = backStackEntry.arguments?.getString("videoM")
-            VideoDetailPage(videoJson = videoM)
+            val videoJs = backStackEntry.arguments?.getString("videoM") ?: "null"
+            DelegateVideoDetail(videoJs = videoJs)
         }
         composable(route = PageRoute.NOTICE_ROUTE) {
             NoticeListPage()

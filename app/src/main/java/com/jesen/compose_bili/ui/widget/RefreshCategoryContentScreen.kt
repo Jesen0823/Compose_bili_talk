@@ -2,24 +2,32 @@ package com.jesen.compose_bili.ui.widget
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.jesen.common_util_lib.paging.SwipeRefreshColumnLayout
 import com.jesen.common_util_lib.paging.SwipeRefreshGridLayout
+import com.jesen.common_util_lib.utils.LocalNavController
 import com.jesen.common_util_lib.utils.oLog
+import com.jesen.compose_bili.navigation.NavUtil
+import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.retrofit_lib.model.VideoM
+import com.jesen.retrofit_lib.model.videoModel2Js
+import kotlinx.coroutines.launch
 
 /**
  * 首页列表加载 ---下拉刷新，加载更多动效
  * */
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -34,6 +42,8 @@ fun RefreshCategoryContentScreen(
     oLog(" refresh content index = $index")
 
     val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val navController = LocalNavController.current
 
     /**
      * index = 0 含Banner，不使用LazyVerticalGrid
@@ -67,13 +77,19 @@ fun RefreshCategoryContentScreen(
                                     ),
                                 propagateMinConstraints = true
                             ) {
-                                videoCategoryList[itemIndex]?.let {
+                                videoCategoryList[itemIndex]?.let { video ->
                                     VideoItemCard(
-                                        index = itemIndex,
-                                        video = it,
+                                        video = video,
                                         onClick = {
-                                            Toast.makeText(context, "ccc", Toast.LENGTH_SHORT)
-                                                .show()
+                                            coroutineScope.launch {
+                                                NavUtil.doPageNavigationTo(
+                                                    navController = navController,
+                                                    PageRoute.VIDEO_DETAIL_ROUTE.replaceAfter(
+                                                        "=",
+                                                        videoModel2Js(video)
+                                                    )
+                                                )
+                                            }
                                         },
                                     )
                                 }
@@ -94,7 +110,6 @@ fun RefreshCategoryContentScreen(
             items(videoCategoryList.itemCount) { index ->
                 videoCategoryList[index]?.let {
                     VideoItemCard(
-                        index = index,
                         video = it,
                         onClick = { Toast.makeText(context, "ccc", Toast.LENGTH_SHORT).show() },
                     )

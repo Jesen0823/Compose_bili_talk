@@ -20,18 +20,19 @@
         android:id="@+id/v_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="120dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:padding="2dp"
-        android:textColor="@color/gray_800"
-        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back_play" />
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/back_play" />
 
     <ImageView
         android:id="@+id/tv_btn"
@@ -58,32 +59,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/controller_bottom_layout"
+        android:id="@+id/exo_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="8dp"
+        android:gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <ImageView
-            android:id="@+id/exo_play"
+            android:id="@+id/exo_play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:contentDescription="@null"
-            android:src="@drawable/play_play_arrow_24"
-            app:srcCompat="@drawable/play_play_arrow_24" />
-
-        <ImageView
-            android:id="@+id/exo_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@null"
-            android:src="@drawable/play_pause_24"
-            app:srcCompat="@drawable/play_pause_24" />
+            android:src="@drawable/exo_ic_play_circle"
+            app:srcCompat="@drawable/exo_ic_play_circle" />
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@+id/exo_progress"
@@ -129,7 +122,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginRight="8dp"
             android:contentDescription="@null"
-            android:text="1"
+            android:text="0:00"
             android:textColor="@color/gray_600"
             android:textSize="12sp" />
 

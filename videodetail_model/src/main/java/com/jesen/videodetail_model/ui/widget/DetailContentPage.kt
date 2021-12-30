@@ -10,17 +10,16 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Upload
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
-import com.jesen.common_util_lib.utils.oLog
 import com.jesen.retrofit_lib.model.VideoDetailData
+import com.jesen.retrofit_lib.model.VideoM
 import com.jesen.videodetail_model.ui.theme.bili_50
 import com.jesen.videodetail_model.util.SmallVideoCard
 import com.jesen.videodetail_model.viewmodel.DetailViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
@@ -33,11 +32,11 @@ import kotlinx.coroutines.launch
 fun VideoDesContent(
     viewModel: DetailViewModel,
     detailData: VideoDetailData,
-    pagerState: PagerState,
+    itemCardClick: (VideoM) -> Unit,
+    coroutineScope: CoroutineScope,
 ) {
 
     val lazyListState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
 
     LazyColumn(state = lazyListState) {
         item {
@@ -45,16 +44,14 @@ fun VideoDesContent(
         }
         itemsIndexed(detailData.videoList) { index, itemData ->
             SmallVideoCard(video = itemData,
-                onClick = { videoM ->
-                    oLog(" click to ${videoM.title}")
-                }
+                onClick = { itemCardClick(itemData) }
             )
         }
         item {
             IconButton(
                 modifier = Modifier.padding(horizontal = 30.dp),
                 onClick = {
-                    scope.launch {
+                    coroutineScope.launch {
                         lazyListState.animateScrollToItem(index = 0)
                     }
                 },

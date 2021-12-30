@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 The Android Open Source Project
+ * Copyright 2019 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,22 @@ package com.google.android.exoplayer2.ui;
 
 import static com.google.android.exoplayer2.Player.COMMAND_GET_TEXT;
 import static com.google.android.exoplayer2.Player.COMMAND_SET_VIDEO_SURFACE;
+import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.opengl.GLSurfaceView;
-import android.os.Build;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,7 +42,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.IntDef;
@@ -54,24 +51,17 @@ import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ControlDispatcher;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.ForwardingPlayer;
 import com.google.android.exoplayer2.MediaMetadata;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Player.DiscontinuityReason;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Timeline.Period;
-import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.TracksInfo;
 import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.ErrorMessageProvider;
-import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.RepeatModeUtil;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoSize;
@@ -88,15 +78,15 @@ import java.util.List;
 
 /**
  * A high level view for {@link Player} media playbacks. It displays video, subtitles and album art
- * during playback, and displays playback controls using a {@link PlayerControlView}.
+ * during playback, and displays playback controls using a {@link StyledPlayerControlView}.
  *
- * <p>A PlayerView can be customized by setting attributes (or calling corresponding methods),
+ * <p>A StyledPlayerView can be customized by setting attributes (or calling corresponding methods),
  * overriding drawables, overriding the view's layout file, or by specifying a custom view layout
  * file.
  *
  * <h2>Attributes</h2>
  * <p>
- * The following attributes can be set on a PlayerView when used in a layout XML file:
+ * The following attributes can be set on a StyledPlayerView when used in a layout XML file:
  *
  * <ul>
  *   <li><b>{@code use_artwork}</b> - Whether artwork is used if available in audio streams.
@@ -172,33 +162,33 @@ import java.util.List;
  *       for more details.
  *       <ul>
  *         <li>Corresponding method: None
- *         <li>Default: {@code R.layout.exo_player_view}
+ *         <li>Default: {@code R.layout.exo_styled_player_view}
  *       </ul>
  *   <li><b>{@code controller_layout_id}</b> - Specifies the id of the layout resource to be
- *       inflated by the child {@link PlayerControlView}. See below for more details.
+ *       inflated by the child {@link StyledPlayerControlView}. See below for more details.
  *       <ul>
  *         <li>Corresponding method: None
- *         <li>Default: {@code R.layout.exo_player_control_view}
+ *         <li>Default: {@code R.layout.exo_styled_player_control_view}
  *       </ul>
- *   <li>All attributes that can be set on {@link PlayerControlView} and {@link DefaultTimeBar} can
- *       also be set on a PlayerView, and will be propagated to the inflated {@link
- *       PlayerControlView} unless the layout is overridden to specify a custom {@code
- *       exo_controller} (see below).
+ *   <li>All attributes that can be set on {@link StyledPlayerControlView} and {@link
+ *       DefaultTimeBar} can also be set on a StyledPlayerView, and will be propagated to the
+ *       inflated {@link StyledPlayerControlView} unless the layout is overridden to specify a
+ *       custom {@code exo_controller} (see below).
  * </ul>
  *
  * <h2>Overriding drawables</h2>
  * <p>
- * The drawables used by {@link PlayerControlView} (with its default layout file) can be overridden
- * by drawables with the same names defined in your application. See the {@link PlayerControlView}
- * documentation for a list of drawables that can be overridden.
+ * The drawables used by {@link StyledPlayerControlView} (with its default layout file) can be
+ * overridden by drawables with the same names defined in your application. See the {@link
+ * StyledPlayerControlView} documentation for a list of drawables that can be overridden.
  *
  * <h2>Overriding the layout file</h2>
  * <p>
- * To customize the layout of PlayerView throughout your app, or just for certain configurations,
- * you can define {@code exo_player_view.xml} layout files in your application {@code res/layout*}
- * directories. These layouts will override the one provided by the ExoPlayer library, and will be
- * inflated for use by PlayerView. The view identifies and binds its children by looking for the
- * following ids:
+ * To customize the layout of StyledPlayerView throughout your app, or just for certain
+ * configurations, you can define {@code exo_styled_player_view.xml} layout files in your
+ * application {@code res/layout*} directories. These layouts will override the one provided by the
+ * library, and will be inflated for use by StyledPlayerView. The view identifies and binds its
+ * children by looking for the following ids:
  *
  * <ul>
  *   <li><b>{@code exo_content_frame}</b> - A frame whose aspect ratio is resized based on the video
@@ -232,17 +222,17 @@ import java.util.List;
  *         <li>Type: {@link TextView}
  *       </ul>
  *   <li><b>{@code exo_controller_placeholder}</b> - A placeholder that's replaced with the inflated
- *       {@link PlayerControlView}. Ignored if an {@code exo_controller} view exists.
+ *       {@link StyledPlayerControlView}. Ignored if an {@code exo_controller} view exists.
  *       <ul>
  *         <li>Type: {@link View}
  *       </ul>
- *   <li><b>{@code exo_controller}</b> - An already inflated {@link PlayerControlView}. Allows use
- *       of a custom extension of {@link PlayerControlView}. {@link PlayerControlView} and {@link
- *       DefaultTimeBar} attributes set on the PlayerView will not be automatically propagated
- *       through to this instance. If a view exists with this id, any {@code
- *       exo_controller_placeholder} view will be ignored.
+ *   <li><b>{@code exo_controller}</b> - An already inflated {@link StyledPlayerControlView}. Allows
+ *       use of a custom extension of {@link StyledPlayerControlView}. {@link
+ *       StyledPlayerControlView} and {@link DefaultTimeBar} attributes set on the StyledPlayerView
+ *       will not be automatically propagated through to this instance. If a view exists with this
+ *       id, any {@code exo_controller_placeholder} view will be ignored.
  *       <ul>
- *         <li>Type: {@link PlayerControlView}
+ *         <li>Type: {@link StyledPlayerControlView}
  *       </ul>
  *   <li><b>{@code exo_ad_overlay}</b> - A {@link FrameLayout} positioned on top of the player which
  *       is used to show ad UI (if applicable).
@@ -261,13 +251,23 @@ import java.util.List;
  *
  * <h2>Specifying a custom layout file</h2>
  * <p>
- * Defining your own {@code exo_player_view.xml} is useful to customize the layout of PlayerView
- * throughout your application. It's also possible to customize the layout for a single instance in
- * a layout file. This is achieved by setting the {@code player_layout_id} attribute on a
- * PlayerView. This will cause the specified layout to be inflated instead of {@code
- * exo_player_view.xml} for only the instance on which the attribute is set.
+ * Defining your own {@code exo_styled_player_view.xml} is useful to customize the layout of
+ * StyledPlayerView throughout your application. It's also possible to customize the layout for a
+ * single instance in a layout file. This is achieved by setting the {@code player_layout_id}
+ * attribute on a StyledPlayerView. This will cause the specified layout to be inflated instead of
+ * {@code exo_styled_player_view.xml} for only the instance on which the attribute is set.
  */
-public class BiliPlayerView extends FrameLayout implements AdViewProvider {
+public class BiliStyledPlayerView extends FrameLayout implements AdViewProvider {
+
+    /**
+     * Determines when the buffering view is shown. One of {@link #SHOW_BUFFERING_NEVER}, {@link
+     * #SHOW_BUFFERING_WHEN_PLAYING} or {@link #SHOW_BUFFERING_ALWAYS}.
+     */
+    @Documented
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({SHOW_BUFFERING_NEVER, SHOW_BUFFERING_WHEN_PLAYING, SHOW_BUFFERING_ALWAYS})
+    public @interface ShowBuffering {
+    }
 
     /**
      * The buffering view is never shown.
@@ -283,13 +283,13 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
      * buffering} state.
      */
     public static final int SHOW_BUFFERING_ALWAYS = 2;
+
     private static final int SURFACE_TYPE_NONE = 0;
     private static final int SURFACE_TYPE_SURFACE_VIEW = 1;
     private static final int SURFACE_TYPE_TEXTURE_VIEW = 2;
     private static final int SURFACE_TYPE_SPHERICAL_GL_SURFACE_VIEW = 3;
     private static final int SURFACE_TYPE_VIDEO_DECODER_GL_SURFACE_VIEW = 4;
-    private static final int PICTURE_TYPE_FRONT_COVER = 3;
-    private static final int PICTURE_TYPE_NOT_SET = -1;
+
     private final ComponentListener componentListener;
     @Nullable
     private final AspectRatioFrameLayout contentFrame;
@@ -305,20 +305,21 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     @Nullable
     private final View bufferingView;
     @Nullable
+    private LottieAnimationView bufferingViewBili;
+    @Nullable
     private final TextView errorMessageView;
     @Nullable
-    private final BiliPlayerControlView controller;
+    private final BiliStyledPlayerControlView controller;
     @Nullable
     private final FrameLayout adOverlayFrameLayout;
     @Nullable
     private final FrameLayout overlayFrameLayout;
-    @Nullable
-    private LottieAnimationView bufferingViewBili;
+
     @Nullable
     private Player player;
     private boolean useController;
     @Nullable
-    private BiliPlayerControlView.VisibilityListener controllerVisibilityListener;
+    private BiliStyledPlayerControlView.VisibilityListener controllerVisibilityListener;
     private boolean useArtwork;
     @Nullable
     private Drawable defaultArtwork;
@@ -335,20 +336,19 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     private boolean controllerHideOnTouch;
     private int textureViewRotation;
     private boolean isTouching;
+    private static final int PICTURE_TYPE_FRONT_COVER = 3;
+    private static final int PICTURE_TYPE_NOT_SET = -1;
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public BiliPlayerView(Context context) {
+    public BiliStyledPlayerView(Context context) {
         this(context, /* attrs= */ null);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public BiliPlayerView(Context context, @Nullable AttributeSet attrs) {
+    public BiliStyledPlayerView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, /* defStyleAttr= */ 0);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressWarnings({"nullness:argument", "nullness:method.invocation"})
-    public BiliPlayerView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BiliStyledPlayerView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         componentListener = new ComponentListener();
@@ -378,13 +378,13 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
 
         boolean shutterColorSet = false;
         int shutterColor = 0;
-        int playerLayoutId = R.layout.exo_player_view;
+        int playerLayoutId = R.layout.exo_styled_player_view;
         boolean useArtwork = true;
         int defaultArtworkId = 0;
         boolean useController = true;
         int surfaceType = SURFACE_TYPE_SURFACE_VIEW;
         int resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT;
-        int controllerShowTimeoutMs = BiliPlayerControlView.DEFAULT_SHOW_TIMEOUT_MS;
+        int controllerShowTimeoutMs = BiliStyledPlayerControlView.DEFAULT_SHOW_TIMEOUT_MS;
         boolean controllerHideOnTouch = true;
         boolean controllerAutoShow = true;
         boolean controllerHideDuringAds = true;
@@ -394,28 +394,32 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
                     context
                             .getTheme()
                             .obtainStyledAttributes(
-                                    attrs, R.styleable.PlayerView, defStyleAttr, /* defStyleRes= */ 0);
+                                    attrs, R.styleable.StyledPlayerView, defStyleAttr, /* defStyleRes= */ 0);
             try {
-                shutterColorSet = a.hasValue(R.styleable.PlayerView_shutter_background_color);
-                shutterColor = a.getColor(R.styleable.PlayerView_shutter_background_color, shutterColor);
-                playerLayoutId = a.getResourceId(R.styleable.PlayerView_player_layout_id, playerLayoutId);
-                useArtwork = a.getBoolean(R.styleable.PlayerView_use_artwork, useArtwork);
+                shutterColorSet = a.hasValue(R.styleable.StyledPlayerView_shutter_background_color);
+                shutterColor =
+                        a.getColor(R.styleable.StyledPlayerView_shutter_background_color, shutterColor);
+                playerLayoutId =
+                        a.getResourceId(R.styleable.StyledPlayerView_player_layout_id, playerLayoutId);
+                useArtwork = a.getBoolean(R.styleable.StyledPlayerView_use_artwork, useArtwork);
                 defaultArtworkId =
-                        a.getResourceId(R.styleable.PlayerView_default_artwork, defaultArtworkId);
-                useController = a.getBoolean(R.styleable.PlayerView_use_controller, useController);
-                surfaceType = a.getInt(R.styleable.PlayerView_surface_type, surfaceType);
-                resizeMode = a.getInt(R.styleable.PlayerView_resize_mode, resizeMode);
+                        a.getResourceId(R.styleable.StyledPlayerView_default_artwork, defaultArtworkId);
+                useController = a.getBoolean(R.styleable.StyledPlayerView_use_controller, useController);
+                surfaceType = a.getInt(R.styleable.StyledPlayerView_surface_type, surfaceType);
+                resizeMode = a.getInt(R.styleable.StyledPlayerView_resize_mode, resizeMode);
                 controllerShowTimeoutMs =
-                        a.getInt(R.styleable.PlayerView_show_timeout, controllerShowTimeoutMs);
+                        a.getInt(R.styleable.StyledPlayerView_show_timeout, controllerShowTimeoutMs);
                 controllerHideOnTouch =
-                        a.getBoolean(R.styleable.PlayerView_hide_on_touch, controllerHideOnTouch);
-                controllerAutoShow = a.getBoolean(R.styleable.PlayerView_auto_show, controllerAutoShow);
-                showBuffering = a.getInteger(R.styleable.PlayerView_show_buffering, showBuffering);
+                        a.getBoolean(R.styleable.StyledPlayerView_hide_on_touch, controllerHideOnTouch);
+                controllerAutoShow =
+                        a.getBoolean(R.styleable.StyledPlayerView_auto_show, controllerAutoShow);
+                showBuffering = a.getInteger(R.styleable.StyledPlayerView_show_buffering, showBuffering);
                 keepContentOnPlayerReset =
                         a.getBoolean(
-                                R.styleable.PlayerView_keep_content_on_player_reset, keepContentOnPlayerReset);
+                                R.styleable.StyledPlayerView_keep_content_on_player_reset,
+                                keepContentOnPlayerReset);
                 controllerHideDuringAds =
-                        a.getBoolean(R.styleable.PlayerView_hide_during_ads, controllerHideDuringAds);
+                        a.getBoolean(R.styleable.StyledPlayerView_hide_during_ads, controllerHideDuringAds);
             } finally {
                 a.recycle();
             }
@@ -435,11 +439,6 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         if (shutterView != null && shutterColorSet) {
             shutterView.setBackgroundColor(shutterColor);
         }
-        // Add
-        ProgressBar exo_buffering = findViewById(R.id.exo_buffering);
-        ColorStateList colorStateList = ColorStateList.valueOf(Color.parseColor("#fb7299"));
-        exo_buffering.setIndeterminateTintList(colorStateList);
-        exo_buffering.setIndeterminateTintMode(PorterDuff.Mode.SRC_ATOP);
 
         // Create a surface view and insert it into the content frame, if there is one.
         boolean surfaceViewIgnoresVideoAspectRatio = false;
@@ -478,9 +477,9 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
                     break;
             }
             surfaceView.setLayoutParams(params);
-            // We don't want surfaceView to be clickable separately to the PlayerView itself, but we do
-            // want to register as an OnClickListener so that surfaceView implementations can propagate
-            // click events up to the PlayerView by calling their own performClick method.
+            // We don't want surfaceView to be clickable separately to the StyledPlayerView itself, but we
+            // do want to register as an OnClickListener so that surfaceView implementations can propagate
+            // click events up to the StyledPlayerView by calling their own performClick method.
             surfaceView.setOnClickListener(componentListener);
             surfaceView.setClickable(false);
             contentFrame.addView(surfaceView, 0);
@@ -509,13 +508,13 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
             subtitleView.setUserDefaultTextSize();
         }
 
-        // Buffering view.
         bufferingView = findViewById(R.id.exo_buffering);
+        // Buffering view.
         if (bufferingView != null) {
             bufferingView.setVisibility(View.GONE);
         }
-        if (bufferingViewBili != null) {
-            bufferingViewBili.setVisibility(View.GONE);
+        if (getBufferingViewBili() != null) {
+            getBufferingViewBili().setVisibility(View.GONE);
         }
         this.showBuffering = showBuffering;
 
@@ -526,14 +525,14 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
 
         // Playback control view.
-        BiliPlayerControlView customController = findViewById(R.id.exo_controller);
+        BiliStyledPlayerControlView customController = findViewById(R.id.exo_controller);
         View controllerPlaceholder = findViewById(R.id.exo_controller_placeholder);
         if (customController != null) {
             this.controller = customController;
         } else if (controllerPlaceholder != null) {
             // Propagate attrs as playbackAttrs so that PlayerControlView's custom attributes are
             // transferred, but standard attributes (e.g. background) are not.
-            this.controller = new BiliPlayerControlView(context, null, 0, attrs);
+            this.controller = new BiliStyledPlayerControlView(context, null, 0, attrs);
             controller.setId(R.id.exo_controller);
             controller.setLayoutParams(controllerPlaceholder.getLayoutParams());
             ViewGroup parent = ((ViewGroup) controllerPlaceholder.getParent());
@@ -548,11 +547,11 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         this.controllerAutoShow = controllerAutoShow;
         this.controllerHideDuringAds = controllerHideDuringAds;
         this.useController = useController && controller != null;
-        hideController();
-        updateContentDescription();
         if (controller != null) {
+            controller.hideImmediately();
             controller.addVisibilityListener(/* listener= */ componentListener);
         }
+        updateContentDescription();
     }
 
     /**
@@ -563,7 +562,9 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
      * @param newPlayerView The new view to attach to the player.
      */
     public static void switchTargetView(
-            Player player, @Nullable BiliPlayerView oldPlayerView, @Nullable BiliPlayerView newPlayerView) {
+            Player player,
+            @Nullable BiliStyledPlayerView oldPlayerView,
+            @Nullable BiliStyledPlayerView newPlayerView) {
         if (oldPlayerView == newPlayerView) {
             return;
         }
@@ -579,47 +580,6 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
     }
 
-    @RequiresApi(23)
-    private static void configureEditModeLogoV23(Resources resources, ImageView logo) {
-        logo.setImageDrawable(resources.getDrawable(R.drawable.exo_edit_mode_logo, null));
-        logo.setBackgroundColor(resources.getColor(R.color.exo_edit_mode_background_color, null));
-    }
-
-    private static void configureEditModeLogo(Resources resources, ImageView logo) {
-        logo.setImageDrawable(resources.getDrawable(R.drawable.exo_edit_mode_logo));
-        logo.setBackgroundColor(resources.getColor(R.color.exo_edit_mode_background_color));
-    }
-
-    @SuppressWarnings("ResourceType")
-    private static void setResizeModeRaw(AspectRatioFrameLayout aspectRatioFrame, int resizeMode) {
-        aspectRatioFrame.setResizeMode(resizeMode);
-    }
-
-    /**
-     * Applies a texture rotation to a {@link TextureView}.
-     */
-    private static void applyTextureViewRotation(TextureView textureView, int textureViewRotation) {
-        Matrix transformMatrix = new Matrix();
-        float textureViewWidth = textureView.getWidth();
-        float textureViewHeight = textureView.getHeight();
-        if (textureViewWidth != 0 && textureViewHeight != 0 && textureViewRotation != 0) {
-            float pivotX = textureViewWidth / 2;
-            float pivotY = textureViewHeight / 2;
-            transformMatrix.postRotate(textureViewRotation, pivotX, pivotY);
-
-            // After rotation, scale the rotated texture to fit the TextureView size.
-            RectF originalTextureRect = new RectF(0, 0, textureViewWidth, textureViewHeight);
-            RectF rotatedTextureRect = new RectF();
-            transformMatrix.mapRect(rotatedTextureRect, originalTextureRect);
-            transformMatrix.postScale(
-                    textureViewWidth / rotatedTextureRect.width(),
-                    textureViewHeight / rotatedTextureRect.height(),
-                    pivotX,
-                    pivotY);
-        }
-        textureView.setTransform(transformMatrix);
-    }
-
     /**
      * Returns the player currently set on this view, or null if no player is set.
      */
@@ -629,13 +589,13 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     /**
-     * Set the {@link Player} to use.
+     * Sets the {@link Player} to use.
      *
      * <p>To transition a {@link Player} from targeting one view to another, it's recommended to use
-     * {@link #switchTargetView(Player, BiliPlayerView, BiliPlayerView)} rather than this method. If you do
-     * wish to use this method directly, be sure to attach the player to the new view <em>before</em>
-     * calling {@code setPlayer(null)} to detach it from the old one. This ordering is significantly
-     * more efficient and may allow for more seamless transitions.
+     * {@link # switchTargetView (Player, StyledPlayerView, StyledPlayerView)} rather than this method.
+     * If you do wish to use this method directly, be sure to attach the player to the new view
+     * <em>before</em> calling {@code setPlayer(null)} to detach it from the old one. This ordering is
+     * significantly more efficient and may allow for more seamless transitions.
      *
      * @param player The {@link Player} to use, or {@code null} to detach the current player. Only
      *               players which are accessed on the main thread are supported ({@code
@@ -651,12 +611,10 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         @Nullable Player oldPlayer = this.player;
         if (oldPlayer != null) {
             oldPlayer.removeListener(componentListener);
-            if (oldPlayer.isCommandAvailable(COMMAND_SET_VIDEO_SURFACE)) {
-                if (surfaceView instanceof TextureView) {
-                    oldPlayer.clearVideoTextureView((TextureView) surfaceView);
-                } else if (surfaceView instanceof SurfaceView) {
-                    oldPlayer.clearVideoSurfaceView((SurfaceView) surfaceView);
-                }
+            if (surfaceView instanceof TextureView) {
+                oldPlayer.clearVideoTextureView((TextureView) surfaceView);
+            } else if (surfaceView instanceof SurfaceView) {
+                oldPlayer.clearVideoSurfaceView((SurfaceView) surfaceView);
             }
         }
         if (subtitleView != null) {
@@ -698,15 +656,6 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     /**
-     * Returns the {@link ResizeMode}.
-     */
-    public @ResizeMode
-    int getResizeMode() {
-        Assertions.checkStateNotNull(contentFrame);
-        return contentFrame.getResizeMode();
-    }
-
-    /**
      * Sets the {@link ResizeMode}.
      *
      * @param resizeMode The {@link ResizeMode}.
@@ -714,6 +663,15 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     public void setResizeMode(@ResizeMode int resizeMode) {
         Assertions.checkStateNotNull(contentFrame);
         contentFrame.setResizeMode(resizeMode);
+    }
+
+    /**
+     * Returns the {@link ResizeMode}.
+     */
+    public @ResizeMode
+    int getResizeMode() {
+        Assertions.checkStateNotNull(contentFrame);
+        return contentFrame.getResizeMode();
     }
 
     /**
@@ -870,7 +828,7 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
 
         boolean isDpadKey = isDpadKey(event.getKeyCode());
         boolean handled = false;
-        if (isDpadKey && useController() && !controller.isVisible()) {
+        if (isDpadKey && useController() && !controller.isFullyVisible()) {
             // Handle the key event by showing the controller.
             maybeShowController(true);
             handled = true;
@@ -898,10 +856,10 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     /**
-     * Returns whether the controller is currently visible.
+     * Returns whether the controller is currently fully visible.
      */
-    public boolean isControllerVisible() {
-        return controller != null && controller.isVisible();
+    public boolean isControllerFullyVisible() {
+        return controller != null && controller.isFullyVisible();
     }
 
     /**
@@ -946,7 +904,7 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
         Assertions.checkStateNotNull(controller);
         this.controllerShowTimeoutMs = controllerShowTimeoutMs;
-        if (controller.isVisible()) {
+        if (controller.isFullyVisible()) {
             // Update the controller's timeout if necessary.
             showController();
         }
@@ -1001,13 +959,13 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     /**
-     * Set the {@link PlayerControlView.VisibilityListener}.
+     * Sets the {@link StyledPlayerControlView.VisibilityListener}.
      *
      * @param listener The listener to be notified about visibility changes, or null to remove the
      *                 current listener.
      */
     public void setControllerVisibilityListener(
-            @Nullable BiliPlayerControlView.VisibilityListener listener) {
+            @Nullable BiliStyledPlayerControlView.VisibilityListener listener) {
         Assertions.checkStateNotNull(controller);
         if (this.controllerVisibilityListener == listener) {
             return;
@@ -1022,14 +980,15 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     /**
-     * @deprecated Use a {@link ForwardingPlayer} and pass it to {@link #setPlayer(Player)} instead.
-     * You can also customize some operations when configuring the player (for example by using
-     * {@link SimpleExoPlayer.Builder#setSeekBackIncrementMs(long)}).
+     * Sets the {@link StyledPlayerControlView.OnFullScreenModeChangedListener}.
+     *
+     * @param listener The listener to be notified when the fullscreen button is clicked, or null to
+     *                 remove the current listener and hide the fullscreen button.
      */
-    @Deprecated
-    public void setControlDispatcher(ControlDispatcher controlDispatcher) {
+    public void setControllerOnFullScreenModeChangedListener(
+            @Nullable BiliStyledPlayerControlView.OnFullScreenModeChangedListener listener) {
         Assertions.checkStateNotNull(controller);
-        controller.setControlDispatcher(controlDispatcher);
+        controller.setOnFullScreenModeChangedListener(listener);
     }
 
     /**
@@ -1093,6 +1052,26 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     /**
+     * Sets whether the subtitle button is shown.
+     *
+     * @param showSubtitleButton Whether the subtitle button is shown.
+     */
+    public void setShowSubtitleButton(boolean showSubtitleButton) {
+        Assertions.checkStateNotNull(controller);
+        controller.setShowSubtitleButton(showSubtitleButton);
+    }
+
+    /**
+     * Sets whether the vr button is shown.
+     *
+     * @param showVrButton Whether the vr button is shown.
+     */
+    public void setShowVrButton(boolean showVrButton) {
+        Assertions.checkStateNotNull(controller);
+        controller.setShowVrButton(showVrButton);
+    }
+
+    /**
      * Sets whether the time bar should show all windows, as opposed to just the current one.
      *
      * @param showMultiWindowTimeBar Whether to show all windows.
@@ -1119,7 +1098,7 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     /**
-     * Set the {@link AspectRatioFrameLayout.AspectRatioListener}.
+     * Sets the {@link AspectRatioFrameLayout.AspectRatioListener}.
      *
      * @param listener The listener to be notified about aspect ratios changes of the video content or
      *                 the content frame.
@@ -1187,8 +1166,7 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
             case MotionEvent.ACTION_UP:
                 if (isTouching) {
                     isTouching = false;
-                    performClick();
-                    return true;
+                    return performClick();
                 }
                 return false;
             default:
@@ -1210,8 +1188,6 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         maybeShowController(true);
         return true;
     }
-
-    // AdsLoader.AdViewProvider implementation.
 
     /**
      * Should be called when the player is visible to the user, if the {@code surface_type} extends
@@ -1239,8 +1215,6 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
     }
 
-    // Internal methods.
-
     /**
      * Called when there's a change in the desired aspect ratio of the content frame. The default
      * implementation sets the aspect ratio of the content frame to the specified value.
@@ -1254,6 +1228,8 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
             contentFrame.setAspectRatio(aspectRatio);
         }
     }
+
+    // AdsLoader.AdViewProvider implementation.
 
     @Override
     public ViewGroup getAdViewGroup() {
@@ -1277,6 +1253,8 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         return ImmutableList.copyOf(overlayViews);
     }
 
+    // Internal methods.
+
     @EnsuresNonNullIf(expression = "controller", result = true)
     private boolean useController() {
         if (useController) {
@@ -1299,12 +1277,14 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         if (!useController() || player == null) {
             return false;
         }
-        if (!controller.isVisible()) {
+        if (!controller.isFullyVisible()) {
             maybeShowController(true);
+            return true;
         } else if (controllerHideOnTouch) {
             controller.hide();
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -1315,7 +1295,8 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
             return;
         }
         if (useController()) {
-            boolean wasShowingIndefinitely = controller.isVisible() && controller.getShowTimeoutMs() <= 0;
+            boolean wasShowingIndefinitely =
+                    controller.isFullyVisible() && controller.getShowTimeoutMs() <= 0;
             boolean shouldShowIndefinitely = shouldShowControllerIndefinitely();
             if (isForced || wasShowingIndefinitely || shouldShowIndefinitely) {
                 showController(shouldShowIndefinitely);
@@ -1329,9 +1310,10 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
         int playbackState = player.getPlaybackState();
         return controllerAutoShow
+                && !player.getCurrentTimeline().isEmpty()
                 && (playbackState == Player.STATE_IDLE
                 || playbackState == Player.STATE_ENDED
-                || !player.getPlayWhenReady());
+                || !checkNotNull(player).getPlayWhenReady());
     }
 
     private void showController(boolean showIndefinitely) {
@@ -1348,7 +1330,7 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
 
     private void updateForCurrentTrackSelections(boolean isNewPlayer) {
         @Nullable Player player = this.player;
-        if (player == null || player.getCurrentTrackGroups().isEmpty()) {
+        if (player == null || player.getCurrentTracksInfo().getTrackGroupInfos().isEmpty()) {
             if (!keepContentOnPlayerReset) {
                 hideArtwork();
                 closeShutter();
@@ -1361,20 +1343,11 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
             closeShutter();
         }
 
-        TrackSelectionArray trackSelections = player.getCurrentTrackSelections();
-        for (int i = 0; i < trackSelections.length; i++) {
-            @Nullable TrackSelection trackSelection = trackSelections.get(i);
-            if (trackSelection != null) {
-                for (int j = 0; j < trackSelection.length(); j++) {
-                    Format format = trackSelection.getFormat(j);
-                    if (MimeTypes.getTrackType(format.sampleMimeType) == C.TRACK_TYPE_VIDEO) {
-                        // Video enabled, so artwork must be hidden. If the shutter is closed, it will be opened
-                        // in onRenderedFirstFrame().
-                        hideArtwork();
-                        return;
-                    }
-                }
-            }
+        if (player.getCurrentTracksInfo().isTypeSelected(C.TRACK_TYPE_VIDEO)) {
+            // Video enabled, so artwork must be hidden. If the shutter is closed, it will be opened
+            // in onRenderedFirstFrame().
+            hideArtwork();
+            return;
         }
 
         // Video disabled so the shutter must be closed.
@@ -1390,38 +1363,6 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
         // Artwork disabled or unavailable.
         hideArtwork();
-    }
-
-    private void updateAspectRatio() {
-        VideoSize videoSize = player != null ? player.getVideoSize() : VideoSize.UNKNOWN;
-        int width = videoSize.width;
-        int height = videoSize.height;
-        int unappliedRotationDegrees = videoSize.unappliedRotationDegrees;
-        float videoAspectRatio =
-                (height == 0 || width == 0) ? 0 : (width * videoSize.pixelWidthHeightRatio) / height;
-
-        if (surfaceView instanceof TextureView) {
-            // Try to apply rotation transformation when our surface is a TextureView.
-            if (videoAspectRatio > 0
-                    && (unappliedRotationDegrees == 90 || unappliedRotationDegrees == 270)) {
-                // We will apply a rotation 90/270 degree to the output texture of the TextureView.
-                // In this case, the output video's width and height will be swapped.
-                videoAspectRatio = 1 / videoAspectRatio;
-            }
-            if (textureViewRotation != 0) {
-                surfaceView.removeOnLayoutChangeListener(componentListener);
-            }
-            textureViewRotation = unappliedRotationDegrees;
-            if (textureViewRotation != 0) {
-                // The texture view's dimensions might be changed after layout step.
-                // So add an OnLayoutChangeListener to apply rotation after layout step.
-                surfaceView.addOnLayoutChangeListener(componentListener);
-            }
-            applyTextureViewRotation((TextureView) surfaceView, textureViewRotation);
-        }
-
-        onContentAspectRatioChanged(
-                contentFrame, surfaceViewIgnoresVideoAspectRatio ? 0 : videoAspectRatio);
     }
 
     @RequiresNonNull("artworkView")
@@ -1465,26 +1406,31 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     }
 
     private void updateBuffering() {
-       /* if (bufferingView != null) {
+        /*if (bufferingView != null) {
             boolean showBufferingSpinner =
                     player != null
                             && player.getPlaybackState() == Player.STATE_BUFFERING
                             && (showBuffering == SHOW_BUFFERING_ALWAYS
                             || (showBuffering == SHOW_BUFFERING_WHEN_PLAYING && player.getPlayWhenReady()));
             bufferingView.setVisibility(showBufferingSpinner ? View.VISIBLE : View.GONE);
+            if (showBufferingSpinner) {
+                bufferingView.playAnimation();
+            } else {
+                bufferingView.cancelAnimation();
+            }
         }*/
 
-        if (bufferingViewBili != null) {
+        if (getBufferingViewBili() != null) {
             boolean showBufferingSpinner =
                     player != null
                             && player.getPlaybackState() == Player.STATE_BUFFERING
                             && (showBuffering == SHOW_BUFFERING_ALWAYS
                             || (showBuffering == SHOW_BUFFERING_WHEN_PLAYING && player.getPlayWhenReady()));
-            bufferingViewBili.setVisibility(showBufferingSpinner ? View.VISIBLE : View.GONE);
+            getBufferingViewBili().setVisibility(showBufferingSpinner ? View.VISIBLE : View.GONE);
             if (showBufferingSpinner) {
-                bufferingViewBili.playAnimation();
+                getBufferingViewBili().playAnimation();
             } else {
-                bufferingViewBili.cancelAnimation();
+                getBufferingViewBili().cancelAnimation();
             }
         }
     }
@@ -1510,7 +1456,7 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
     private void updateContentDescription() {
         if (controller == null || !useController) {
             setContentDescription(/* contentDescription= */ null);
-        } else if (controller.getVisibility() == View.VISIBLE) {
+        } else if (controller.isFullyVisible()) {
             setContentDescription(
                     /* contentDescription= */ controllerHideOnTouch
                             ? getResources().getString(R.string.exo_controls_hide)
@@ -1529,6 +1475,79 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
     }
 
+    private void updateAspectRatio() {
+        VideoSize videoSize = player != null ? player.getVideoSize() : VideoSize.UNKNOWN;
+        int width = videoSize.width;
+        int height = videoSize.height;
+        int unappliedRotationDegrees = videoSize.unappliedRotationDegrees;
+        float videoAspectRatio =
+                (height == 0 || width == 0) ? 0 : (width * videoSize.pixelWidthHeightRatio) / height;
+
+        if (surfaceView instanceof TextureView) {
+            // Try to apply rotation transformation when our surface is a TextureView.
+            if (videoAspectRatio > 0
+                    && (unappliedRotationDegrees == 90 || unappliedRotationDegrees == 270)) {
+                // We will apply a rotation 90/270 degree to the output texture of the TextureView.
+                // In this case, the output video's width and height will be swapped.
+                videoAspectRatio = 1 / videoAspectRatio;
+            }
+            if (textureViewRotation != 0) {
+                surfaceView.removeOnLayoutChangeListener(componentListener);
+            }
+            textureViewRotation = unappliedRotationDegrees;
+            if (textureViewRotation != 0) {
+                // The texture view's dimensions might be changed after layout step.
+                // So add an OnLayoutChangeListener to apply rotation after layout step.
+                surfaceView.addOnLayoutChangeListener(componentListener);
+            }
+            applyTextureViewRotation((TextureView) surfaceView, textureViewRotation);
+        }
+
+        onContentAspectRatioChanged(
+                contentFrame, surfaceViewIgnoresVideoAspectRatio ? 0 : videoAspectRatio);
+    }
+
+    @RequiresApi(23)
+    private static void configureEditModeLogoV23(Resources resources, ImageView logo) {
+        logo.setImageDrawable(resources.getDrawable(R.drawable.exo_edit_mode_logo, null));
+        logo.setBackgroundColor(resources.getColor(R.color.exo_edit_mode_background_color, null));
+    }
+
+    private static void configureEditModeLogo(Resources resources, ImageView logo) {
+        logo.setImageDrawable(resources.getDrawable(R.drawable.exo_edit_mode_logo));
+        logo.setBackgroundColor(resources.getColor(R.color.exo_edit_mode_background_color));
+    }
+
+    @SuppressWarnings("ResourceType")
+    private static void setResizeModeRaw(AspectRatioFrameLayout aspectRatioFrame, int resizeMode) {
+        aspectRatioFrame.setResizeMode(resizeMode);
+    }
+
+    /**
+     * Applies a texture rotation to a {@link TextureView}.
+     */
+    private static void applyTextureViewRotation(TextureView textureView, int textureViewRotation) {
+        Matrix transformMatrix = new Matrix();
+        float textureViewWidth = textureView.getWidth();
+        float textureViewHeight = textureView.getHeight();
+        if (textureViewWidth != 0 && textureViewHeight != 0 && textureViewRotation != 0) {
+            float pivotX = textureViewWidth / 2;
+            float pivotY = textureViewHeight / 2;
+            transformMatrix.postRotate(textureViewRotation, pivotX, pivotY);
+
+            // After rotation, scale the rotated texture to fit the TextureView size.
+            RectF originalTextureRect = new RectF(0, 0, textureViewWidth, textureViewHeight);
+            RectF rotatedTextureRect = new RectF();
+            transformMatrix.mapRect(rotatedTextureRect, originalTextureRect);
+            transformMatrix.postScale(
+                    textureViewWidth / rotatedTextureRect.width(),
+                    textureViewHeight / rotatedTextureRect.height(),
+                    pivotX,
+                    pivotY);
+        }
+        textureView.setTransform(transformMatrix);
+    }
+
     @SuppressLint("InlinedApi")
     private boolean isDpadKey(int keyCode) {
         return keyCode == KeyEvent.KEYCODE_DPAD_UP
@@ -1542,46 +1561,11 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
                 || keyCode == KeyEvent.KEYCODE_DPAD_CENTER;
     }
 
-    /******************************************* extend ***************************************/
-    // contentFrame.addView(surfaceView, 0);
-    public AspectRatioFrameLayout getContentFrame() {
-        if (contentFrame == null) return null;
-        return contentFrame;
-    }
-
-    public View getSurfaceView() {
-        if (surfaceView == null) return null;
-        return surfaceView;
-    }
-
-    public BiliPlayerControlView getPlayerController() {
-        return this.controller;
-    }
-
-    @Nullable
-    public LottieAnimationView getBufferingViewBili() {
-        return bufferingViewBili;
-    }
-
-    public void setBufferingViewBili(@Nullable LottieAnimationView bufferingViewBili) {
-        this.bufferingViewBili = bufferingViewBili;
-    }
-
-    /**
-     * Determines when the buffering view is shown. One of {@link #SHOW_BUFFERING_NEVER}, {@link
-     * #SHOW_BUFFERING_WHEN_PLAYING} or {@link #SHOW_BUFFERING_ALWAYS}.
-     */
-    @Documented
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({SHOW_BUFFERING_NEVER, SHOW_BUFFERING_WHEN_PLAYING, SHOW_BUFFERING_ALWAYS})
-    public @interface ShowBuffering {
-    }
-
     private final class ComponentListener
             implements Player.Listener,
             OnLayoutChangeListener,
             OnClickListener,
-            BiliPlayerControlView.VisibilityListener {
+            BiliStyledPlayerControlView.VisibilityListener {
 
         private final Period period;
         private @Nullable
@@ -1595,8 +1579,9 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
 
         @Override
         public void onCues(List<Cue> cues) {
+            Log.d("PlayerView--", "onCues,subtitleView" + subtitleView + ",cues:" + cues.size());
             if (subtitleView != null) {
-                subtitleView.onCues(cues);
+                subtitleView.setCues(cues);
             }
         }
 
@@ -1613,15 +1598,15 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
 
         @Override
-        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray selections) {
+        public void onTracksInfoChanged(TracksInfo tracksInfo) {
             // Suppress the update if transitioning to an unprepared period within the same window. This
             // is necessary to avoid closing the shutter when such a transition occurs. See:
             // https://github.com/google/ExoPlayer/issues/5507.
-            Player player = Assertions.checkNotNull(BiliPlayerView.this.player);
+            Player player = checkNotNull(BiliStyledPlayerView.this.player);
             Timeline timeline = player.getCurrentTimeline();
             if (timeline.isEmpty()) {
                 lastPeriodUidWithTracks = null;
-            } else if (!player.getCurrentTrackGroups().isEmpty()) {
+            } else if (!player.getCurrentTracksInfo().getTrackGroupInfos().isEmpty()) {
                 lastPeriodUidWithTracks =
                         timeline.getPeriod(player.getCurrentPeriodIndex(), period, /* setIds= */ true).uid;
             } else if (lastPeriodUidWithTracks != null) {
@@ -1629,8 +1614,8 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
                 if (lastPeriodIndexWithTracks != C.INDEX_UNSET) {
                     int lastWindowIndexWithTracks =
                             timeline.getPeriod(lastPeriodIndexWithTracks, period).windowIndex;
-                    if (player.getCurrentWindowIndex() == lastWindowIndexWithTracks) {
-                        // We're in the same window. Suppress the update.
+                    if (player.getCurrentMediaItemIndex() == lastWindowIndexWithTracks) {
+                        // We're in the same media item. Suppress the update.
                         return;
                     }
                 }
@@ -1687,7 +1672,7 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
             toggleControllerVisibility();
         }
 
-        // PlayerControlView.VisibilityListener implementation
+        // StyledPlayerControlView.VisibilityListener implementation
 
         @Override
         public void onVisibilityChange(int visibility) {
@@ -1695,4 +1680,25 @@ public class BiliPlayerView extends FrameLayout implements AdViewProvider {
         }
     }
 
+    @Nullable
+    public LottieAnimationView getBufferingViewBili() {
+        return this.bufferingViewBili;
+    }
+
+    public void setBufferingViewBili(@Nullable LottieAnimationView bufferingViewBili) {
+        this.bufferingViewBili = bufferingViewBili;
+    }
+
+    /************************ extend
+     * @return*********************************/
+
+    public BiliStyledPlayerControlView getPlayerController() {
+        return controller;
+    }
+
+    public void setControllerOnExtendButtonEventListener(
+            @Nullable BiliStyledPlayerControlView.OnExtendButtonEventListener listener) {
+        Assertions.checkStateNotNull(controller);
+        controller.setOnExtendButtonEventListener(listener);
+    }
 }

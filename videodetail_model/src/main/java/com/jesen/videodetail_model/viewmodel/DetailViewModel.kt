@@ -6,38 +6,42 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.jesen.common_util_lib.utils.oLog
-import com.jesen.retrofit_lib.com.fromJson
 import com.jesen.retrofit_lib.model.*
 import com.jesen.retrofit_lib.response.DataState
 import com.jesen.retrofit_lib.response.ModelMapper
 import com.jesen.retrofit_lib.response.Response
 import com.jesen.videodetail_model.datasource.CommentListDataSource
 import com.jesen.videodetail_model.repository.VideoDetailRepository
-import com.jesen.videodetail_model.util.videoDataDemoJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class DetailViewModel : ViewModel() {
 
+    var curVideoM: VideoM? = null
+
     // 详情页数据状态
-    val videoDetailState = MutableStateFlow<DataState<VideoDetailM>>(DataState.Empty())
+    private val _videoDetailState = MutableStateFlow<DataState<VideoDetailM>>(DataState.Empty())
+    val videoDetailState: StateFlow<DataState<VideoDetailM>> = _videoDetailState
 
     // 关注/取关作者状态，没有对应API，来个假的
-    private val upFollowState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
+    private val _upFollowState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
+    val upFollowState: StateFlow<DataState<InteractionM>> = _upFollowState
 
     // 点赞/取消赞状态
-    private val videoLikeState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
+    private val _videoLikeState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
+    val videoLikeState: StateFlow<DataState<InteractionM>> = _videoLikeState
 
     // 收藏/取消收藏状态
-    private val videoFavoriteState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
+    private val _videoFavoriteState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
+    val videoFavoriteState: StateFlow<DataState<InteractionM>> = _videoFavoriteState
 
-    var testVideoM: VideoM = videoDataDemoJson.fromJson<VideoM>()!!
-
-    fun loadVideoInfo2(vid: String) = viewModelScope.launch {
-        videoDetailState.value = DataState.Loading()
+    fun loadVideoInfo2(videoMjs: String) = viewModelScope.launch {
+        _videoDetailState.value = DataState.Loading()
         flow {
-            val result = VideoDetailRepository.getVideDetailData(vid)
+            val videoM = videoJs2Model(videoMjs)
+            curVideoM = videoM
+            val result = VideoDetailRepository.getVideDetailData(videoM!!.vid)
 
             oLog(" video detail result: ${result.msg}")
             emit(result)
@@ -48,11 +52,11 @@ class DetailViewModel : ViewModel() {
             }
             .collect { response ->
                 if (response.isSuccess()) {
-                    videoDetailState.value = DataState.Success(response.read())
+                    _videoDetailState.value = DataState.Success(response.read())
 
                     // insert history
                 } else {
-                    videoDetailState.value =
+                    _videoDetailState.value =
                         DataState.Error(response.errorMessage(), response.code())
                 }
             }
@@ -60,7 +64,7 @@ class DetailViewModel : ViewModel() {
 
     fun requestFollow(isFollow: Boolean, result: (response: Response<InteractionM>?) -> Unit) =
         viewModelScope.launch {
-            upFollowState.value = DataState.Loading()
+            _upFollowState.value = DataState.Loading()
             var response: Response<InteractionM>? = null
 
             flow {
@@ -74,10 +78,10 @@ class DetailViewModel : ViewModel() {
                 }
                 .collect { res ->
                     if (res.isSuccess()) {
-                        upFollowState.value = DataState.Success(res.read())
+                        _upFollowState.value = DataState.Success(res.read())
 
                     } else {
-                        upFollowState.value =
+                        _upFollowState.value =
                             DataState.Error(res.errorMessage(), res.code())
                     }
                     response = res
@@ -91,7 +95,7 @@ class DetailViewModel : ViewModel() {
         result: (response: Response<InteractionM>?) -> Unit
     ) =
         viewModelScope.launch {
-            videoLikeState.value = DataState.Loading()
+            _videoLikeState.value = DataState.Loading()
             var response: Response<InteractionM>? = null
 
             flow {
@@ -105,10 +109,10 @@ class DetailViewModel : ViewModel() {
                 }
                 .collect { res ->
                     if (res.isSuccess()) {
-                        videoLikeState.value = DataState.Success(res.read())
+                        _videoLikeState.value = DataState.Success(res.read())
 
                     } else {
-                        videoLikeState.value =
+                        _videoLikeState.value =
                             DataState.Error(res.errorMessage(), res.code())
                     }
                     response = res
@@ -122,7 +126,7 @@ class DetailViewModel : ViewModel() {
         result: (response: Response<InteractionM>?) -> Unit
     ) =
         viewModelScope.launch {
-            videoFavoriteState.value = DataState.Loading()
+            _videoFavoriteState.value = DataState.Loading()
             var response: Response<InteractionM>? = null
 
             flow {
@@ -136,9 +140,9 @@ class DetailViewModel : ViewModel() {
                 }
                 .collect { res ->
                     if (res.isSuccess()) {
-                        videoFavoriteState.value = DataState.Success(res.read())
+                        _videoFavoriteState.value = DataState.Success(res.read())
                     } else {
-                        videoFavoriteState.value =
+                        _videoFavoriteState.value =
                             DataState.Error(res.errorMessage(), res.code())
                     }
                     response = res

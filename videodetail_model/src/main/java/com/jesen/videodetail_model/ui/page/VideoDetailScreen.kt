@@ -1,6 +1,6 @@
 package com.jesen.videodetail_model.ui.page
 
-import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +14,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.jesen.biliexoplayer.player.ExoComposePlayer
+import com.jesen.common_util_lib.utils.LocalMainActivity
 import com.jesen.retrofit_lib.model.VideoDetailM
 import com.jesen.retrofit_lib.model.VideoM
 import com.jesen.retrofit_lib.response.DataState
@@ -29,10 +30,13 @@ import soup.compose.material.motion.MaterialFadeThrough
 @ExperimentalAnimationApi
 @Composable
 fun VideoDetailScreen(
-    activity: ComponentActivity,
-    viewModel: DetailViewModel,
-    videoM: VideoM
+    videoMjs: String,
+    itemCardClick: (VideoM) -> Unit,
+    onBackCall: () -> Unit
 ) {
+    val activity = LocalMainActivity.current
+    val viewModel by activity.viewModels<DetailViewModel>()
+
     val videoDetailData by viewModel.videoDetailState.collectAsState()
 
     // 判断视频是否加载了
@@ -41,7 +45,7 @@ fun VideoDetailScreen(
     // 加载视频信息
     LaunchedEffect(Unit) {
         if (!isVideoLoaded()) {
-            viewModel.loadVideoInfo2(videoM.vid)
+            viewModel.loadVideoInfo2(videoMjs)
         }
     }
 
@@ -52,10 +56,11 @@ fun VideoDetailScreen(
     ) {
         // 布入播放器
         ExoComposePlayer(
-            activity = activity,
+            activity = LocalMainActivity.current,
             modifier = Modifier.fillMaxWidth(),
-            title = videoM.title,
-            url = videoM.url,
+            title = viewModel.curVideoM?.title ?: "",
+            url = viewModel.curVideoM?.url ?: "",
+            onBackCall = onBackCall,
         )
 
         MaterialFadeThrough(
@@ -69,10 +74,10 @@ fun VideoDetailScreen(
                 }
                 is DataState.Success -> {
                     // 展示详情内容
-                    DetailPageInfo(viewModel, dataStoreData.read())
+                    DetailPageInfo(viewModel, dataStoreData.read(), itemCardClick)
                 }
                 is DataState.Error -> {
-                    DetailLoadError(viewModel = viewModel, videoId = videoM.vid)
+                    DetailLoadError(viewModel = viewModel, videoId = viewModel.curVideoM?.vid ?: "")
                 }
             }
         }
@@ -88,7 +93,11 @@ fun VideoDetailScreen(
 @ExperimentalComposeUiApi
 @ExperimentalPagerApi
 @Composable
-private fun DetailPageInfo(viewModel: DetailViewModel, videoDetail: VideoDetailM) {
+private fun DetailPageInfo(
+    viewModel: DetailViewModel,
+    videoDetail: VideoDetailM,
+    itemCardClick: (VideoM) -> Unit
+) {
     val pagerState = rememberPagerState(0)
     val coroutineScope = rememberCoroutineScope()
 
@@ -106,7 +115,8 @@ private fun DetailPageInfo(viewModel: DetailViewModel, videoDetail: VideoDetailM
         ) {
             when (it) {
                 0 -> VideoDesContent(
-                    pagerState = pagerState,
+                    coroutineScope = coroutineScope,
+                    itemCardClick = itemCardClick,
                     viewModel = viewModel,
                     detailData = videoDetail.data
                 )

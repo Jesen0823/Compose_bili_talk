@@ -152,12 +152,6 @@ fun ProfileContentScreen(
                                 PageRoute.WEB_VIEW_ROUTE.replaceAfter("=", banner.url)
                             )
                         }
-                        /*coroutineScope.run {
-                            NavUtil.doPageNavigationTo(
-                                navController,
-                                PageRoute.WEB_VIEW_ROUTE.replaceAfter("=", banner.url)
-                            )
-                        }*/
                     }
                 )
             }
@@ -198,15 +192,6 @@ fun ProfileContentScreen(
                                                 )
                                             )
                                         }
-                                        /*coroutineScope.run {
-                                            NavUtil.doPageNavigationTo(
-                                                navController,
-                                                PageRoute.WEB_VIEW_ROUTE.replaceAfter(
-                                                    "=",
-                                                    nenefitList[index].url
-                                                )
-                                            )
-                                        }*/
                                     }
                                 )
                             }
@@ -244,9 +229,6 @@ fun ProfileContentScreen(
                     coroutineScope.launch {
                         NavUtil.doPageNavigationTo(navController, PageRoute.LOGIN_ROUTE, false)
                     }
-                    /*coroutineScope.run {
-                        NavUtil.doPageNavigationTo(navController, PageRoute.LOGIN_ROUTE, false)
-                    }*/
                 }
             )
         }

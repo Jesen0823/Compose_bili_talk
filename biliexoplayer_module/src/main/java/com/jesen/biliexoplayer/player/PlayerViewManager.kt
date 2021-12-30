@@ -2,193 +2,137 @@ package com.jesen.biliexoplayer.player
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.core.util.Pools
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.airbnb.lottie.LottieAnimationView
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.BiliPlayerView
+import com.google.android.exoplayer2.ui.BiliStyledPlayerView
 import com.jesen.biliexoplayer.R
-import com.jesen.common_util_lib.utils.oLog
-import com.jesen.common_util_lib.utils.statusBarIsHide
 
 /**
  * 用来管理 PlayerView
  * */
-object PlayerViewManager : ExoEventListener {
+object PlayerViewManager {
 
-    // 播放模式，是单一播放/列表播放
-    var playerMode = PlayerMode.SINGLE_MODE
+    private lateinit var curActivity: ComponentActivity
+    const val TOP_BACK_TAG = "top_back"
 
-    var playerViewMode = PlayViewMode.HALF_SCREEN
-    var activity: ComponentActivity? = null
+    // 当前全屏半屏状态记录
+    private var currIsFullScreen = false
 
+    private var layoutParamLast: ViewGroup.LayoutParams? = null
 
-    private val playerViewPool = Pools.SimplePool<BiliPlayerView>(2)
+    fun init(activity: ComponentActivity) {
+        curActivity = activity
+    }
 
-    fun get(context: Context): BiliPlayerView {
+    private val playerViewPool = Pools.SimplePool<BiliStyledPlayerView>(2)
+
+    fun get(context: Context): BiliStyledPlayerView {
         return playerViewPool.acquire() ?: createPlayerView(context)
     }
 
-    fun release(player: BiliPlayerView) {
+    fun release(player: BiliStyledPlayerView) {
         playerViewPool.release(player)
     }
 
     /**
      * 创建PlayerView
      * */
-    private fun createPlayerView(context: Context): BiliPlayerView {
+    private fun createPlayerView(context: Context): BiliStyledPlayerView {
+
         val playView = (LayoutInflater.from(context)
-            .inflate(R.layout.exoplayer_texture_view, null, false) as BiliPlayerView)
-        // 自定义加载动画
-        val loading = playView.findViewById<LottieAnimationView>(R.id.bili_loading)
-        playView.bufferingViewBili = loading
-        playView.apply {
-            setShowMultiWindowTimeBar(true)
-            setShowBuffering(BiliPlayerView.SHOW_BUFFERING_ALWAYS)
-            controllerAutoShow = true
-            playerController.setExoEventListener(this@PlayerViewManager)
-            keepScreenOn = true
-        }
+            .inflate(R.layout.exoplayer_texture_view, null, false) as BiliStyledPlayerView)
 
         initOther(playView)
+
+        val bufferLottie = playView.findViewById<LottieAnimationView>(R.id.exo_cnm_buffering);
+        playView.apply {
+            bufferingViewBili = bufferLottie
+            setShowMultiWindowTimeBar(true)
+            setShowBuffering(BiliStyledPlayerView.SHOW_BUFFERING_ALWAYS)
+            controllerAutoShow = true
+            keepScreenOn = true
+            setControllerOnFullScreenModeChangedListener { isFullScreen -> //TODO("Not yet implemented")
+                Log.d("Manager--", "isFull:$isFullScreen")
+                switchIsFullScreen(isFullScreen, this)
+            }
+        }
         return playView
     }
 
+    private fun initOther(playView: BiliStyledPlayerView) {
+        val controllerView = playView.playerController
+        controllerView.setBiliVideoTitle(controllerView.findViewById(R.id.v_title))
+        val backTopBtn = controllerView.findViewById<ImageView>(R.id.back_play)
+        backTopBtn.tag = TOP_BACK_TAG
+        controllerView.setBiliBackButton(backTopBtn)
+    }
 
-    /****************************************其他业务*******************************************/
+    public fun setVideoTitleContent(playView: BiliStyledPlayerView, title: String) {
+        val controllerView = playView.playerController
+        controllerView.getBiliVideoTitle().text = title
+    }
 
-
-    private fun initOther(playView: BiliPlayerView) {
-        PlayViewData.instance.activity = activity
-
-        // 返回按钮
-        val backExitBtn = playView.findViewById<ImageView>(R.id.back_play)
-        backExitBtn.setOnClickListener {
-            if (isFullScreen()) {
-                switchPlayerViewMode()
+    private fun switchIsFullScreen(
+        isFullScreen: Boolean,
+        playerView: BiliStyledPlayerView
+    ) {
+        val controller = ViewCompat.getWindowInsetsController(curActivity.window.decorView)
+        currIsFullScreen = isFullScreen
+        if (isFullScreen) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                curActivity.window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             } else {
-                PlayViewData.instance.activity?.finish()
+                curActivity.window.setDecorFitsSystemWindows(false)
+                controller?.hide(WindowInsetsCompat.Type.statusBars())
+                controller?.hide(WindowInsetsCompat.Type.navigationBars())
+                controller?.systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
-        }
-        playView.playerController.videoTitle = playView.findViewById(R.id.v_title)
-    }
-
-
-    fun switchPlayerViewMode() {
-        oLog("switchPlayerViewMode")
-        val activity = PlayViewData.instance.activity
-        if (activity?.requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            //切换竖屏
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            val layoutParam = playerView.layoutParams
+            layoutParamLast = layoutParam
+            Log.d("PlayerManager--", "layoutParam height=${layoutParam.height}")
+            curActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            layoutParam.height = ViewGroup.LayoutParams.MATCH_PARENT
+            layoutParam.width = ViewGroup.LayoutParams.MATCH_PARENT
+            playerView.layoutParams = layoutParam
         } else {
-            //切换横屏
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
-    }
-
-    fun setVideoTitle(visibility: Boolean, content: String? = "") {
-        val curPlayView = PlayViewData.instance.curPlayerView
-        val title = curPlayView?.playerController?.videoTitle
-        if (content.isNullOrBlank()) {
-            title?.visibility = if (visibility) View.VISIBLE else View.GONE
-        } else {
-            title?.text = content
-        }
-    }
-
-    fun enterFullScreen() {
-        val activity = PlayViewData.instance.activity
-        val contentRoot = activity?.findViewById<ViewGroup>(android.R.id.content)
-        val curPlayView = PlayViewData.instance.curPlayerView
-        // 保存竖屏下的播放器父布局
-        val curParent = curPlayView?.parent as ViewGroup
-
-        // 隐藏状态栏导航栏
-        activity?.statusBarIsHide(contentRoot as View, true)
-
-        // 从curParent移到rootContent
-        curParent.removeView(curPlayView)
-        contentRoot?.addView(
-            curPlayView, ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        )
-        oLog(" enterFullScreen,  remove parent:$curParent, add contentView:$contentRoot")
-        setVideoTitle(true)
-        PlayViewData.instance.fullPlayParent = contentRoot
-        playerViewMode = PlayViewMode.FULL_SCREEN
-    }
-
-    fun exitFullScreen(): Boolean {
-        if (isFullScreen()) {
-            oLog("switchPlayerViewMode  set to screen half")
-            val activity = PlayViewData.instance.activity
-            val rootContent = PlayViewData.instance.fullPlayParent
-            val curPlayView = PlayViewData.instance.curPlayerView
-            rootContent?.let {
-                // 恢复状态栏显示
-                activity?.statusBarIsHide(it as View, false)
-                // 从根rootContent移除PlayerView
-                it.removeView(curPlayView)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                curActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+            } else {
+                curActivity.window.setDecorFitsSystemWindows(true)
+                controller?.show(WindowInsetsCompat.Type.statusBars())
+                controller?.show(WindowInsetsCompat.Type.navigationBars())
             }
 
-            val originParent = PlayViewData.instance.halfPlayParent
-            // 然后加入LazyColumn的ItemView下
-            originParent?.addView(
-                curPlayView,
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-            setVideoTitle(false)
+            val layoutParam = playerView.layoutParams
+            layoutParam.height =
+                (230 * curActivity.application.resources.displayMetrics.density).toInt()
+            layoutParam.width = ViewGroup.LayoutParams.MATCH_PARENT
 
-            playerViewMode = PlayViewMode.HALF_SCREEN
+            val firstLayoutParams = layoutParamLast
+            curActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-            return true
-        }
-        return false
-    }
-
-
-    /**
-     * 全屏处理
-     * */
-    override fun changeFullScreen(player: Player) {
-        switchPlayerViewMode()
-    }
-
-    override fun backExitScreen(player: Player) {
-        if (isFullScreen()) {
-            exitFullScreen()
-        } else {
-            activity?.finish()
+            playerView.layoutParams = firstLayoutParams ?: layoutParam
         }
     }
 
-    /**
-     * 暂停续播
-     * */
-    fun playOrPause(isPause: Boolean) {
-        val curViewPlay = PlayViewData.instance.curPlayerView
-        val playerController = curViewPlay?.playerController
-        playerController?.let {
-            if (isPause) it.doPause() else it.doPlay()
-        }
-    }
-
-    private fun isFullScreen(): Boolean = playerViewMode == PlayViewMode.FULL_SCREEN
-
-    fun onBackPressed(): Boolean {
-        return exitFullScreen()
-    }
 }
+/****************************************其他业务*******************************************/
 
 
-enum class PlayViewMode { HALF_SCREEN, FULL_SCREEN }
 
-enum class PlayerMode { SINGLE_MODE, LIST_MODE }
+   
+
+    

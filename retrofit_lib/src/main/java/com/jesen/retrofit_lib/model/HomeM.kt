@@ -1,6 +1,8 @@
 package com.jesen.retrofit_lib.model
 
 import android.os.Parcelable
+import com.jesen.retrofit_lib.com.fromJson
+import com.jesen.retrofit_lib.com.toJson
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
@@ -21,41 +23,41 @@ data class HomeM(
 @Parcelize
 data class VideoM(
     @Json(name = "coin")
-    val coin: Int,
+    val coin: Int = 0,
     @Json(name = "cover")
-    val cover: String,
+    val cover: String = "",
     @Json(name = "createTime")
-    val createTime: String,
+    val createTime: String = "",
     @Json(name = "desc")
-    val desc: String,
+    val desc: String = "",
     @Json(name = "duration")
-    val duration: Int,
+    val duration: Int = 0,
     @Json(name = "favorite")
-    val favorite: Int,
+    val favorite: Int = 0,
     @Json(name = "id")
-    val id: String,
+    val id: String = "",
     @Json(name = "like")
-    val like: Int,
+    val like: Int = 0,
     @Json(name = "owner")
-    val owner: OwnerM,
+    val owner: OwnerM? = null,
     @Json(name = "pubdate")
-    val pubdate: Int,
+    val pubdate: Int = 0,
     @Json(name = "reply")
-    val reply: Int,
+    val reply: Int = 0,
     @Json(name = "share")
-    val share: Int,
+    val share: Int = 0,
     @Json(name = "size")
-    val size: Int,
+    val size: Int = 0,
     @Json(name = "title")
-    val title: String,
+    val title: String = "",
     @Json(name = "tname")
-    val tname: String,
+    val tname: String = "",
     @Json(name = "url")
-    val url: String,
+    val url: String = "",
     @Json(name = "vid")
-    val vid: String,
+    val vid: String = "",
     @Json(name = "view")
-    val view: Int
+    val view: Int = 0
 ) : Parcelable
 
 @JsonClass(generateAdapter = true)
@@ -110,3 +112,5 @@ data class HomeData(
     val videoList: List<VideoM>
 ) : Parcelable
 
+fun videoJs2Model(js: String) = js.fromJson<VideoM>()
+fun videoModel2Js(video: VideoM) = video.toJson()

@@ -68,7 +68,6 @@ class MainActivity : ComponentActivity() {
                             systemUiController.setNavigationBarColor(
                                 primaryColor, darkIcons = dark
                             )
-
                         }
 
                         // A surface container using the 'background' color from the theme

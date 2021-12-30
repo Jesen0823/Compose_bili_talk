@@ -3,9 +3,9 @@ package com.jesen.biliexoplayer.player
 import android.content.Context
 import android.widget.Toast
 import com.google.android.exoplayer2.DefaultLoadControl
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.video.VideoSize
 import com.jesen.common_util_lib.utils.oLog
 
@@ -13,9 +13,9 @@ import com.jesen.common_util_lib.utils.oLog
  * 播放器实例创建
  * */
 object ExoPlayerHolder {
-    private var exoplayer: SimpleExoPlayer? = null
+    private var exoplayer: ExoPlayer? = null
 
-    fun get(context: Context): SimpleExoPlayer {
+    fun get(context: Context): ExoPlayer {
         if (exoplayer == null) {
             exoplayer = createExoPlayer(context)
         }
@@ -40,8 +40,8 @@ object ExoPlayerHolder {
     }
 
     // 创建ExoPlayer实例
-    private fun createExoPlayer(context: Context): SimpleExoPlayer {
-        return SimpleExoPlayer.Builder(context)
+    private fun createExoPlayer(context: Context): ExoPlayer {
+        return ExoPlayer.Builder(context)
             .setLoadControl(
                 DefaultLoadControl.Builder().setBufferDurationsMs(
                     // 设置预加载上限下限
