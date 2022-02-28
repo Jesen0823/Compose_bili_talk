@@ -26,10 +26,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.jesen.bilibanner.BannerConfig
-import com.jesen.common_util_lib.utils.ColorUtil
-import com.jesen.common_util_lib.utils.LocalMainActivity
-import com.jesen.common_util_lib.utils.LocalNavController
-import com.jesen.common_util_lib.utils.oLog
+import com.jesen.common_util_lib.utils.*
+import com.jesen.compose_bili.BiliApp
 import com.jesen.compose_bili.navigation.NavUtil
 import com.jesen.compose_bili.navigation.PageRoute
 import com.jesen.compose_bili.ui.theme.bili_90
@@ -119,6 +117,10 @@ fun HomeTabPage(categoryIndex: Int) {
 
                 viewModel.selectedIndex = indexPage
 
+                if (indexPage == 0){
+                    viewModel.getDefaultBannerList2(BiliApp.mContext)
+                }
+
                 // 按栏目获取数据，可以简单做个viewModel缓存，避免跳转的时候去重新请求
                 val curCategory = viewModel.categoryList[indexPage]
                 val videoPagingDataList: Pair<CategoryM, Flow<PagingData<VideoM>>> =
@@ -160,7 +162,7 @@ fun HomeTabPage(categoryIndex: Int) {
                                                 navController,
                                                 PageRoute.WEB_VIEW_ROUTE.replaceAfter(
                                                     "=",
-                                                    banner.url
+                                                    banner.url.extUrlEncode()?:""
                                                 )
                                             )
                                         }

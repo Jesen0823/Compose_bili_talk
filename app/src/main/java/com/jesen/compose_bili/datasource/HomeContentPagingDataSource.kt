@@ -1,6 +1,8 @@
 package com.jesen.compose_bili.datasource
 
 import com.jesen.common_util_lib.paging.CommonListPagingDataSource
+import com.jesen.common_util_lib.utils.oLog
+import com.jesen.compose_bili.BiliApp
 import com.jesen.compose_bili.repository.HomeCategoryRepository
 import com.jesen.compose_bili.utils.mapper.EntityBannerMapper
 import com.jesen.compose_bili.viewmodel.HomeViewModel
@@ -38,11 +40,12 @@ class HomeContentPagingDataSource(
 
             responseResult.data.bannerList?.let {
                 // 转换为封装的banner需要的数据类型
-                val bannerEntityList = it.map { banner ->
+                // 暂时注释 使用本地Banner数据
+                /*val bannerEntityList = it.map { banner ->
                     bannerMapper.map(banner)
                 }
                 viewModel.bannerDataList.clear()
-                viewModel.bannerDataList.addAll(bannerEntityList)
+                viewModel.bannerDataList.addAll(bannerEntityList)*/
             }
         }
 

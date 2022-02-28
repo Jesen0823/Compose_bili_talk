@@ -1,5 +1,7 @@
 package com.jesen.compose_bili.utils
 
+import com.jesen.compose_bili.R
+
 /**
  * 常量定义文件
  *

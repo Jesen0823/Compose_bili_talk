@@ -1,9 +1,7 @@
 package com.jesen.biliwebview_module.webview
 
-import android.webkit.CookieManager
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.os.Build
+import android.webkit.*
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -56,6 +54,13 @@ fun BiliWebView(
             webViewClient = WebViewClient()
             settings.javaScriptEnabled = true
 
+            // 解决webView无法加载图片的问题
+            settings.blockNetworkImage = false
+            settings.domStorageEnabled = true
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            }
+
             session?.let {
                 CookieManager.getInstance().let { manager ->
                     manager.acceptCookie()
@@ -64,6 +69,7 @@ fun BiliWebView(
                         "api.devio.org",
                         it.toString()
                     )
+                    manager.setCookie("feeds-drcn.cloud.huawei.com.cn", it.toString())
                 }
             }
 
