@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.jesen.common_util_lib.ui.theme.gray300
 import com.jesen.common_util_lib.utils.CoilImage
 import com.jesen.common_util_lib.utils.countFormat
 import com.jesen.retrofit_lib.model.VideoM
@@ -63,7 +64,7 @@ fun SmallVideoCard(
                 .fillMaxHeight()
                 .padding(start = 15.dp, end = 15.dp, bottom = 5.dp)
         ) {
-            val (coverImage, length, title, upTag, upName, viewNum, replyNum, moreIcon) = createRefs()
+            val (coverImage, length, title, upTag, upName, viewNum, replyNum, moreIcon,bottomLine) = createRefs()
             CoilImage(
                 url = video.cover,
                 modifier = Modifier
@@ -173,9 +174,17 @@ fun SmallVideoCard(
                     .size(16.dp)
                     .constrainAs(moreIcon) {
                         end.linkTo(parent.end, margin = 6.dp)
-                        bottom.linkTo(parent.bottom, margin = 8.dp)
+                        bottom.linkTo(bottomLine.top, margin = 8.dp)
                     }
             )
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(2.dp)
+                .constrainAs(bottomLine) {
+                    end.linkTo(parent.end, margin = 16.dp)
+                    start.linkTo(parent.start, margin = 16.dp)
+                    bottom.linkTo(parent.bottom,margin = 0.dp)
+                }.background(color = gray300))
         }
     }
 }

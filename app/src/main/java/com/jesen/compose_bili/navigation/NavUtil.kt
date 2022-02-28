@@ -6,6 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.jesen.common_util_lib.utils.oLog
 
 object NavUtil {
 
@@ -19,16 +20,21 @@ object NavUtil {
     fun doPageNavigationTo(
         navController: NavHostController,
         route: String,
-        allowBack: Boolean = true
+        allowBack: Boolean = true,
+        popUpToRoute: String? = null, // 指定回退目标
+        singTop:Boolean = true
     ) {
+        oLog("naviagte page route: $route")
         navController.navigate(route) {
-            launchSingleTop = false
-
-            popUpTo(navController.graph.findStartDestination().id) {
+            launchSingleTop = singTop
+            popUpToRoute?.let {
+                popUpTo(it)
+            } ?: popUpTo(navController.graph.findStartDestination().id) {
                 if (allowBack) {
                     // 防止状态丢失
                     saveState = true
                 } else {
+                    // 清除导航后目的页之前的所有页面
                     inclusive = true
                 }
             }

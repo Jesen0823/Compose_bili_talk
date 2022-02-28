@@ -45,6 +45,8 @@ fun ZxingComposable(resultBack: (String) -> Unit) {
         ProcessCameraProvider.getInstance(context)
     }
 
+    val tipsTopState  = remember{ mutableStateOf(false)}
+
     var hasCameraPremission by remember {
         mutableStateOf(
             ContextCompat.checkSelfPermission(
@@ -87,6 +89,8 @@ fun ZxingComposable(resultBack: (String) -> Unit) {
                         ContextCompat.getMainExecutor(context),
                         QrCodeAnalyzer { result ->
                             code = result
+                            tipsTopState.value = true
+                            resultBack(code)
                         }
                     )
 
@@ -103,7 +107,6 @@ fun ZxingComposable(resultBack: (String) -> Unit) {
                     previewView
                 },
             )
-            resultBack(code)
 
             ScanDecoration(
                 modifier = Modifier
@@ -134,8 +137,8 @@ fun ZxingComposable(resultBack: (String) -> Unit) {
                     .wrapContentSize()
                     .background(color = Color.Transparent)
                     .padding(start = 30.dp),
-                text = "正在努力扫码中...",
-                color = Color.White,
+                text = if (tipsTopState.value) "扫描完成" else "正在努力扫描中...",
+                color = if (tipsTopState.value) Color.Green else Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )

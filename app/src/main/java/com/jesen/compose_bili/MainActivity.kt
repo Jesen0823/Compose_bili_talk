@@ -4,6 +4,7 @@ package com.jesen.compose_bili
 //import androidx.navigation.compose.rememberNavController
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -38,6 +39,11 @@ class MainActivity : ComponentActivity() {
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//注意要清除 FLAG_TRANSLUCENT_STATUS flag
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.statusBarColor = resources.getColor(android.R.color.holo_red_light);
 
         setContent {
             // 普通导航

@@ -9,12 +9,17 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.jesen.biliexoplayer.player.ExoComposePlayer
 import com.jesen.common_util_lib.utils.LocalMainActivity
+import com.jesen.common_util_lib.utils.LocalNavController
+import com.jesen.common_util_lib.utils.oLog
 import com.jesen.retrofit_lib.model.VideoDetailM
 import com.jesen.retrofit_lib.model.VideoM
 import com.jesen.retrofit_lib.response.DataState
@@ -22,6 +27,7 @@ import com.jesen.videodetail_model.ui.widget.CommentListContent
 import com.jesen.videodetail_model.ui.widget.TabSelectBar
 import com.jesen.videodetail_model.ui.widget.VideoDesContent
 import com.jesen.videodetail_model.viewmodel.DetailViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import soup.compose.material.motion.MaterialFadeThrough
 
 @ExperimentalMaterialApi
@@ -34,6 +40,7 @@ fun VideoDetailScreen(
     itemCardClick: (VideoM) -> Unit,
     onBackCall: () -> Unit
 ) {
+    oLog("DelegateVideoDetail, VideoDetailScreen videoMjs: $videoMjs")
     val activity = LocalMainActivity.current
     val viewModel by activity.viewModels<DetailViewModel>()
 
@@ -43,7 +50,8 @@ fun VideoDetailScreen(
     fun isVideoLoaded() = videoDetailData is DataState.Success
 
     // 加载视频信息
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1= videoMjs) {
+        oLog("DelegateVideoDetail, isVideoLoaded() : ${isVideoLoaded()}")
         if (!isVideoLoaded()) {
             viewModel.loadVideoInfo2(videoMjs)
         }
@@ -79,6 +87,32 @@ fun VideoDetailScreen(
                 is DataState.Error -> {
                     DetailLoadError(viewModel = viewModel, videoId = viewModel.curVideoM?.vid ?: "")
                 }
+            }
+        }
+
+
+        /**
+         * 生命周期：
+         * event: ON_CREATE
+         * event: ON_START
+         * event: ON_RESUME
+         * event: ON_PAUSE
+         * event: ON_STOP
+         * event: ON_DESTROY
+         */
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val navController = LocalNavController.current
+        DisposableEffect(key1 = lifecycleOwner){
+            val observer = LifecycleEventObserver{_, event ->
+                oLog("VideoDetailScreen, event: $event")
+                if (event == Lifecycle.Event.ON_STOP){
+                    viewModel.onStopEvent()
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
             }
         }
 

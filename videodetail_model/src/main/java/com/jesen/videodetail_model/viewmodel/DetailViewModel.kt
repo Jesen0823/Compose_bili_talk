@@ -21,8 +21,8 @@ class DetailViewModel : ViewModel() {
     var curVideoM: VideoM? = null
 
     // 详情页数据状态
-    private val _videoDetailState = MutableStateFlow<DataState<VideoDetailM>>(DataState.Empty())
-    val videoDetailState: StateFlow<DataState<VideoDetailM>> = _videoDetailState
+    private var _videoDetailState = MutableStateFlow<DataState<VideoDetailM>>(DataState.Empty())
+    var videoDetailState: StateFlow<DataState<VideoDetailM>> = _videoDetailState
 
     // 关注/取关作者状态，没有对应API，来个假的
     private val _upFollowState = MutableStateFlow<DataState<InteractionM>>(DataState.Empty())
@@ -37,6 +37,7 @@ class DetailViewModel : ViewModel() {
     val videoFavoriteState: StateFlow<DataState<InteractionM>> = _videoFavoriteState
 
     fun loadVideoInfo2(videoMjs: String) = viewModelScope.launch {
+        oLog("DetailModel, loadVideoInfo2 : $videoMjs")
         _videoDetailState.value = DataState.Loading()
         flow {
             val videoM = videoJs2Model(videoMjs)
@@ -191,4 +192,9 @@ class DetailViewModel : ViewModel() {
                 }
             result(response)
         }
+
+    fun onStopEvent() {
+        _videoDetailState = MutableStateFlow<DataState<VideoDetailM>>(DataState.Empty())
+        videoDetailState = _videoDetailState
+    }
 }

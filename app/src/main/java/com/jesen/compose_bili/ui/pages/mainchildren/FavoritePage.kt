@@ -100,8 +100,8 @@ fun FavoritePage() {
                                         navController = navController,
                                         PageRoute.VIDEO_DETAIL_ROUTE.replaceAfter(
                                             "=",
-                                            videoModel2Js(video)
-                                        )
+                                            videoModel2Js(video),
+                                        ),
                                     )
                                 }
                             },

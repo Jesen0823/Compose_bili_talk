@@ -111,7 +111,17 @@ fun RefreshCategoryContentScreen(
                 videoCategoryList[index]?.let {
                     VideoItemCard(
                         video = it,
-                        onClick = { Toast.makeText(context, "ccc", Toast.LENGTH_SHORT).show() },
+                        onClick = {
+                            coroutineScope.launch {
+                                NavUtil.doPageNavigationTo(
+                                    navController = navController,
+                                    PageRoute.VIDEO_DETAIL_ROUTE.replaceAfter(
+                                        "=",
+                                        videoModel2Js(it)
+                                    )
+                                )
+                            }
+                        },
                     )
                 }
             }

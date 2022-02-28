@@ -46,7 +46,7 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding()
+            //.navigationBarsPadding()
             .background(MaterialTheme.colors.background),
     ) {
         splashViewModel.checkLoginState()
