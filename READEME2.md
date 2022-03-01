@@ -692,4 +692,4 @@ fun SearchTopBar(
 [github链接 - Flutter]:https://github.com/Jesen0823/flutter_bili_talk/tree/br_componentization
 
 ![Compose  蒲公英](./doc/compose_release_apk.jpg)
-![flutter  蒲公英](./doc/flutter_release_apk.jpg)
+<img src="/doc/flutter_release_apk.jpg" alt="flutter  蒲公英" style="zoom:50%;" />
