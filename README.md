@@ -7,13 +7,13 @@
 
 效果图：
 
-<img src="C:\Users\X1 Carbon\Desktop\capture\ezgif-6-f53b17f37b15.gif" style="zoom:80%;" /
+<img src="./doc/ezgif-6-f53b17f37b15.gif" style="zoom:80%;" /
 
 > 非常简单的一个页面UI，就是一些控件 + Navigation + 状态保持，之前看过一些Flutter实现的视频，所以最近就想到用Compose尝试一下，手感跟Flutter感觉差别不大，实际上是有差别的，毕竟对Android更熟悉。
 >
 > Compose中看别人的文章都是一个Activity，其他的都是Compose控件，也就是 Activity + N * Screen  ,这个Screen就类似Fragment，只不过更加灵活。
 
-| <img src="C:\Users\X1 Carbon\Desktop\capture\ezgif-6-f53b17f37b15.gif" style="zoom: 67%;" /> | <img src="C:\Users\X1 Carbon\Desktop\capture\导航首页.jpg" style="zoom:80%;" /> |
+| <img src="./doc/ezgif-6-f53b17f37b15.gif" style="zoom: 67%;" /> | <img src="./doc/导航首页.jpg" style="zoom:80%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 #### 一、登录注册页面：
@@ -333,7 +333,7 @@ fun doPageNavBack(route: String?) {
 
 
 
-   关于Pager的了解可以看谷歌的文档，推荐一个比较好的用Pager实现banner轮播案例，来自大佬朱江的[Compose Banner](https://github.com/zhujiang521/Banner)
+   关于Pager的了解可以看谷歌的文档，推荐一个比较好的用Pager实现banner轮播案例，参考朱江的[Compose Banner](https://github.com/zhujiang521/Banner)
 
    ```groovy
     // 类似ViewPager
@@ -344,7 +344,7 @@ fun doPageNavBack(route: String?) {
 
 * TabView: 不可滚动，子元素等宽，排列装不下的时候文字方向会由横向变纵向。适合以下场景：
 
-  <img src="C:\Users\X1 Carbon\Desktop\capture\_155914.jpg" style="zoom:50%;" />
+  <img src="./doc/_155914.jpg" style="zoom:50%;" />
 
 *
   ScrollableTabRow 可以滚动，子项长度取决包裹内容。
@@ -600,4 +600,4 @@ fun BiliAnimatedIndicator(tabPositions: List<TabPosition>, selectedTabIndex: Int
 
 画完了指示器，替代上面ScrollTabView中的 indicator = xxx, 就可以看到下面的效果：
 
-<img src="C:\Users\X1 Carbon\Desktop\capture\ezgif-3-e49ae2699e2e.gif" style="zoom:80%;" />
+<img src="./doc/ezgif-3-e49ae2699e2e.gif" style="zoom:80%;" />
