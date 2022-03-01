@@ -11,13 +11,15 @@
 
 
 
-上一篇文章中主要记录了登录注册页面和路由框架的实现 →
+**上一篇文章中主要记录了登录注册页面和路由框架的实现 →**  
 
-// 上一篇文章
-
-![代码结构](C:\Users\X1 Carbon\Desktop\capture\release\SVID_20220228_204534_1.gif) ![首页](C:\Users\X1 Carbon\Desktop\capture\release\SVID_20220228_204625_1.gif) ![个人中心](C:\Users\X1 Carbon\Desktop\capture\release\SVID_20220228_204837_1.gif) ![详情页](C:\Users\X1 Carbon\Desktop\capture\release\SVID_20220301_101952_1.gif)
+[Jetpack Compose | 低仿哔哩哔哩（一）|尝试实现 登录注册| 首页骨架]: https://juejin.cn/post/7036674714915471373
 
 
+
+效果图：
+
+![代码结构](./doc/SVID_20220228_204534_1.gif) ![首页](./doc/SVID_20220228_204625_1.gif) ![个人中心](./doc/SVID_20220228_204837_1.gif) ![详情页](./doc/SVID_20220301_101952_1.gif)
 
 
 
@@ -237,7 +239,7 @@ fun SplashBgOne() {
 
 ​     页面滑动嵌套，官方提供了一个Modifier即nestedScroll()来处理滑动，通过它可以监听滑动进度和滑动方向。Google去年就有计划完善Compose的文档，最新的文档应该更加完善了，官方还提供了Samples:
 
-<img src="C:\Users\X1 Carbon\Desktop\capture\nested.jpg" alt="nested" style="zoom:50%;" />
+<img src="./doc/nested.jpg" alt="nested" style="zoom:50%;" />
 
 ​     简单用法如下，available保存了滑动的单步距离，通过测试日志发现了该变量的值与滑动方向的关系，如下：
 
@@ -268,7 +270,7 @@ Box(
 }
 ```
 
-![2021-12-21_010233](C:\Users\X1 Carbon\Desktop\capture\2021-12-21_010233.jpg)
+![2021-12-21_010233](./doc/2021-12-21_010233.jpg)
 
 
 
@@ -276,7 +278,7 @@ Box(
 
 然后根据进度与某部件的最大滑动距离，即可实时偏移部件位置或尺寸：
 
-![2021-12-21_001645](C:\Users\X1 Carbon\Desktop\capture\2021-12-21_001645.jpg)
+![2021-12-21_001645](./doc/2021-12-21_001645.jpg)
 
 基于此，简单封装了一下，根据滑动进度调整控件位置，而调整控件位置这里是通过给它动态设置offset偏移量来达到的。
 
@@ -664,9 +666,13 @@ fun SearchTopBar(
 
 ### 五、视频播放
 
-关于视频播放部分，之前有文章分享过Compose中如何进行视频播放。【参考链接】
+关于视频播放部分，之前有文章分享过Compose中如何进行视频播放。
 
-另外，列表分页加载使用了Paging分页框架。【参考链接】
+[【参考链接】]: https://juejin.cn/post/7034363130121551903
+
+另外，列表分页加载使用了Paging分页框架。
+
+[【参考链接】]: https://juejin.cn/post/7032954701071155213
 
 
 
@@ -676,10 +682,14 @@ fun SearchTopBar(
 
 拆分比较随意，仅仅是处于方便查找，按功能划分小模块。
 
-![代码结构](C:\Users\X1 Carbon\Desktop\capture\release\2022-03-01_103605.jpg)
+![代码结构](./doc/2022-03-01_103605.jpg)
 
 
 
 ### 本文源码：
 
-[github链接]: https://github.com/Jesen0823/Compose_bili_talk/tree/basic_v1.0
+[github链接 - Compose]: https://github.com/Jesen0823/Compose_bili_talk/tree/basic_v1.0
+[github链接 - Flutter]:https://github.com/Jesen0823/flutter_bili_talk/tree/br_componentization
+
+![Compose  蒲公英](./doc/compose_release_apk.jpg)
+![flutter  蒲公英](./doc/flutter_release_apk.jpg)
