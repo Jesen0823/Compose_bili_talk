@@ -688,8 +688,12 @@ fun SearchTopBar(
 
 ### 本文源码：
 
-[github链接 - Compose]: https://github.com/Jesen0823/Compose_bili_talk/tree/basic_v1.0
-[github链接 - Flutter]:https://github.com/Jesen0823/flutter_bili_talk/tree/br_componentization
 
-![Compose  蒲公英](./doc/compose_release_apk.jpg)
-<img src="/doc/flutter_release_apk.jpg" alt="flutter  蒲公英" style="zoom:50%;" />
+ [ github链接 - Compose]: https://github.com/Jesen0823/Compose_bili_talk      basev1.0
+
+
+ [ github链接 - Flutter ]: https://github.com/Jesen0823/flutter_bili_talk/tree/br_componentization
+
+
+<img src="./doc/compose_release_apk.jpg" alt="compose  蒲公英" width="400" />
+<img src="/doc/flutter_release_apk.jpg" alt="flutter  蒲公英" width="400" />
