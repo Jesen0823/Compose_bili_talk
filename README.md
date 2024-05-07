@@ -189,7 +189,7 @@ fun doPageNavBack(route: String?) {
 
 #### 二、首页结构：
 
-![](C:\Users\X1 Carbon\Desktop\capture\141444.jpg)
+![](https://github.com/Jesen0823/Compose_bili_talk/blob/basic_v1.0/doc/141444.jpg)
 
 * 底部导航定义在主页(**mainScreen**)底部，分别对应4个Compose Screen页面，默认选中第一个Screen(**homeScreen**)。
 
